@@ -5,12 +5,146 @@
     android:id="@+id/content_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.tech.thrithvam.partyec.Home"
     tools:showIn="@layout/app_bar_home">
-
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:src="@drawable/logo"
+        android:scaleType="fitCenter"
+        android:layout_alignParentTop="true"
+        android:id="@+id/logo"
+        android:layout_marginBottom="5dp"
+        />
+<TableRow
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:gravity="center"
+    android:layout_below="@+id/logo"
+    android:id="@+id/btn_row_1">
+    <RelativeLayout
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:background="@color/partyec"
+        android:layout_margin="2dp"
+        android:padding="5dp">
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/shop"
+        android:layout_above="@+id/btn1"
+        android:layout_centerHorizontal="true"
+        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shop by Category"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/btn1"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:textSize="12sp"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:background="@color/partyec"
+        android:layout_margin="2dp"
+        android:padding="5dp">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/occation"
+            android:layout_above="@+id/btn2"
+            android:layout_centerHorizontal="true"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shop by Occasion"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/btn2"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:textSize="12sp"/>
+    </RelativeLayout>
+</TableRow>
+<TableRow
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:gravity="center"
+    android:layout_below="@+id/btn_row_1"
+    android:id="@+id/btn_row_2">
+    <RelativeLayout
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:background="@color/partyec"
+        android:layout_margin="2dp"
+        android:padding="5dp">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/offer"
+            android:layout_above="@+id/btn3"
+            android:layout_centerHorizontal="true"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Offers"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/btn3"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:textSize="12sp"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:background="@color/partyec"
+        android:layout_margin="2dp"
+        android:padding="5dp">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/register_event"
+            android:layout_above="@+id/btn4"
+            android:layout_centerHorizontal="true"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register an Event"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/btn4"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:textSize="12sp"/>
+    </RelativeLayout>
+</TableRow>
+<ImageView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/home_image"
+    android:src="@drawable/home_image"
+    android:layout_alignParentBottom="true"
+    android:scaleType="centerCrop"
+    android:layout_below="@+id/btn_row_2"/>
 </RelativeLayout>
