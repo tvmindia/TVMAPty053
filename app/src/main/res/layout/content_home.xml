@@ -10,7 +10,7 @@
     tools:showIn="@layout/app_bar_home">
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:src="@drawable/logo"
         android:scaleType="fitCenter"
         android:layout_alignParentTop="true"
@@ -40,7 +40,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Shop by Category"
+            android:text="@string/shop_by_category"
             android:gravity="center"
             android:layout_centerHorizontal="true"
             android:textColor="@android:color/white"
@@ -67,7 +67,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Shop by Occasion"
+            android:text="@string/shop_by_occasion"
             android:gravity="center"
             android:layout_centerHorizontal="true"
             android:textColor="@android:color/white"
@@ -101,7 +101,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Offers"
+            android:text="@string/offers"
             android:gravity="center"
             android:layout_centerHorizontal="true"
             android:textColor="@android:color/white"
@@ -128,7 +128,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Register an Event"
+            android:text="@string/register_an_event"
             android:gravity="center"
             android:layout_centerHorizontal="true"
             android:textColor="@android:color/white"
