@@ -18,6 +18,10 @@
         <activity
             android:name=".Home"
             android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CategoryList"
+            android:label="@string/title_activity_category_list"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 

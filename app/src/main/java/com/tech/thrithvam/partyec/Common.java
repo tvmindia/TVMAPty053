@@ -1,6 +1,7 @@
 package com.tech.thrithvam.partyec;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -10,7 +11,8 @@ class Common {
         int id = item.getItemId();
 
         if (id == R.id.nav_shop_by_category) {
-            Toast.makeText(context,"touched category",Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(context,CategoryList.class);
+            context.startActivity(intent);
         }/* else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
