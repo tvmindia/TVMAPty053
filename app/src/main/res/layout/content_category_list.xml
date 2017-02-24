@@ -12,5 +12,9 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.tech.thrithvam.partyec.CategoryList"
     tools:showIn="@layout/app_bar_category_list">
-
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:text="sample text"
+    android:textColor="@color/primary_text"/>
 </RelativeLayout>
