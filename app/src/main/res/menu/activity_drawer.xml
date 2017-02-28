@@ -4,19 +4,19 @@
     <group >
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/home"
             android:title="@string/home" />
         <item
             android:id="@+id/nav_shop_by_category"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/shop"
             android:title="@string/shop_by_category" />
         <item
             android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/occation"
             android:title="@string/shop_by_occasion" />
         <item
             android:id="@+id/nav_offers"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/offer"
             android:title="@string/offers" />
     </group>
 
@@ -24,23 +24,23 @@
         <menu>
             <item
                 android:id="@+id/nav_favourites"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/favourite"
                 android:title="@string/favourites" />
             <item
                 android:id="@+id/nav_view_orders"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/cart"
                 android:title="@string/view_orders" />
             <item
                 android:id="@+id/nav_view_bookings"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/booking"
                 android:title="@string/view_bookings" />
             <item
                 android:id="@+id/nav_view_quotations"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/quotation"
                 android:title="@string/view_quotations" />
             <item
                 android:id="@+id/nav_contact_us"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/contact"
                 android:title="@string/contact_us" />
         </menu>
     </item>
