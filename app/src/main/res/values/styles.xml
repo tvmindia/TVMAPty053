@@ -15,6 +15,7 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlActivated">@android:color/white</item>
         <item name="toolbarStyle">@style/Widget.Toolbar</item>
     </style>
     <style name="Widget.Toolbar" parent="@style/Widget.AppCompat.Toolbar">
