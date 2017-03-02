@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
 <ImageView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="100dp"
     android:src="@drawable/name_logo"
-    android:scaleType="fitCenter"
+    android:scaleType="centerInside"
     android:id="@+id/category_image"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="category name"
         android:gravity="center"
-        android:textColor="@color/primary_text"
-        android:textSize="17sp"
-        android:id="@+id/category_name"/>
+        android:id="@+id/category_name"
+        android:textStyle="normal|bold"
+        android:textAllCaps="true"
+        android:typeface="monospace"
+        android:textColor="@color/primary_text"/>
 </LinearLayout>

@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 class Common {
 
@@ -44,5 +47,22 @@ class Common {
                 return false;
             }
         });
+    }
+
+    void LoadImage(Context context,ImageView imageView, String imageURL, int failImage){
+        if(!imageURL.equals("null")){
+            Glide.with(context)
+                    .load(imageURL)//adapterContext.getResources().getString(R.string.url) +imageURL.substring(imageURL.indexOf("img")))
+                    .fitCenter()
+                    .thumbnail(0.1f)
+                    .error(failImage)
+                    .into(imageView);
+        }
+        else{
+            Glide.with(context)
+                    .load(failImage)
+                    .fitCenter()
+                    .into(imageView);
+        }
     }
 }

@@ -124,8 +124,8 @@ public class CategoryList extends AppCompatActivity
                     msg=jsonObject.optString("Message");
                     pass=jsonObject.optBoolean("Flag",true);
                     String[] data=new String[5];
-                    data[0]=jsonObject.optString("Name");
-                    data[1]=jsonObject.optString("AlbumName");
+                    data[0]="http://blog.ecardlr.com/faq/Mahindra-XUV-500.jpg";//"http://www.iconpr.com.au/uploads/styles/feature/uploads/features/preview/Y82bI-Tencent_Logo_icon_3.png";
+                    data[1]=jsonObject.optString("Name");
                     dataArrayList.add(data);
                 }
             } catch (Exception ex) {
@@ -138,7 +138,6 @@ public class CategoryList extends AppCompatActivity
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             loadingIndicator.setVisibility(View.GONE);
-            Toast.makeText(CategoryList.this, strJson, Toast.LENGTH_SHORT).show();
             if(!pass) {
                 Intent noItemsIntent=new Intent(CategoryList.this,NothingToDisplay.class);
                 noItemsIntent.putExtra("msg",msg);

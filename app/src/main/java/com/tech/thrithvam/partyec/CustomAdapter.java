@@ -1,12 +1,18 @@
 package com.tech.thrithvam.partyec;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,6 +26,7 @@ public class CustomAdapter extends BaseAdapter{
     private String calledFrom;
     private SimpleDateFormat formatted;
     private Calendar cal;
+    Common common;
     public CustomAdapter(Context context, ArrayList<String[]> objects, String calledFrom) {
         // super(context, textViewResourceId, objects);
         adapterContext=context;
@@ -28,6 +35,7 @@ public class CustomAdapter extends BaseAdapter{
         this.calledFrom=calledFrom;
         formatted = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
         cal= Calendar.getInstance();
+        common=new Common();
     }
     @Override
     public int getCount() {
@@ -53,10 +61,10 @@ public class CustomAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final Holder holder;
+        Holder holder;
         final int fPos=position;
         switch (calledFrom) {
-            //--------------------------for search results------------------
+            //--------------------------for category list items------------------
             case "CategoryList":
                 if (convertView == null) {
                     holder = new Holder();
@@ -68,7 +76,11 @@ public class CustomAdapter extends BaseAdapter{
                     holder = (Holder) convertView.getTag();
                 }
                 //Label loading--------------------
-                holder.categoryName.setText(objects.get(position)[0]);
+                holder.categoryName.setText(objects.get(position)[1]);
+                common.LoadImage(adapterContext,
+                                    holder.categoryImage,
+                                    objects.get(position)[0],
+                                    R.drawable.dim_icon);
                 break;
             default:
                 break;
