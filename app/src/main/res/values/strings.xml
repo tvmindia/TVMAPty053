@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">PartyEC</string>
     <string name="title_activity_home">PartyEC</string>
+    <string name="url">http://192.168.1.109:555/</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -19,4 +20,6 @@
     <string name="title_activity_category_list">Category List</string>
     <string name="search">Search</string>
     <string name="wishlist">Wishlist</string>
+    <string name="no_items_to_display">Nothing to display</string>
+    <string name="back">Back</string>
 </resources>

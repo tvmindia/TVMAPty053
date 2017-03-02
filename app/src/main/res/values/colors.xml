@@ -5,5 +5,5 @@
     <color name="colorAccent">@color/partyec</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
-    <color name="partyec">#d42680</color>
+    <color name="partyec">#e01d73</color>
 </resources>

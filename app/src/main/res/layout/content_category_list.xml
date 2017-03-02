@@ -5,16 +5,21 @@
     android:id="@+id/content_category_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.tech.thrithvam.partyec.CategoryList"
     tools:showIn="@layout/app_bar_category_list">
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:text="sample text"
-    android:textColor="@color/primary_text"/>
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:indicatorName="BallClipRotateMultipleIndicator"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        app:indicatorColor="@color/colorAccent"
+        android:id="@+id/loading_indicator"
+        />
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/category_listview"/>
 </RelativeLayout>
