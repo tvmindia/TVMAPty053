@@ -40,7 +40,30 @@ public class CategoryList extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         categoryListView=(ListView)findViewById(R.id.category_listview);
-        new GetCategoyList().execute();
+
+        //Threading------------------------------------------------------------------------------------------------------
+        String webService="Webservices/document.asmx/TestJSON";
+        String postData =  "{\"test\":\"" + "testdatainput"+ "\"}";
+        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
+        String[] dataColumns={"Image","Name"};//Order Matters. Data in the common.dataArrayList will be in same order
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                CustomAdapter adapter=new CustomAdapter(CategoryList.this, common.dataArrayList,"CategoryList");
+                categoryListView.setAdapter(adapter);
+                categoryListView.setVisibility(View.VISIBLE);
+            }
+        };
+        common.AsynchronousThread(CategoryList.this,
+                                    webService,
+                                    postData,
+                                    loadingIndicator,
+                                    dataColumns,
+                                    postThread,
+                                    null);
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -51,108 +74,7 @@ public class CategoryList extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
-    public class GetCategoyList extends AsyncTask<Void , Void, Void> {
-        int status;StringBuilder sb;
-        String strJson, postData;
-        JSONArray jsonArray;
-        String msg;
-        boolean pass=false;
-        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView)findViewById(R.id.loading_indicator);
-        ArrayList<String[]> dataArrayList=new ArrayList<>();
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            loadingIndicator.setVisibility(View.VISIBLE);
-            //----------encrypting ---------------------------
-            // usernameString=cryptography.Encrypt(usernameString);
-        }
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            String url =getResources().getString(R.string.url) + "Webservices/document.asmx/TestJSON";
-            HttpURLConnection c = null;
-            try {
-                postData =  "{\"test\":\"" + "testdatainput"+ "\"}";
-                URL u = new URL(url);
-                c = (HttpURLConnection) u.openConnection();
-                c.setRequestMethod("POST");
-                c.setRequestProperty("Content-type", "application/json; charset=utf-16");
-                c.setRequestProperty("Content-length", Integer.toString(postData.length()));
-                c.setDoInput(true);
-                c.setDoOutput(true);
-                c.setUseCaches(false);
-                c.setConnectTimeout(10000);
-                c.setReadTimeout(10000);
-                DataOutputStream wr = new DataOutputStream(c.getOutputStream());
-                wr.writeBytes(postData);
-                wr.flush();
-                wr.close();
-                status = c.getResponseCode();
-                switch (status) {
-                    case 200:
-                    case 201: BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream()));
-                        sb = new StringBuilder();
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            sb.append(line).append("\n");
-                        }
-                        br.close();
-                        int a=sb.indexOf("[");
-                        int b=sb.lastIndexOf("]");
-                        strJson=sb.substring(a, b + 1);
-                        //   strJson=cryptography.Decrypt(strJson);
-                        strJson="{\"JSON\":" + strJson.replace("\\\"","\"").replace("\\\\","\\") + "}";
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
-                msg=ex.getMessage();
-            } finally {
-                if (c != null) {
-                    try {
-                        c.disconnect();
-                    } catch (Exception ex) {
-                        Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
-                        msg=ex.getMessage();
-                    }
-                }
-            }
-            if(strJson!=null)
-            {try {
-                JSONObject jsonRootObject = new JSONObject(strJson);
-                jsonArray = jsonRootObject.optJSONArray("JSON");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    msg=jsonObject.optString("Message");
-                    pass=jsonObject.optBoolean("Flag",true);
-                    String[] data=new String[5];
-                    data[0]="http://blog.ecardlr.com/faq/Mahindra-XUV-500.jpg";//"http://www.iconpr.com.au/uploads/styles/feature/uploads/features/preview/Y82bI-Tencent_Logo_icon_3.png";
-                    data[1]=jsonObject.optString("Name");
-                    dataArrayList.add(data);
-                }
-            } catch (Exception ex) {
-                msg=ex.getMessage();
-            }}
-            return null;
-        }
 
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            loadingIndicator.setVisibility(View.GONE);
-            if(!pass) {
-                Intent noItemsIntent=new Intent(CategoryList.this,NothingToDisplay.class);
-                noItemsIntent.putExtra("msg",msg);
-                noItemsIntent.putExtra("activityHead","Shopping");
-                startActivity(noItemsIntent);
-                finish();
-            }
-            else {
-                CustomAdapter adapter=new CustomAdapter(CategoryList.this, dataArrayList,"CategoryList");
-                categoryListView.setAdapter(adapter);
-                categoryListView.setVisibility(View.VISIBLE);
-
-            }
-        }
-    }
 
     @Override
     public void onBackPressed() {
