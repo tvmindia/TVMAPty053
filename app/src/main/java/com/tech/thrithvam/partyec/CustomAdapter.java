@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class CustomAdapter extends BaseAdapter{
+class CustomAdapter extends BaseAdapter{
     private Context adapterContext;
     private static LayoutInflater inflater=null;
     private ArrayList<String[]> objects;
@@ -26,6 +27,7 @@ public class CustomAdapter extends BaseAdapter{
         adapterContext=context;
         inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.objects=objects;
+        this.filteredObjects=objects;
         this.calledFrom=calledFrom;
         formatted = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
         cal= Calendar.getInstance();
@@ -33,7 +35,7 @@ public class CustomAdapter extends BaseAdapter{
     }
     @Override
     public int getCount() {
-        return objects.size();
+        return filteredObjects.size();
     }
 
     @Override
@@ -70,15 +72,50 @@ public class CustomAdapter extends BaseAdapter{
                     holder = (Holder) convertView.getTag();
                 }
                 //Label loading--------------------
-                holder.categoryName.setText(objects.get(position)[1]);
+                holder.categoryName.setText(filteredObjects.get(position)[1]);
                 common.LoadImage(adapterContext,
                                     holder.categoryImage,
-                                    objects.get(position)[0],
+                        filteredObjects.get(position)[0],
                                     R.drawable.dim_icon);
                 break;
             default:
                 break;
         }
         return convertView;
+    }
+
+    //Filtering--------------------------------------
+    private ItemFilter mFilter = new ItemFilter();
+    private ArrayList<String[]> filteredObjects;
+    private int dataItemPosition;
+    Filter getFilter(int dataItem) {
+        dataItemPosition=dataItem;
+        return mFilter;
+    }
+    private class ItemFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            String filterString = constraint.toString().toLowerCase();
+            FilterResults results = new FilterResults();
+            int count = objects.size();
+            final ArrayList<String[]> filteredList = new ArrayList<String[]>(count);
+
+            for (int i = 0; i < count; i++) {
+                if (objects.get(i)[dataItemPosition].toLowerCase().contains(filterString)) {
+                    filteredList.add(objects.get(i));
+                }
+            }
+
+            results.values = filteredList;
+            results.count = filteredList.size();
+            return results;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            filteredObjects = (ArrayList<String[]>) results.values;
+            notifyDataSetChanged();
+        }
     }
 }

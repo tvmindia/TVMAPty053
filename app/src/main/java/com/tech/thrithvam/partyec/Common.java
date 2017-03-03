@@ -50,24 +50,6 @@ class Common {
 
     }
 
-    //SearchView in actionbar initialization----------------------------------------
-    void SearchViewActionBarInitialisation(final Context context, Menu menu){
-        final SearchView searchView =
-                (SearchView) menu.findItem(R.id.menu_search).getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(context, searchView.getQuery().toString(), Toast.LENGTH_SHORT).show();
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-    }
-
     //To load image from a url------------------------------------------------------
     void LoadImage(Context context,ImageView imageView, String imageURL, int failImage){
         if(!imageURL.equals("null")){

@@ -1,38 +1,26 @@
 package com.tech.thrithvam.partyec;
 
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.wang.avi.AVLoadingIndicatorView;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class CategoryList extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Common common=new Common();
+    SearchView searchView;
     ListView categoryListView;
+    CustomAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +37,20 @@ public class CategoryList extends AppCompatActivity
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
-                CustomAdapter adapter=new CustomAdapter(CategoryList.this, common.dataArrayList,"CategoryList");
+                adapter=new CustomAdapter(CategoryList.this, common.dataArrayList,"CategoryList");
                 categoryListView.setAdapter(adapter);
                 categoryListView.setVisibility(View.VISIBLE);
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        adapter.getFilter(1).filter(searchView.getQuery().toString().trim());
+                        return true;
+                    }
+                });
             }
         };
         common.AsynchronousThread(CategoryList.this,
@@ -89,7 +88,7 @@ public class CategoryList extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_actionbar, menu);
-        common.SearchViewActionBarInitialisation(this,menu);
+        searchView=(SearchView) menu.findItem(R.id.menu_search).getActionView();
         return true;
     }
 
