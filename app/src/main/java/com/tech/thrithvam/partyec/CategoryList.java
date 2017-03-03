@@ -1,5 +1,6 @@
 package com.tech.thrithvam.partyec;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -74,6 +75,7 @@ public class CategoryList extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        common.NavigationBarHeaderClick(this,navigationView);
     }
 
 
@@ -92,15 +94,6 @@ public class CategoryList extends AppCompatActivity
         getMenuInflater().inflate(R.menu.menu_actionbar, menu);
         searchView=(SearchView) menu.findItem(R.id.menu_search).getActionView();
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.menu_search) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

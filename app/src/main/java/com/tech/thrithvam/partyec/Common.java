@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.NavigationView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,7 +36,6 @@ class Common {
         if (id == R.id.nav_shop_by_category) {
             Intent intent=new Intent(context,CategoryList.class);
             context.startActivity(intent);
-            ((Activity)context).finish();
         }/* else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -48,6 +48,14 @@ class Common {
 
         }*/
 
+    }
+    void NavigationBarHeaderClick(final Context context, NavigationView navigationView){
+        navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context, Login.class));
+            }
+        });
     }
 
     //To load image from a url------------------------------------------------------
