@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -28,7 +29,7 @@ public class CategoryList extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         categoryListView=(ListView)findViewById(R.id.category_listview);
-
+        final TextView noItems=(TextView)findViewById(R.id.no_items);
         //Threading------------------------------------------------------------------------------------------------------
         String webService="Webservices/document.asmx/TestJSON";
         String postData =  "{\"test\":\"" + "testdatainput"+ "\"}";
@@ -48,6 +49,7 @@ public class CategoryList extends AppCompatActivity
                     @Override
                     public boolean onQueryTextChange(String newText) {
                         adapter.getFilter(1).filter(searchView.getQuery().toString().trim());
+                        noItems.setVisibility(categoryListView.getChildCount()>0?View.INVISIBLE:View.VISIBLE);
                         return true;
                     }
                 });

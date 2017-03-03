@@ -75,7 +75,7 @@ class CustomAdapter extends BaseAdapter{
                 holder.categoryName.setText(filteredObjects.get(position)[1]);
                 common.LoadImage(adapterContext,
                                     holder.categoryImage,
-                        filteredObjects.get(position)[0],
+                                    filteredObjects.get(position)[0],
                                     R.drawable.dim_icon);
                 break;
             default:
