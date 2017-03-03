@@ -22,4 +22,5 @@
     <string name="wishlist">Wishlist</string>
     <string name="no_items_to_display">Nothing to display</string>
     <string name="back">Back</string>
+    <string name="title_activity_login">Login</string>
 </resources>

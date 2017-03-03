@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tech.thrithvam.partyec">
-<uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -24,8 +25,13 @@
             android:name=".CategoryList"
             android:label="@string/title_activity_category_list"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".NothingToDisplay"
-            android:label="@string/no_items_to_display"></activity>
+        <activity
+            android:name=".NothingToDisplay"
+            android:label="@string/no_items_to_display" />
+        <activity
+            android:name=".Login"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
