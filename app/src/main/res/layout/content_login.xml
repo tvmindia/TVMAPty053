@@ -24,14 +24,28 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:textColor="@color/primary_text"
-        android:id="@+id/mob_no"/>
+        android:id="@+id/mob_no"
+        android:inputType="phone"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:text="Login"
+        android:text="Login / SignUp"
+        android:padding="7dp"
         android:textColor="@android:color/white"
         android:layout_below="@+id/mob_no"
         android:layout_centerHorizontal="true"
         android:shadowColor="@color/secondary_text"
-        android:background="@color/colorAccent"/>
+        android:background="@color/colorAccent"
+        android:onClick="mobileEnteredClick"/>
+    <com.wang.avi.AVLoadingIndicatorView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:indicatorName="BallPulseIndicator"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        app:indicatorColor="@color/colorAccent"
+        android:id="@+id/loading_indicator"
+        android:layout_below="@+id/mob_no"
+        android:visibility="invisible"
+        />
 </RelativeLayout>

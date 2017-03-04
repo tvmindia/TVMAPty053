@@ -96,6 +96,7 @@ class Common {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
+                dataArrayList.clear();
                 if(loadingIndicator!=null) loadingIndicator.setVisibility(View.VISIBLE);
                 //----------encrypting ---------------------------
                 // usernameString=cryptography.Encrypt(usernameString);
