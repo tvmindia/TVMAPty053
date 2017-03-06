@@ -30,7 +30,6 @@ public class CategoryList extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         categoryListView=(ListView)findViewById(R.id.category_listview);
-        final TextView noItems=(TextView)findViewById(R.id.no_items);
         //Threading------------------------------------------------------------------------------------------------------
         String webService="Webservices/document.asmx/TestJSON";
         String postData =  "{\"test\":\"" + "testdatainput"+ "\"}";
@@ -42,18 +41,6 @@ public class CategoryList extends AppCompatActivity
                 adapter=new CustomAdapter(CategoryList.this, common.dataArrayList,"CategoryList");
                 categoryListView.setAdapter(adapter);
                 categoryListView.setVisibility(View.VISIBLE);
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        return false;
-                    }
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        adapter.getFilter(1).filter(searchView.getQuery().toString().trim());
-                        noItems.setVisibility(categoryListView.getChildCount()>0?View.INVISIBLE:View.VISIBLE);
-                        return true;
-                    }
-                });
             }
         };
         common.AsynchronousThread(CategoryList.this,
@@ -93,6 +80,21 @@ public class CategoryList extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_actionbar, menu);
         searchView=(SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(adapter!=null){
+                    adapter.getFilter(1).filter(searchView.getQuery().toString().trim());
+                    TextView noItems=(TextView)findViewById(R.id.no_items);
+                    noItems.setVisibility(categoryListView.getChildCount()>0?View.INVISIBLE:View.VISIBLE);
+                }
+                return true;
+            }
+        });
         return true;
     }
 

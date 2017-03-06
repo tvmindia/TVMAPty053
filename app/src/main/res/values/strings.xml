@@ -23,4 +23,6 @@
     <string name="no_items_to_display">Nothing to display</string>
     <string name="back">Back</string>
     <string name="title_activity_login">Login</string>
+    <string name="enter_otp">Please enter OTP sent to your mobile</string>
+    <string name="ok_button">OK</string>
 </resources>

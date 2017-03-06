@@ -25,7 +25,8 @@
         android:gravity="center"
         android:textColor="@color/primary_text"
         android:id="@+id/mob_no"
-        android:inputType="phone"/>
+        android:inputType="phone"
+        android:maxLines="1"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="35dp"
@@ -48,4 +49,58 @@
         android:layout_below="@+id/mob_no"
         android:visibility="invisible"
         />
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_below="@id/mob_no"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/signup_form"
+        android:visibility="invisible">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Name*"
+            android:gravity="center"
+            android:textColor="@color/primary_text"
+            android:id="@+id/name"
+            android:inputType="textPersonName"
+            android:maxLines="1"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email*"
+            android:gravity="center"
+            android:textColor="@color/primary_text"
+            android:id="@+id/email"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Shipping Address"
+            android:gravity="center"
+            android:textColor="@color/primary_text"
+            android:id="@+id/address"
+            android:inputType="textPostalAddress"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:text="SignUp"
+            android:padding="7dp"
+            android:textColor="@android:color/white"
+            android:shadowColor="@color/secondary_text"
+            android:background="@color/colorAccent"
+            android:onClick="signUp"
+            android:id="@+id/signup_button"/>
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:indicatorName="BallPulseIndicator"
+            app:indicatorColor="@color/colorAccent"
+            android:id="@+id/loading_indicator2"
+            android:visibility="invisible"
+            />
+    </LinearLayout>
 </RelativeLayout>
