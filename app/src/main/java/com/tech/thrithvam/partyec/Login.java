@@ -139,10 +139,10 @@ public class Login extends AppCompatActivity
                     Toast.makeText(Login.this,"Matches",Toast.LENGTH_LONG).show();
 
                   /*  new UserActivation().execute();
-                    db.UserLogin(userID,adres);
-                    Intent intentUser = new Intent(User.this, User.class);
+                    db.UserLogin(userID,adres);*/
+                    Intent intentUser = new Intent(Login.this, MyProfile.class);
                     finish();
-                    startActivity(intentUser);*/
+                    startActivity(intentUser);
                 }
                 else {
                     Toast.makeText(Login.this,"Not Matching",Toast.LENGTH_LONG).show();
