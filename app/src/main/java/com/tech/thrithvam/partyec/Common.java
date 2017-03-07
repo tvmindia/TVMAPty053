@@ -36,9 +36,10 @@ class Common {
         if (id == R.id.nav_shop_by_category) {
             Intent intent=new Intent(context,CategoryList.class);
             context.startActivity(intent);
-        }/* else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_register_event) {
+            Intent intent=new Intent(context,RegisterEvent.class);
+            context.startActivity(intent);
+        }/* else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
 

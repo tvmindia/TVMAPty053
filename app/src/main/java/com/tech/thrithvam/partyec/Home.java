@@ -1,5 +1,6 @@
 package com.tech.thrithvam.partyec;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -8,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,7 +33,14 @@ Common common=new Common();
         navigationView.setNavigationItemSelectedListener(this);
         common.NavigationBarHeaderClick(this,navigationView);
     }
-
+    public void registerEvent(View view){
+        Intent intent=new Intent(this,RegisterEvent.class);
+        startActivity(intent);
+    }
+    public void shopByCategory(View view){
+        Intent intent=new Intent(this,CategoryList.class);
+        startActivity(intent);
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
