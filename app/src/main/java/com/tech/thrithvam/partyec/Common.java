@@ -28,6 +28,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 class Common {
+    //Constants-----------------------
+    String MobileNumberRegularExpression = "^[0-9]*$";
+    String UserNameRegularExpression="^[a-zA-Z\\. ]+$";                 //^[a-z0-9_-]{3,15}$
 
     //To load navigation panel menu items and their clicks--------------------------
     void NavigationBarItemClick(Context context, MenuItem item){

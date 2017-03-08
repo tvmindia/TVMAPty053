@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">PartyEC</string>
     <string name="title_activity_home">PartyEC</string>
-    <string name="url">http://192.168.1.109:555/</string>
+    <string name="url" translatable="false">http://192.168.1.109:555/</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -27,4 +27,21 @@
     <string name="ok_button">OK</string>
     <string name="title_activity_my_profile">MyProfile</string>
     <string name="title_activity_register_event">Register Event</string>
+    <string name="e_mail_m">E-mail*</string>
+    <string name="phone_m">Phone*</string>
+    <string name="name_m">Name*</string>
+    <string name="requirements">Requirements</string>
+    <string name="looking_for_m">Looking for*</string>
+    <string name="budget">Budget</string>
+    <string name="number_of_persons_m">Number of persons*</string>
+    <string name="date_and_time_m">Date and Time*</string>
+    <string name="event_type_m">Event Type*</string>
+    <string name="event_name_m">Event Name*</string>
+    <string name="submit">Submit</string>
+    <string name="e_mail">E-mail</string>
+    <string name="phone">Phone</string>
+    <string name="are_mandatory">* are mandatory</string>
+    <string name="give_valid">Give valid information</string>
+    <string name="select_event_type">Select event type</string>
+    <string name="select_time_optional">Select Time (Optinal)</string>
 </resources>

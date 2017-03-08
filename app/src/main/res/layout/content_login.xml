@@ -37,7 +37,7 @@
         android:layout_below="@+id/mob_no"
         android:layout_centerHorizontal="true"
         android:shadowColor="@color/secondary_text"
-        android:background="@color/colorAccent"
+        android:background="@drawable/button"
         android:onClick="mobileEnteredClick"/>
     <com.wang.avi.AVLoadingIndicatorView
         android:layout_width="wrap_content"
@@ -92,7 +92,7 @@
             android:padding="7dp"
             android:textColor="@android:color/white"
             android:shadowColor="@color/secondary_text"
-            android:background="@color/colorAccent"
+            android:background="@drawable/button"
             android:onClick="signUp"
             android:id="@+id/signup_button"/>
         <com.wang.avi.AVLoadingIndicatorView

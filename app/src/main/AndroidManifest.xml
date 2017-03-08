@@ -39,7 +39,8 @@
         <activity
             android:name=".RegisterEvent"
             android:label="@string/title_activity_register_event"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>
