@@ -73,19 +73,34 @@ public class RegisterEvent extends AppCompatActivity
         common.NavigationBarHeaderClick(RegisterEvent.this,navigationView);
     }
     public void submitRequest(View view){
-        eventName.setText(eventName.getText().toString().trim());
-        /*if(eventName.getText().toString().length()==0 || !eventName.getText().toString().matches(common.UserNameRegularExpression)){
+        if(eventName.getText().toString().length()==0 || !eventName.getText().toString().matches(common.UserNameRegularExpression)){
             eventName.setError(getResources().getString(R.string.give_valid));
+            eventName.requestFocus();
         }
         else if(!(eventTypeSpinner.getSelectedItemPosition()>0)){
             Toast.makeText(this, R.string.select_event_type, Toast.LENGTH_SHORT).show();
+            eventTypeSpinner.requestFocus();
         }
-        else*/ if(dateTime.getText().toString().length()==0){
+        else if(dateTime.getText().toString().length()==0){
             dateTime.setError(getResources().getString(R.string.give_valid));
+            dateTime.requestFocus();
         }
-        /*else if( !android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()) {
+        else if(noOfPersons.getText().toString().length()==0 || Integer.parseInt(noOfPersons.getText().toString())<1){
+            noOfPersons.setError(getResources().getString(R.string.give_valid));
+            noOfPersons.requestFocus();
+        }
+        else if(name.getText().toString().length()==0 || !name.getText().toString().matches(common.UserNameRegularExpression)){
+            name.setError(getResources().getString(R.string.give_valid));
+            name.requestFocus();
+        }
+        else if( !android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()) {
             email.setError(getResources().getString(R.string.give_valid));
-        }*/
+            email.requestFocus();
+        }
+        else if(phone.getText().toString().length()==0){// || !name.getText().toString().matches(common.MobileNumberRegularExpression)){
+            phone.setError(getResources().getString(R.string.give_valid));
+            phone.requestFocus();
+        }
         else{
             AVLoadingIndicatorView loadingIndicatorView=(AVLoadingIndicatorView)findViewById(R.id.loading_indicator);
             loadingIndicatorView.setVisibility(View.VISIBLE);
@@ -155,14 +170,16 @@ public class RegisterEvent extends AppCompatActivity
                 };
                 TimePickerDialog timePickerDialog=new TimePickerDialog(RegisterEvent.this,timeSetListener,today.get(Calendar.HOUR_OF_DAY), today.get(Calendar.MINUTE),false);
                 timePickerDialog.setTitle(R.string.select_time_optional);
-                timePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "No Time", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        eventDateTime.set(Calendar.HOUR_OF_DAY,0);
-                        eventDateTime.set(Calendar.MINUTE,0);
-                        //Setting display text-------
-                        SimpleDateFormat formatted = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
-                        dateTime.setText(formatted.format(eventDateTime.getTime()));
+                timePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
+                        getResources().getString(R.string.no_time),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                eventDateTime.set(Calendar.HOUR_OF_DAY,0);
+                                eventDateTime.set(Calendar.MINUTE,0);
+                                //Setting display text-------
+                                SimpleDateFormat formatted = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
+                                dateTime.setText(formatted.format(eventDateTime.getTime()));
                     }
                 });
                 timePickerDialog.show();

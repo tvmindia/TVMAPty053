@@ -44,4 +44,5 @@
     <string name="give_valid">Give valid information</string>
     <string name="select_event_type">Select event type</string>
     <string name="select_time_optional">Select Time (Optinal)</string>
+    <string name="no_time">No Time</string>
 </resources>
