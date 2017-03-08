@@ -32,6 +32,7 @@
     <string name="name_m">Name*</string>
     <string name="requirements">Requirements</string>
     <string name="looking_for_m">Looking for*</string>
+    <string name="looking_for">Looking for</string>
     <string name="budget">Budget</string>
     <string name="number_of_persons_m">Number of persons*</string>
     <string name="date_and_time_m">Date and Time*</string>
@@ -43,6 +44,8 @@
     <string name="are_mandatory">* are mandatory</string>
     <string name="give_valid">Give valid information</string>
     <string name="select_event_type">Select event type</string>
-    <string name="select_time_optional">Select Time (Optinal)</string>
+    <string name="select_time_optional">Select Time (Optional)</string>
     <string name="no_time">No Time</string>
+    <string name="message">Message</string>
+    <string name="contact_me_by">Contact me by</string>
 </resources>

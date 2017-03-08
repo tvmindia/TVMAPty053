@@ -128,8 +128,9 @@
                     android:textColor="@color/primary_text"
                     android:id="@+id/looking_for"
                     android:inputType="none"
-                    android:enabled="false"
-                    android:maxLines="1"/>
+                    android:focusable="false"
+                    android:maxLines="1"
+                    android:onClick="getLookingForItemsFromUser"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -200,7 +201,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Contact me by"
+                    android:text="@string/contact_me_by"
                     android:textColor="@color/secondary_text"
                     android:textSize="14sp"
                     android:paddingLeft="5dp"
@@ -226,7 +227,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Message"
+                    android:text="@string/message"
                     android:textColor="@color/secondary_text"
                     android:textSize="14sp"
                     android:paddingLeft="5dp"
