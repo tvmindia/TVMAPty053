@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wang.avi.AVLoadingIndicatorView;
@@ -51,7 +52,7 @@ public class Login extends AppCompatActivity
     public void mobileEnteredClick(final View view){
         mobileInput.setText(mobileInput.getText().toString().trim());
         mobileInput.setEnabled(false);mobileInput.setInputType(InputType.TYPE_NULL);
-        view.setVisibility(View.GONE);
+        view.setVisibility(View.INVISIBLE);
         //Threading------------------------------------------------------------------------------------------------------
         String webService="Webservices/document.asmx/userLogin";
         String postData =  "{\"mobile\":\"" + mobileInput.getText().toString() + "\"}";
@@ -66,6 +67,8 @@ public class Login extends AppCompatActivity
                 else {
                     LinearLayout signUpForm=(LinearLayout)findViewById(R.id.signup_form);
                     signUpForm.setVisibility(View.VISIBLE);
+                    TextView loginDescription=(TextView)findViewById(R.id.login_description);
+                    loginDescription.setVisibility(View.GONE);
                 }
             }
         };

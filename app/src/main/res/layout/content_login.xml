@@ -38,7 +38,8 @@
         android:layout_centerHorizontal="true"
         android:shadowColor="@color/secondary_text"
         android:background="@drawable/button"
-        android:onClick="mobileEnteredClick"/>
+        android:onClick="mobileEnteredClick"
+        android:id="@+id/login_signup"/>
     <com.wang.avi.AVLoadingIndicatorView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,6 +51,17 @@
         android:layout_below="@+id/mob_no"
         android:visibility="invisible"
         />
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="@string/login_description"
+        android:layout_below="@+id/login_signup"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:textSize="12sp"
+        android:textColor="@color/secondary_text"
+        android:paddingTop="7dp"
+        android:id="@+id/login_description"/>
     <LinearLayout
         android:layout_width="200dp"
         android:layout_height="wrap_content"
