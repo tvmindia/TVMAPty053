@@ -48,5 +48,6 @@
     <string name="no_time">No Time</string>
     <string name="message">Message</string>
     <string name="contact_me_by">Contact me by</string>
-    <string name="login_description">By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and mroe.</string>
+    <string name="login_description">By creating an account with us, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.</string>
+    <string name="title_activity_product_list">ProductList</string>
 </resources>
