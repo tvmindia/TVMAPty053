@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,6 +42,13 @@ public class CategoryList extends AppCompatActivity
                 adapter=new CustomAdapter(CategoryList.this, common.dataArrayList,"CategoryList");
                 categoryListView.setAdapter(adapter);
                 categoryListView.setVisibility(View.VISIBLE);
+                categoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent=new Intent(CategoryList.this,ProductList.class);
+                        startActivity(intent);
+                    }
+                });
             }
         };
         common.AsynchronousThread(CategoryList.this,

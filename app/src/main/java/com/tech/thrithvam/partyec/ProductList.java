@@ -17,14 +17,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ProductList extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,6 +39,8 @@ public class ProductList extends AppCompatActivity
     AVLoadingIndicatorView loadingIndicator;
     ArrayList<String[]> allProducts=new ArrayList<>();
     ArrayList<String[]> filterCategories=new ArrayList<>();
+    RelativeLayout productsAndNavigationRelativeView,allProductsRelativeView;
+    GridView allProductsGrid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +48,9 @@ public class ProductList extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
+        productsAndNavigationRelativeView=(RelativeLayout)findViewById(R.id.products_and_categories);
+        allProductsRelativeView=(RelativeLayout)findViewById(R.id.all_products);
+        allProductsRelativeView.setVisibility(View.GONE);
 
         //horizontal initial products------------------------
         initialProductsHorizontal=(LinearLayout)findViewById(R.id.initial_products_horizontal);
@@ -106,19 +114,23 @@ public class ProductList extends AppCompatActivity
                             loadingIndicator.setVisibility(View.VISIBLE);
 
                             //All products and filter categories loading---------------------------------
-/*
-                            navigationCategoryListView=(ListView)findViewById(R.id.navigation_category_listview);
 
-                            String[] nData1=new String[2];nData1[0]="Birthday";nData1[1]="465";
-                            String[] nData2=new String[2];nData2[0]="Seasonal cakes";nData2[1]="95";
-                            String[] nData3=new String[2];nData3[0]="Corporate events";nData3[1]="64";
+                            allProductsGrid=(GridView) findViewById(R.id.all_products_grid);
 
-                            navigationCategories.add(nData1);navigationCategories.add(nData2);navigationCategories.add(nData3);
+                            for(int i=0;i<11;i++){
+                            String[] pData1=new String[2];pData1[0]="Product A";pData1[1]="https://www.partyec.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/b/a/balthazar_3.jpg";
+                            String[] pData2=new String[2];pData2[0]="Product B";pData2[1]="https://www.partyec.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/l/e/le_sultan-02.jpg";
+                            String[] pData3=new String[2];pData3[0]="Product C";pData3[1]="https://www.partyec.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/c/h/chocolate-fudge_2.jpg";
 
+                            allProducts.add(pData1);allProducts.add(pData2);allProducts.add(pData3);
+                            }
+                            Collections.shuffle(allProducts);
 
-                            CustomAdapter adapterNavCats=new CustomAdapter(ProductList.this, navigationCategories,"NavigationCategoryList");
-                            navigationCategoryListView.setAdapter(adapterNavCats);
-                            loadingIndicator.setVisibility(View.GONE);*/
+                            CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts");
+                            allProductsGrid.setAdapter(adapterAllProducts);
+
+                            productsAndNavigationRelativeView.setVisibility(View.GONE);
+                            allProductsRelativeView.setVisibility(View.VISIBLE);
 
                         }
                     });

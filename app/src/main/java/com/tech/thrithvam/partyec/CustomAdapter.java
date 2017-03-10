@@ -55,6 +55,9 @@ class CustomAdapter extends BaseAdapter{
         ImageView categoryImage;
         //Navigation Category List---------
         TextView navCatName,itemsCount;
+        //All products list----------------
+        TextView productName;
+        ImageView productImage;
     }
 
     @Override
@@ -94,6 +97,24 @@ class CustomAdapter extends BaseAdapter{
                 //Label loading--------------------
                 holder.navCatName.setText(filteredObjects.get(position)[0]);
                 holder.itemsCount.setText(filteredObjects.get(position)[1]);
+                break;
+            //--------------------------for All products list items------------------
+            case "AllProducts":
+                if (convertView == null) {
+                    holder = new Holder();
+                    convertView = inflater.inflate(R.layout.item_product, null);
+                    holder.productName = (TextView) convertView.findViewById(R.id.product_name);
+                    holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (Holder) convertView.getTag();
+                }
+                //Label loading--------------------
+                holder.productName.setText(filteredObjects.get(position)[0]);
+                common.LoadImage(adapterContext,
+                        holder.productImage,
+                        filteredObjects.get(position)[1],
+                        R.drawable.dim_icon);
                 break;
             default:
                 break;
