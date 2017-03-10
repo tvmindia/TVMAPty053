@@ -1,5 +1,7 @@
 package com.tech.thrithvam.partyec;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,7 +19,10 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 
@@ -25,13 +30,19 @@ public class ProductList extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Common common=new Common();
     LinearLayout initialProductsHorizontal;
+    ListView navigationCategoryListView;
     ArrayList<String[]> initialProducts=new ArrayList<>();
+    ArrayList<String[]> navigationCategories=new ArrayList<>();
+    AVLoadingIndicatorView loadingIndicator;
+    ArrayList<String[]> allProducts=new ArrayList<>();
+    ArrayList<String[]> filterCategories=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
 
         //horizontal initial products------------------------
         initialProductsHorizontal=(LinearLayout)findViewById(R.id.initial_products_horizontal);
@@ -45,6 +56,21 @@ public class ProductList extends AppCompatActivity
         for(int i=0;i<initialProducts.size();i++){
             initialProductsHorizontal(i);
         }
+
+        //Navigation Category Listing-----------------------------
+        navigationCategoryListView=(ListView)findViewById(R.id.navigation_category_listview);
+
+        String[] nData1=new String[2];nData1[0]="Birthday";nData1[1]="465";
+        String[] nData2=new String[2];nData2[0]="Seasonal cakes";nData2[1]="95";
+        String[] nData3=new String[2];nData3[0]="Corporate events";nData3[1]="64";
+
+        navigationCategories.add(nData1);navigationCategories.add(nData2);navigationCategories.add(nData3);
+
+
+        CustomAdapter adapterNavCats=new CustomAdapter(ProductList.this, navigationCategories,"NavigationCategoryList");
+        navigationCategoryListView.setAdapter(adapterNavCats);
+        loadingIndicator.setVisibility(View.GONE);
+
         //-------------------------------------------------------------------------------------------------
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -60,10 +86,42 @@ public class ProductList extends AppCompatActivity
     void initialProductsHorizontal(int i){
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View productItem=inflater.inflate(R.layout.item_product, null);
-        productItem.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,1.0f));
+        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,1.0f);
+        params.setMargins(5,5,5,5);
+        productItem.setLayoutParams(params);
         ((TextView)(productItem.findViewById(R.id.product_name))).setText(initialProducts.get(i)[0]);
         common.LoadImage(ProductList.this,(ImageView)(productItem.findViewById(R.id.product_image)),initialProducts.get(i)[1],R.drawable.dim_icon);
         initialProductsHorizontal.addView(productItem);
+    }
+
+    public void viewAll(View view){
+        navigationCategoryListView.animate()
+                .translationY(navigationCategoryListView.getHeight())
+                .alpha(0.0f)
+                .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            navigationCategoryListView.setVisibility(View.GONE);
+                            loadingIndicator.setVisibility(View.VISIBLE);
+
+                            //All products and filter categories loading---------------------------------
+/*
+                            navigationCategoryListView=(ListView)findViewById(R.id.navigation_category_listview);
+
+                            String[] nData1=new String[2];nData1[0]="Birthday";nData1[1]="465";
+                            String[] nData2=new String[2];nData2[0]="Seasonal cakes";nData2[1]="95";
+                            String[] nData3=new String[2];nData3[0]="Corporate events";nData3[1]="64";
+
+                            navigationCategories.add(nData1);navigationCategories.add(nData2);navigationCategories.add(nData3);
+
+
+                            CustomAdapter adapterNavCats=new CustomAdapter(ProductList.this, navigationCategories,"NavigationCategoryList");
+                            navigationCategoryListView.setAdapter(adapterNavCats);
+                            loadingIndicator.setVisibility(View.GONE);*/
+
+                        }
+                    });
     }
 
     @Override

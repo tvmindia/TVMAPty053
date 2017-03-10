@@ -13,12 +13,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/products_and_categories">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/view_all"
+        android:textSize="12sp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="7dp"
+        android:paddingEnd="7dp"
+        android:textColor="@color/colorAccent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/view_all"
+        android:onClick="viewAll"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:id="@+id/initial_products_horizontal">
+            android:id="@+id/initial_products_horizontal"
+            android:layout_below="@id/view_all">
         </LinearLayout>
+    <com.wang.avi.AVLoadingIndicatorView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:indicatorName="BallClipRotateMultipleIndicator"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        app:indicatorColor="@color/colorAccent"
+        android:id="@+id/loading_indicator"
+        />
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/navigation_category_listview"
+            android:paddingLeft="7dp"
+            android:paddingRight="7dp"
+            android:divider="@color/gray"
+            android:dividerHeight="1dp"
+            android:scrollbars="none"
+            android:layout_below="@+id/initial_products_horizontal"/>
 </RelativeLayout>
     <!--Products complete list and filters screen-->
 </RelativeLayout>

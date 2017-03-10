@@ -53,6 +53,8 @@ class CustomAdapter extends BaseAdapter{
         //Category list---------------------
         TextView categoryName;
         ImageView categoryImage;
+        //Navigation Category List---------
+        TextView navCatName,itemsCount;
     }
 
     @Override
@@ -77,6 +79,21 @@ class CustomAdapter extends BaseAdapter{
                                     holder.categoryImage,
                                     filteredObjects.get(position)[0],
                                     R.drawable.dim_icon);
+                break;
+            //--------------------------for navigation category list items------------------
+            case "NavigationCategoryList":
+                if (convertView == null) {
+                    holder = new Holder();
+                    convertView = inflater.inflate(R.layout.item_nav_category, null);
+                    holder.navCatName = (TextView) convertView.findViewById(R.id.nav_cat_name);
+                    holder.itemsCount=(TextView) convertView.findViewById(R.id.items_count);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (Holder) convertView.getTag();
+                }
+                //Label loading--------------------
+                holder.navCatName.setText(filteredObjects.get(position)[0]);
+                holder.itemsCount.setText(filteredObjects.get(position)[1]);
                 break;
             default:
                 break;
