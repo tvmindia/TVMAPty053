@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".SplashScreen"
+        <activity
+            android:name=".SplashScreen"
             android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,39 +21,44 @@
         </activity>
         <activity
             android:name=".Home"
+            android:configChanges="orientation|screenSize"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation|screenSize" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CategoryList"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_category_list"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation|screenSize" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".NothingToDisplay"
-            android:label="@string/no_items_to_display"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:label="@string/no_items_to_display" />
         <activity
             android:name=".Login"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation|screenSize" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MyProfile"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_my_profile"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation|screenSize" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RegisterEvent"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_register_event"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"
-            android:configChanges="orientation|screenSize" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ProductList"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_product_list"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation|screenSize"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ContactUs"
+            android:label="@string/title_activity_contact_us"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

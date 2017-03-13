@@ -42,9 +42,10 @@ class Common {
         } else if (id == R.id.nav_register_event) {
             Intent intent=new Intent(context,RegisterEvent.class);
             context.startActivity(intent);
-        }/* else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_contact_us) {
+            Intent intent=new Intent(context,ContactUs.class);
+            context.startActivity(intent);
+        }/* else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
 

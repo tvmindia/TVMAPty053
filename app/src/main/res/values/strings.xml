@@ -52,4 +52,5 @@
     <string name="title_activity_product_list">ProductList</string>
     <string name="view_all">View all</string>
     <string name="filter">Filter</string>
+    <string name="title_activity_contact_us">ContactUs</string>
 </resources>
