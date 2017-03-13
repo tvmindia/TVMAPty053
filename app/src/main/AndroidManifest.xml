@@ -58,7 +58,8 @@
             android:name=".ContactUs"
             android:label="@string/title_activity_contact_us"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>
