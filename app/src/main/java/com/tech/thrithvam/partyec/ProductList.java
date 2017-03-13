@@ -3,10 +3,13 @@ package com.tech.thrithvam.partyec;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,15 +45,18 @@ public class ProductList extends AppCompatActivity
     ArrayList<String[]> filterCategories=new ArrayList<>();
     RelativeLayout productsAndNavigationRelativeView,allProductsRelativeView;
     GridView allProductsGrid;
+    CardView filterMenu;
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
         productsAndNavigationRelativeView=(RelativeLayout)findViewById(R.id.products_and_categories);
         allProductsRelativeView=(RelativeLayout)findViewById(R.id.all_products);
+        filterMenu=(CardView)findViewById(R.id.filter_menu_card);
         allProductsRelativeView.setVisibility(View.GONE);
 
         //horizontal initial products------------------------
@@ -79,6 +86,43 @@ public class ProductList extends AppCompatActivity
         navigationCategoryListView.setAdapter(adapterNavCats);
         loadingIndicator.setVisibility(View.GONE);
 
+        //Filter menu------------------------------------------------------------------
+        LinearLayout filterMenuLinear=(LinearLayout)findViewById(R.id.filter_menu_linear);
+
+        String[] fData1=new String[2];fData1[0]="Chocolate Flavour";fData1[1]="12";
+        String[] fData2=new String[2];fData2[0]="Cheese";fData2[1]="13";
+        String[] fData3=new String[2];fData3[0]="Honey";fData3[1]="14";
+
+        filterCategories.add(fData1);filterCategories.add(fData2);filterCategories.add(fData3);
+
+        for(int i=0;i<filterCategories.size();i++){
+            CheckBox checkBox= new CheckBox(ProductList.this);
+            checkBox.setText(filterCategories.get(i)[0]);
+            filterMenuLinear.addView(checkBox);
+        }
+        //Divider
+        View divider = new View(this);
+        LinearLayout.LayoutParams lp =
+                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
+        divider.setLayoutParams(lp);
+        divider.setBackgroundColor(Color.GRAY);
+        divider.setPadding(0,7,0,7);
+        filterMenuLinear.addView(divider);
+
+        //navigation categories
+        for(int i=0;i<navigationCategories.size();i++){
+            TextView textView= new TextView(ProductList.this);
+            textView.setText(navigationCategories.get(i)[0]);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                textView.setTextColor(getResources().getColor(R.color.colorAccent,null));
+            }
+            else {
+                textView.setTextColor(getResources().getColor(R.color.colorAccent));
+            }
+            textView.setPadding(7,10,7,10);
+            filterMenuLinear.addView(textView);
+        }
+
         //-------------------------------------------------------------------------------------------------
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -103,8 +147,9 @@ public class ProductList extends AppCompatActivity
     }
 
     public void viewAll(View view){
+        menu.setGroupVisible(R.id.search_n_filter,true);
         navigationCategoryListView.animate()
-                .translationY(navigationCategoryListView.getHeight())
+                .translationX(navigationCategoryListView.getWidth())
                 .alpha(0.0f)
                 .setListener(new AnimatorListenerAdapter() {
                         @Override
@@ -135,7 +180,6 @@ public class ProductList extends AppCompatActivity
                         }
                     });
     }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -146,27 +190,48 @@ public class ProductList extends AppCompatActivity
         }
     }
 
+    Menu menu;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_actionbar, menu);
+        getMenuInflater().inflate(R.menu.filter_category, menu);
+        this.menu=menu;
+        menu.setGroupVisible(R.id.search_n_filter,false);
         return true;
     }
 
-/*    @Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.filter) {
+            if(filterMenu.getVisibility()==View.VISIBLE){
+                filterMenu.setVisibility(View.GONE);
+            }
+            else {
+                filterMenu.setVisibility(View.VISIBLE);
+            }
             return true;
         }
-
         return super.onOptionsItemSelected(item);
-    }*/
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event){
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (filterMenu.getVisibility()==View.VISIBLE) {
+                Rect outRect = new Rect();
+                filterMenu.getGlobalVisibleRect(outRect);
+                Rect outRect2=new Rect();
+                toolbar.getGlobalVisibleRect(outRect2);
+                if(!outRect.contains((int)event.getRawX(), (int)event.getRawY())
+                        &&
+                        !outRect2.contains((int)event.getRawX(), (int)event.getRawY()))
+                    filterMenu.setVisibility(View.GONE);
+            }
+        }
+        return super.dispatchTouchEvent(event);
+    }
 
 
     @SuppressWarnings("StatementWithEmptyBody")
