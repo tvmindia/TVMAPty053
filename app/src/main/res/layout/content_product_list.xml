@@ -71,6 +71,8 @@
         android:layout_marginLeft="3dp"
         android:layout_marginRight="3dp"
         android:scrollbars="none"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
         />
 
     <android.support.v7.widget.CardView

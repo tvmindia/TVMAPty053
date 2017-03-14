@@ -137,7 +137,7 @@ public class ProductList extends AppCompatActivity
 
     void initialProductsHorizontal(int i){
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View productItem=inflater.inflate(R.layout.item_product, null);
+        View productItem=inflater.inflate(R.layout.item_product_grid, null);
         LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,1.0f);
         params.setMargins(5,5,5,5);
         productItem.setLayoutParams(params);
@@ -171,7 +171,7 @@ public class ProductList extends AppCompatActivity
                             }
                             Collections.shuffle(allProducts);
 
-                            CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts");
+                            CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts",0);
                             allProductsGrid.setAdapter(adapterAllProducts);
 
                             productsAndNavigationRelativeView.setVisibility(View.GONE);
@@ -200,11 +200,10 @@ public class ProductList extends AppCompatActivity
         return true;
     }
 
+    int viewState=0;//  0=view grid : 1=view horizontal : 2=view single
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.filter) {
             if(filterMenu.getVisibility()==View.VISIBLE){
                 filterMenu.setVisibility(View.GONE);
@@ -213,6 +212,29 @@ public class ProductList extends AppCompatActivity
                 filterMenu.setVisibility(View.VISIBLE);
             }
             return true;
+        }
+        else if(id==R.id.change_view){
+            if(viewState==0){
+                item.setIcon(R.drawable.view_single);
+                viewState++;
+                CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts",1);
+                allProductsGrid.setNumColumns(1);
+                allProductsGrid.setAdapter(adapterAllProducts);
+            }
+            else if(viewState==1){
+                item.setIcon(R.drawable.view_grid);
+                viewState++;
+                CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts",2);
+                allProductsGrid.setNumColumns(1);
+                allProductsGrid.setAdapter(adapterAllProducts);
+            }
+            else if(viewState==2){
+                item.setIcon(R.drawable.view_horizontal);
+                viewState=0;
+                CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts",0);
+                allProductsGrid.setNumColumns(2);
+                allProductsGrid.setAdapter(adapterAllProducts);
+            }
         }
         return super.onOptionsItemSelected(item);
     }

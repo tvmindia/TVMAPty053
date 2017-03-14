@@ -22,8 +22,16 @@ class CustomAdapter extends BaseAdapter{
     private SimpleDateFormat formatted;
     private Calendar cal;
     private Common common;
+    private int viewType;
+    CustomAdapter(Context context, ArrayList<String[]> objects, String calledFrom,int viewType){
+        this.viewType=viewType;
+        initialization(context, objects, calledFrom);
+    }
     CustomAdapter(Context context, ArrayList<String[]> objects, String calledFrom) {
         // super(context, textViewResourceId, objects);
+        initialization(context, objects, calledFrom);
+    }
+    void initialization(Context context, ArrayList<String[]> objects, String calledFrom){
         adapterContext=context;
         inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.objects=objects;
@@ -102,7 +110,12 @@ class CustomAdapter extends BaseAdapter{
             case "AllProducts":
                 if (convertView == null) {
                     holder = new Holder();
-                    convertView = inflater.inflate(R.layout.item_product, null);
+                    if(viewType==0)
+                        convertView = inflater.inflate(R.layout.item_product_grid, null);
+                    else if(viewType==1)
+                        convertView = inflater.inflate(R.layout.item_product_horizontal, null);
+                    else
+                        convertView = inflater.inflate(R.layout.item_product_single, null);
                     holder.productName = (TextView) convertView.findViewById(R.id.product_name);
                     holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
                     convertView.setTag(holder);

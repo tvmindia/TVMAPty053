@@ -7,6 +7,10 @@
         android:title="@string/search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always"/>
+    <item android:id="@+id/change_view"
+        android:icon="@drawable/view_horizontal"
+        android:title="@string/change_view"
+        app:showAsAction="ifRoom"/>
     <item android:id="@+id/filter"
         android:icon="@drawable/filter_category"
         android:title="@string/filter"
