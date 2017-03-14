@@ -21,7 +21,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No items"
+        android:text="@string/no_items"
         android:textColor="@color/secondary_text"
         android:layout_centerHorizontal="true"
         android:padding="5dp"
@@ -35,5 +35,6 @@
         android:paddingRight="7dp"
         android:divider="@color/gray"
         android:dividerHeight="1dp"
-        android:scrollbars="none"/>
+        android:scrollbars="none"
+        android:clipToPadding="false"/>
 </RelativeLayout>

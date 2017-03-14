@@ -57,4 +57,5 @@
     <string name="comment">Comment</string>
     <string name="comment_m">Comment*</string>
     <string name="change_view">Change View</string>
+    <string name="no_items">No items</string>
 </resources>
