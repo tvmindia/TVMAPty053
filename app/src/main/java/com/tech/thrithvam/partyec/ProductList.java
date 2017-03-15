@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
@@ -204,15 +205,19 @@ public class ProductList extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        //Filter menu------------------------
         if (id == R.id.filter) {
             if(filterMenu.getVisibility()==View.VISIBLE){
+                item.getIcon().setColorFilter(null);
                 filterMenu.setVisibility(View.GONE);
             }
             else {
+                item.getIcon().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
                 filterMenu.setVisibility(View.VISIBLE);
             }
             return true;
         }
+        //Changing views---------------------
         else if(id==R.id.change_view){
             if(viewState==0){
                 item.setIcon(R.drawable.view_single);
