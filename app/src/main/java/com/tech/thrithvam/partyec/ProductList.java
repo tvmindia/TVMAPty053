@@ -208,7 +208,7 @@ public class ProductList extends AppCompatActivity
         //Filter menu------------------------
         if (id == R.id.filter) {
             if(filterMenu.getVisibility()==View.VISIBLE){
-                item.getIcon().setColorFilter(null);
+                item.getIcon().clearColorFilter();
                 filterMenu.setVisibility(View.GONE);
             }
             else {
