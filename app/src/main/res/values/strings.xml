@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">PartyEC</string>
-    <string name="title_activity_home">PartyEC</string>
     <string name="url" translatable="false">http://192.168.1.109:555/</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -25,7 +24,7 @@
     <string name="title_activity_login">Login</string>
     <string name="enter_otp">Please enter OTP sent to your mobile</string>
     <string name="ok_button">OK</string>
-    <string name="title_activity_my_profile">MyProfile</string>
+    <string name="title_activity_my_profile">My Profile</string>
     <string name="title_activity_register_event">Register Event</string>
     <string name="e_mail_m">E-mail*</string>
     <string name="phone_m">Phone*</string>
@@ -45,14 +44,14 @@
     <string name="give_valid">Give valid information</string>
     <string name="select_event_type">Select event type</string>
     <string name="select_time_optional">Select Time (Optional)</string>
-    <string name="no_time">No Time</string>
+    <string name="no_time">Skip Time</string>
     <string name="message">Message</string>
     <string name="contact_me_by">Contact me by</string>
     <string name="login_description">By creating an account with us, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.</string>
-    <string name="title_activity_product_list">ProductList</string>
+    <string name="title_activity_product_list">Product List</string>
     <string name="view_all">View all</string>
     <string name="filter">Filter</string>
-    <string name="title_activity_contact_us">ContactUs</string>
+    <string name="title_activity_contact_us">Contact Us</string>
     <string name="name">Name</string>
     <string name="comment">Comment</string>
     <string name="comment_m">Comment*</string>

@@ -13,7 +13,6 @@ public class NothingToDisplay extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nothing_to_display);
         extras=getIntent().getExtras();
-        //Fonts---------------
 
         final TextView nothingLabel=(TextView)findViewById(R.id.nothing_label);
         if(getIntent().hasExtra("activityHead")){

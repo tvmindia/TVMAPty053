@@ -23,12 +23,12 @@ class CustomAdapter extends BaseAdapter{
     private Calendar cal;
     private Common common;
     private int viewType;
-    CustomAdapter(Context context, ArrayList<String[]> objects, String calledFrom,int viewType){
-        this.viewType=viewType;
-        initialization(context, objects, calledFrom);
-    }
     CustomAdapter(Context context, ArrayList<String[]> objects, String calledFrom) {
         // super(context, textViewResourceId, objects);
+        initialization(context, objects, calledFrom);
+    }
+    CustomAdapter(Context context, ArrayList<String[]> objects, String calledFrom,int viewType){//Constructor for products listing
+        this.viewType=viewType;
         initialization(context, objects, calledFrom);
     }
     void initialization(Context context, ArrayList<String[]> objects, String calledFrom){

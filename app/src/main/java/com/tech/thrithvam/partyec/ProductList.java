@@ -194,7 +194,6 @@ public class ProductList extends AppCompatActivity
     Menu menu;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.filter_category, menu);
         this.menu=menu;
         menu.setGroupVisible(R.id.search_n_filter,false);

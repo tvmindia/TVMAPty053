@@ -1,16 +1,14 @@
 package com.tech.thrithvam.partyec;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
-import io.codetail.widget.RevealFrameLayout;
 
 public class SplashScreen extends AppCompatActivity {
 

@@ -71,7 +71,7 @@ public class RegisterEvent extends AppCompatActivity
         lookingForItemsAvailable.add("Flowers");
         lookingForItemsAvailable.add("Chocolate");
         lookingForItemsSelectedIndex=new boolean[lookingForItemsAvailable.size()];
-        Arrays.fill(lookingForItemsSelectedIndex, Boolean.FALSE);
+        Arrays.fill(lookingForItemsSelectedIndex, Boolean.FALSE);//initialize
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
