@@ -152,7 +152,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/name_m"
+                    android:text="@string/your_name_m"
                     android:textColor="@color/secondary_text"
                     android:textSize="14sp"
                     android:paddingLeft="5dp"
