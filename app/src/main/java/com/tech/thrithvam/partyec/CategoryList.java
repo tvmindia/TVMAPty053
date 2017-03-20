@@ -32,10 +32,10 @@ public class CategoryList extends AppCompatActivity
         setSupportActionBar(toolbar);
         categoryListView=(ListView)findViewById(R.id.category_listview);
         //Threading------------------------------------------------------------------------------------------------------
-        String webService="Webservices/document.asmx/TestJSON";
-        String postData =  "{\"test\":\"" + "testdatainput"+ "\"}";
+        String webService="api/category/GetMainCategories";
+        String postData =  "";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
-        String[] dataColumns={"Image","Name"};//Order Matters. Data in the common.dataArrayList will be in same order
+        String[] dataColumns={"URL","Name"};//Order Matters. Data in the common.dataArrayList will be in same order
         Runnable postThread=new Runnable() {
             @Override
             public void run() {

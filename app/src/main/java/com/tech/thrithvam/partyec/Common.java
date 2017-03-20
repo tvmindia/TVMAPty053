@@ -92,7 +92,6 @@ class Common {
             private int status;
             private StringBuilder sb;
             private String strJson;
-            private JSONArray jsonArray;
             private String msg;
             private boolean pass=false;
             @Override
@@ -111,7 +110,7 @@ class Common {
                     URL u = new URL(url);
                     c = (HttpURLConnection) u.openConnection();
                     c.setRequestMethod("POST");
-                    c.setRequestProperty("Content-type", "application/json; charset=utf-16");
+                    c.setRequestProperty("Content-type", "application/json");
                     c.setRequestProperty("Content-length", Integer.toString(postData.length()));
                     c.setDoInput(true);
                     c.setDoOutput(true);
@@ -132,11 +131,11 @@ class Common {
                                 sb.append(line).append("\n");
                             }
                             br.close();
-                            int a=sb.indexOf("[");
-                            int b=sb.lastIndexOf("]");
+                            int a=sb.indexOf("{");
+                            int b=sb.lastIndexOf("}");
                             strJson=sb.substring(a, b + 1);
                             //   strJson=cryptography.Decrypt(strJson);
-                            strJson="{\"JSON\":" + strJson.replace("\\\"","\"").replace("\\\\","\\") + "}";
+                            strJson=/*"{\"JSON\":[" +*/ strJson.replace("\\\"","\"").replace("\\\\","\\") /*+ "]}"*/;
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
@@ -154,16 +153,20 @@ class Common {
                 if(strJson!=null)
                 {try {
                     JSONObject jsonRootObject = new JSONObject(strJson);
-                    jsonArray = jsonRootObject.optJSONArray("JSON");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        msg=jsonObject.optString("Message");
-                        pass=jsonObject.optBoolean("Flag",true);
-                        String[] data=new String[dataColumns.length];
-                        for(int j=0;j<dataColumns.length;j++){
-                            data[j]=jsonObject.optString(dataColumns[j]);
+                    pass = jsonRootObject.optBoolean("Result");
+                    if(pass){
+                        JSONArray jsonArray = jsonRootObject.optJSONArray("Records");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            String[] data=new String[dataColumns.length];
+                            for(int j=0;j<dataColumns.length;j++){
+                                data[j]=jsonObject.optString(dataColumns[j]);
+                            }
+                            dataArrayList.add(data);
                         }
-                        dataArrayList.add(data);
+                    }
+                    else {
+                        msg=jsonRootObject.optString("Message");
                     }
                 } catch (Exception ex) {
                     msg=ex.getMessage();

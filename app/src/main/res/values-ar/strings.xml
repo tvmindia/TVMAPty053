@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PartyEC</string>
+    <string name="shop_by_occasion">تسوق حسب المناسبة</string>
+    <string name="shop_by_category">تسوق حسب الاقسام</string>
+    <string name="offers">عروض</string>
+    <string name="home">منزل</string>
+    <string name="wishlist">الأماني</string>
+    <string name="your_partyec">partyEC الخاص بك</string>
+    <string name="view_orders">أوامر رأي</string>
+    <string name="view_bookings">عرض الحجوزات</string>
+    <string name="view_quotations">عرض الأسعار</string>
+    <string name="contact_us">اتصل بنا</string>
+    <string name="register_an_event">تسجيل حدث معنا</string>
+</resources>

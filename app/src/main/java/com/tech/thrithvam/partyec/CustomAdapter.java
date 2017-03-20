@@ -88,7 +88,7 @@ class CustomAdapter extends BaseAdapter{
                 holder.categoryName.setText(filteredObjects.get(position)[1]);
                 common.LoadImage(adapterContext,
                                     holder.categoryImage,
-                                    filteredObjects.get(position)[0],
+                                    adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[0],
                                     R.drawable.dim_icon);
                 break;
             //--------------------------for navigation category list items------------------
