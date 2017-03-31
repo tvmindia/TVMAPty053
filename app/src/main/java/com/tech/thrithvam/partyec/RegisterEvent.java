@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -37,6 +38,7 @@ public class RegisterEvent extends AppCompatActivity
     Common common=new Common();
     EditText eventName,dateTime,noOfPersons,budget,lookingFor,requirements,name,email, phone,message;
     Spinner eventTypeSpinner;
+    ArrayList<String> arrayListEventTypes;
     Calendar eventDateTime=Calendar.getInstance();
     ArrayList<String> lookingForItemsAvailable=new ArrayList<>();
     boolean[] lookingForItemsSelectedIndex;
@@ -58,20 +60,8 @@ public class RegisterEvent extends AppCompatActivity
         message=(EditText)findViewById(R.id.message);
 
         //---------------------Get Event type items------------------------------
-        ArrayList<String> arrayListEventTypes=new ArrayList<>();
-        arrayListEventTypes.add(getResources().getString(R.string.select_event_type));
-        arrayListEventTypes.add("Wedding");
-        arrayListEventTypes.add("Birthday");
-        arrayListEventTypes.add("Conference");
-        setEventTypeSpinner(arrayListEventTypes);
+        setEventTypeSpinner();
 
-        //---------------------Get Looking for items-----------------------------------
-        lookingForItemsAvailable.add("Cake");
-        lookingForItemsAvailable.add("Venue");
-        lookingForItemsAvailable.add("Flowers");
-        lookingForItemsAvailable.add("Chocolate");
-        lookingForItemsSelectedIndex=new boolean[lookingForItemsAvailable.size()];
-        Arrays.fill(lookingForItemsSelectedIndex, Boolean.FALSE);//initialize
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -122,29 +112,82 @@ public class RegisterEvent extends AppCompatActivity
             view.setVisibility(View.GONE);
         }
     }
-    void setEventTypeSpinner(ArrayList<String> arrayListEventTypes){
-        ArrayAdapter adapter = new ArrayAdapter<String>(RegisterEvent.this, android.R.layout.simple_spinner_item, arrayListEventTypes){
+    void setEventTypeSpinner(){
+        arrayListEventTypes=new ArrayList<>();
+        arrayListEventTypes.add(getResources().getString(R.string.select_event_type));
+        eventTypeSpinner=(Spinner)findViewById(R.id.event_type);
+        //Threading--------------------------------------------------
+        String webService="api/event/GetEventTypesAndRelatedCategories";
+        String postData =  "";
+        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator_event_type);
+        String[] dataColumns={"ID","Name","RelatedCategoriesCSV"};//Order Matters. Data in the common.dataArrayList will be in same order
+        Runnable postThread=new Runnable() {
             @Override
-            public boolean isEnabled(int position){
-                return position != 0;// Disable the first item from Spinner. First item will be use for hint
-            }
-            @Override
-            public View getDropDownView(int position, View convertView,
-                                        ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-                if(position == 0){                    // Set the hint text color gray
-                    tv.setTextColor(Color.GRAY);
-                }
-                else {
-                    tv.setTextColor(Color.BLACK);
-                }
-                return view;
+            public void run() {
+                for(int i=0;i<common.dataArrayList.size();i++)
+                    arrayListEventTypes.add(common.dataArrayList.get(i)[1]);
+                ArrayAdapter adapter = new ArrayAdapter<String>(RegisterEvent.this, android.R.layout.simple_spinner_item, arrayListEventTypes){
+                    @Override
+                    public boolean isEnabled(int position){
+                        return position != 0;// Disable the first item from Spinner. First item will be use for hint
+                    }
+                    @Override
+                    public View getDropDownView(int position, View convertView,
+                                                ViewGroup parent) {
+                        View view = super.getDropDownView(position, convertView, parent);
+                        TextView tv = (TextView) view;
+                        if(position == 0){                    // Set the hint text color gray
+                            tv.setTextColor(Color.GRAY);
+                        }
+                        else {
+                            tv.setTextColor(Color.BLACK);
+                        }
+                        return view;
+                    }
+                };
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                eventTypeSpinner.setAdapter(adapter);
+                eventTypeSpinner.setVisibility(View.VISIBLE);
+                //Looking For items filling-------------------------------
+                eventTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        if(position>0) {
+                            String relatedCategories = common.dataArrayList.get(position - 1)[2];//since first item is placeholder in spinner
+                            ArrayList<String> lookingForItemsUnderThisType = new ArrayList<>(Arrays.asList(relatedCategories.split("\\s*,\\s*")));
+                            setAvailableLookingForItems(lookingForItemsUnderThisType);
+                        }
+                    }
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
             }
         };
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        eventTypeSpinner=(Spinner)findViewById(R.id.event_type);
-        eventTypeSpinner.setAdapter(adapter);
+        Runnable postFailThread=new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(RegisterEvent.this, R.string.retrying, Toast.LENGTH_SHORT).show();
+                setEventTypeSpinner();
+            }
+        };
+        common.AsynchronousThread(RegisterEvent.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                postFailThread);
+    }
+    void setAvailableLookingForItems(ArrayList<String> lookingForItemsUnderCurrentType){
+        lookingForItemsAvailable.clear();
+        lookingFor.setText("");
+        if(lookingForItemsUnderCurrentType.size()>0) {
+            lookingForItemsAvailable = lookingForItemsUnderCurrentType;
+            lookingForItemsSelectedIndex = new boolean[lookingForItemsAvailable.size()];
+            Arrays.fill(lookingForItemsSelectedIndex, Boolean.FALSE);//initialize
+        }
     }
     public void getEventDateTime(View view){
         dateTime.setError(null);

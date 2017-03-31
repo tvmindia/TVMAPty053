@@ -29,7 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="5dp"
+                android:animateLayoutChanges="true">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -56,12 +57,24 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:paddingTop="5dp"/>
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    app:indicatorName="BallPulseIndicator"
+                    app:indicatorColor="@color/colorAccent"
+                    android:id="@+id/loading_indicator_event_type"
+                    android:visibility="visible"
+                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:layout_gravity="center"
+                    />
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/event_type"
                     android:paddingTop="7dp"
-                    android:paddingBottom="7dp"/>
+                    android:paddingBottom="7dp"
+                    android:visibility="gone"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -129,7 +142,6 @@
                     android:id="@+id/looking_for"
                     android:inputType="none"
                     android:focusable="false"
-                    android:maxLines="1"
                     android:onClick="getLookingForItemsFromUser"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -146,7 +158,6 @@
                     android:textColor="@color/primary_text"
                     android:id="@+id/requirements"
                     android:inputType="textMultiLine"
-                    android:maxLines="3"
                     android:scrollbars="horizontal"
                     android:maxLength="1500"/>
                 <TextView
@@ -239,7 +250,6 @@
                     android:textColor="@color/primary_text"
                     android:id="@+id/message"
                     android:inputType="textMultiLine"
-                    android:maxLines="3"
                     android:maxLength="1500"/>
                 <Button
                     android:layout_width="wrap_content"

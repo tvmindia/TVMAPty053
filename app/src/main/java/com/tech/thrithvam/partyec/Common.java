@@ -86,7 +86,7 @@ class Common {
                             final AVLoadingIndicatorView loadingIndicator,
                             final String[] dataColumns,
                             final Runnable postThread,
-                            final Runnable postThreadFail){
+                            final Runnable postFailThread){
 
         class GetDataFromServer extends AsyncTask<Void , Void, Void> {
             private int status;
@@ -179,7 +179,7 @@ class Common {
                 super.onPostExecute(result);
                 if(loadingIndicator!=null) loadingIndicator.setVisibility(View.GONE);
                 if(!pass) {
-                    if(postThreadFail==null){
+                    if(postFailThread==null){
                         Intent noItemsIntent=new Intent(context,NothingToDisplay.class);
                         noItemsIntent.putExtra("msg",msg);
                         noItemsIntent.putExtra("activityHead","PartyEC");
@@ -187,7 +187,7 @@ class Common {
                         ((Activity)context).finish();
                     }
                     else {
-                        postThreadFail.run();
+                        postFailThread.run();
                     }
                 }
                 else {
