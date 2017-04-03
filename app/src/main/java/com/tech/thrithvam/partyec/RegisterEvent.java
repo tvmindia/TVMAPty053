@@ -20,6 +20,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -38,6 +40,7 @@ public class RegisterEvent extends AppCompatActivity
     Common common=new Common();
     EditText eventName,dateTime,noOfPersons,budget,lookingFor,requirements,name,email, phone,message;
     Spinner eventTypeSpinner;
+    String eventTypeIDGlobal,dateTimeGlobal;
     ArrayList<String> arrayListEventTypes;
     Calendar eventDateTime=Calendar.getInstance();
     ArrayList<String> lookingForItemsAvailable=new ArrayList<>();
@@ -107,9 +110,69 @@ public class RegisterEvent extends AppCompatActivity
             phone.requestFocus();
         }
         else{
+
+            //Threading--------------------------------------------------
+            String webService="api/event/RequestEvent";
+            String postData =  "{";
+
+            postData+="\"EventTitle\":\""+eventName.getText().toString().trim()+"\",";
+
+            postData+="\"EventType\":\""+eventTypeIDGlobal+"\",";
+
+            postData+="\"EventDateTime\":\""+dateTimeGlobal+"\",";
+
+            postData+="\"NoOfPersons\":\""+noOfPersons.getText().toString().trim()+"\",";
+
+            if(!budget.getText().toString().trim().equals(""))
+                postData+="\"Budget\":\""+budget.getText().toString().trim()+"\",";
+
+            postData+="\"LookingFor\":\""+lookingFor.getText().toString().trim()+"\",";
+
+            if(!requirements.getText().toString().trim().equals(""))
+                postData+="\"RequirementSpec\":\""+requirements.getText().toString().trim()+"\",";
+
+
+            //  TO:DO
+            //Customer id is to be passed if logged in
+
+            postData+="\"ContactName\":\""+name.getText().toString().trim()+"\",";
+
+            postData+="\"Email\":\""+email.getText().toString().trim()+"\",";
+
+            postData+="\"Phone\":\""+phone.getText().toString().trim()+"\",";
+
+            String contactType=((RadioButton)findViewById(((RadioGroup)findViewById(R.id.contact_method)).getCheckedRadioButtonId())).getText().toString();
+            postData+="\"ContactType\":\""+contactType+"\",";
+
+            if(!message.getText().toString().trim().equals(""))
+                postData+="\"Message\":\""+message.getText().toString().trim()+"\"";
+
+            postData+="}";
+
             AVLoadingIndicatorView loadingIndicatorView=(AVLoadingIndicatorView)findViewById(R.id.loading_indicator);
             loadingIndicatorView.setVisibility(View.VISIBLE);
             view.setVisibility(View.GONE);
+            String[] dataColumns={};//Order Matters. Data in the common.dataArrayList will be in same order
+            Runnable postThread=new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(RegisterEvent.this,R.string.success,Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            };
+            Runnable postFailThread=new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(RegisterEvent.this, R.string.failed, Toast.LENGTH_SHORT).show();
+                }
+            };
+            common.AsynchronousThread(RegisterEvent.this,
+                    webService,
+                    postData,
+                    loadingIndicatorView,
+                    dataColumns,
+                    postThread,
+                    postFailThread);
         }
     }
     void setEventTypeSpinner(){
@@ -153,6 +216,7 @@ public class RegisterEvent extends AppCompatActivity
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         if(position>0) {
+                            eventTypeIDGlobal=common.dataArrayList.get(position-1)[0];
                             String relatedCategories = common.dataArrayList.get(position - 1)[2];//since first item is placeholder in spinner
                             ArrayList<String> lookingForItemsUnderThisType = new ArrayList<>(Arrays.asList(relatedCategories.split("\\s*,\\s*")));
                             setAvailableLookingForItems(lookingForItemsUnderThisType);
@@ -215,6 +279,8 @@ public class RegisterEvent extends AppCompatActivity
                         //Setting display text-------
                         SimpleDateFormat formatted = new SimpleDateFormat("dd-MMM-yyyy   hh:mm a", Locale.US);
                         dateTime.setText(formatted.format(eventDateTime.getTime()));
+                        SimpleDateFormat formattedForServer = new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.US);
+                        dateTimeGlobal=formattedForServer.format(eventDateTime.getTime());
                     }
                 };
                 TimePickerDialog timePickerDialog=new TimePickerDialog(RegisterEvent.this,timeSetListener,today.get(Calendar.HOUR_OF_DAY), today.get(Calendar.MINUTE),false);
@@ -229,6 +295,8 @@ public class RegisterEvent extends AppCompatActivity
                                 //Setting display text-------
                                 SimpleDateFormat formatted = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
                                 dateTime.setText(formatted.format(eventDateTime.getTime()));
+                                SimpleDateFormat formattedForServer = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
+                                dateTimeGlobal=formattedForServer.format(eventDateTime.getTime());
                             }
                         });
                 timePickerDialog.show();

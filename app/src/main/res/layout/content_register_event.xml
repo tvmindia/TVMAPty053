@@ -229,11 +229,13 @@
                         android:layout_height="wrap_content"
                         android:text="@string/e_mail"
                         android:paddingRight="20dp"
-                        android:paddingEnd="20dp"/>
+                        android:paddingEnd="20dp"
+                        android:id="@+id/radio_email"/>
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/phone"/>
+                        android:text="@string/phone"
+                        android:id="@+id/radio_phone"/>
                 </RadioGroup>
                 <TextView
                     android:layout_width="wrap_content"
