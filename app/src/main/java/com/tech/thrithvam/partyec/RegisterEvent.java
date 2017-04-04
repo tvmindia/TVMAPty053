@@ -141,11 +141,11 @@ public class RegisterEvent extends AppCompatActivity
 
             postData+="\"Phone\":\""+phone.getText().toString().trim()+"\",";
 
-            String contactType=((RadioButton)findViewById(((RadioGroup)findViewById(R.id.contact_method)).getCheckedRadioButtonId())).getText().toString();
-            postData+="\"ContactType\":\""+contactType+"\",";
-
             if(!message.getText().toString().trim().equals(""))
-                postData+="\"Message\":\""+message.getText().toString().trim()+"\"";
+                postData+="\"Message\":\""+message.getText().toString().trim()+"\",";
+
+            String contactType=((RadioButton)findViewById(((RadioGroup)findViewById(R.id.contact_method)).getCheckedRadioButtonId())).getText().toString();
+            postData+="\"ContactType\":\""+contactType+"\"";
 
             postData+="}";
 
