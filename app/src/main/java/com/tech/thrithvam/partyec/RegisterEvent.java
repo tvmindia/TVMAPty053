@@ -175,6 +175,7 @@ public class RegisterEvent extends AppCompatActivity
                     postFailThread);
         }
     }
+    int retry=0;
     void setEventTypeSpinner(){
         arrayListEventTypes=new ArrayList<>();
         arrayListEventTypes.add(getResources().getString(R.string.select_event_type));
@@ -233,7 +234,9 @@ public class RegisterEvent extends AppCompatActivity
             @Override
             public void run() {
                 Toast.makeText(RegisterEvent.this, R.string.retrying, Toast.LENGTH_SHORT).show();
-                setEventTypeSpinner();
+                retry++;
+                if(retry<5)
+                    setEventTypeSpinner();
             }
         };
         common.AsynchronousThread(RegisterEvent.this,

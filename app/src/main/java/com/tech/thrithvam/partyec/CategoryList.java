@@ -47,6 +47,7 @@ public class CategoryList extends AppCompatActivity
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent intent=new Intent(CategoryList.this,ProductList.class);
                         intent.putExtra("CategoryCode",common.dataArrayList.get(position)[2]);
+                        intent.putExtra("CategoryName",common.dataArrayList.get(position)[1]);
                         startActivity(intent);
                     }
                 });

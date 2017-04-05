@@ -3,6 +3,7 @@ package com.tech.thrithvam.partyec;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -21,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -59,6 +61,7 @@ public class ProductList extends AppCompatActivity
         setContentView(R.layout.activity_product_list);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(getIntent().getExtras().getString("CategoryName"));
         loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
         productsAndNavigationRelativeView=(RelativeLayout)findViewById(R.id.products_and_categories);
         allProductsRelativeView=(RelativeLayout)findViewById(R.id.all_products);
@@ -73,42 +76,6 @@ public class ProductList extends AppCompatActivity
         //Navigation Category Listing-----------------------------
         navigationCategoryListView=(ListView)findViewById(R.id.navigation_category_listview);
 
-        //Filter menu------------------------------------------------------------------
-        LinearLayout filterMenuLinear=(LinearLayout)findViewById(R.id.filter_menu_linear);
-
-        String[] fData1=new String[2];fData1[0]="Chocolate Flavour";fData1[1]="12";
-        String[] fData2=new String[2];fData2[0]="Cheese";fData2[1]="13";
-        String[] fData3=new String[2];fData3[0]="Honey";fData3[1]="14";
-
-        filterCategories.add(fData1);filterCategories.add(fData2);filterCategories.add(fData3);
-
-        for(int i=0;i<filterCategories.size();i++){
-            CheckBox checkBox= new CheckBox(ProductList.this);
-            checkBox.setText(filterCategories.get(i)[0]);
-            filterMenuLinear.addView(checkBox);
-        }
-        //Divider
-        View divider = new View(this);
-        LinearLayout.LayoutParams lp =
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
-        divider.setLayoutParams(lp);
-        divider.setBackgroundColor(Color.GRAY);
-        divider.setPadding(0,7,0,7);
-        filterMenuLinear.addView(divider);
-
-        //navigation categories
-        for(int i=0;i<navigationCategories.size();i++){
-            TextView textView= new TextView(ProductList.this);
-            textView.setText(navigationCategories.get(i)[0]);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                textView.setTextColor(getResources().getColor(R.color.colorAccent,null));
-            }
-            else {
-                textView.setTextColor(getResources().getColor(R.color.colorAccent));
-            }
-            textView.setPadding(7,10,7,10);
-            filterMenuLinear.addView(textView);
-        }
 
         //-------------------------------------------------------------------------------------------------
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -147,15 +114,9 @@ public class ProductList extends AppCompatActivity
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                if(initialProducts.size()==0) (findViewById(R.id.view_all)).setVisibility(View.GONE);
                 //Displaying sub categories-------
                 getSubCategories();
-            }
-        };
-        Runnable postFailThread=new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(ProductList.this, R.string.retrying, Toast.LENGTH_SHORT).show();
-                getTopProductsFromServer();
             }
         };
         common.AsynchronousThread(ProductList.this,
@@ -164,7 +125,7 @@ public class ProductList extends AppCompatActivity
                 loadingIndicator,
                 dataColumns,
                 postThread,
-                postFailThread);
+                null);
     }
     void initialProductsHorizontal(int i){
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -193,6 +154,16 @@ public class ProductList extends AppCompatActivity
             }
             CustomAdapter adapterNavCats=new CustomAdapter(ProductList.this, navigationCategories,"NavigationCategoryList");
             navigationCategoryListView.setAdapter(adapterNavCats);
+            navigationCategoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent=new Intent(ProductList.this,ProductList.class);
+                    intent.putExtra("CategoryCode",navigationCategories.get(position)[0]);
+                    intent.putExtra("CategoryName",navigationCategories.get(position)[1]);
+                    startActivity(intent);
+                    finish();
+                }
+            });
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -231,6 +202,54 @@ public class ProductList extends AppCompatActivity
 
                         }
                     });
+
+        //Filter menu------------------------------------------------------------------
+        LinearLayout filterMenuLinear=(LinearLayout)findViewById(R.id.filter_menu_linear);
+
+        String[] fData1=new String[2];fData1[0]="Chocolate Flavour";fData1[1]="12";
+        String[] fData2=new String[2];fData2[0]="Cheese";fData2[1]="13";
+        String[] fData3=new String[2];fData3[0]="Honey";fData3[1]="14";
+
+        filterCategories.add(fData1);filterCategories.add(fData2);filterCategories.add(fData3);
+
+        for(int i=0;i<filterCategories.size();i++){
+            CheckBox checkBox= new CheckBox(ProductList.this);
+            checkBox.setText(filterCategories.get(i)[0]);
+            filterMenuLinear.addView(checkBox);
+        }
+        //Divider
+        View divider = new View(this);
+        LinearLayout.LayoutParams lp =
+                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
+        divider.setLayoutParams(lp);
+        divider.setBackgroundColor(Color.GRAY);
+        divider.setPadding(0,7,0,7);
+        filterMenuLinear.addView(divider);
+
+        //navigation categories
+        for(int i=0;i<navigationCategories.size();i++){
+            TextView textView= new TextView(ProductList.this);
+            textView.setText(navigationCategories.get(i)[1]);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                textView.setTextColor(getResources().getColor(R.color.colorAccent,null));
+            }
+            else {
+                textView.setTextColor(getResources().getColor(R.color.colorAccent));
+            }
+            textView.setPadding(7,10,7,10);
+            final int final_i=i;
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(ProductList.this,ProductList.class);
+                    intent.putExtra("CategoryCode",navigationCategories.get(final_i)[0]);
+                    intent.putExtra("CategoryName",navigationCategories.get(final_i)[1]);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            filterMenuLinear.addView(textView);
+        }
     }
     @Override
     public void onBackPressed() {
