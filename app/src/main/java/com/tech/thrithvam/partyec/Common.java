@@ -80,6 +80,7 @@ class Common {
 
     //Threading: to load data from a server----------------------------------------
     ArrayList<String[]> dataArrayList=new ArrayList<>();
+    String json="";
     void AsynchronousThread(final Context context,
                             final String webService,
                             final String postData,
@@ -156,13 +157,18 @@ class Common {
                     pass = jsonRootObject.optBoolean("Result");
                     if(pass){
                         JSONArray jsonArray = jsonRootObject.optJSONArray("Records");
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            String[] data=new String[dataColumns.length];
-                            for(int j=0;j<dataColumns.length;j++){
-                                data[j]=jsonObject.optString(dataColumns[j]);
+                        if(jsonArray!=null) {
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                String[] data = new String[dataColumns.length];
+                                for (int j = 0; j < dataColumns.length; j++) {
+                                    data[j] = jsonObject.optString(dataColumns[j]);
+                                }
+                                dataArrayList.add(data);
                             }
-                            dataArrayList.add(data);
+                        }
+                        else {
+                            json=jsonRootObject.optString("Records");
                         }
                     }
                     else {

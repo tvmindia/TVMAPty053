@@ -35,7 +35,7 @@ public class CategoryList extends AppCompatActivity
         String webService="api/category/GetMainCategories";
         String postData =  "";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
-        String[] dataColumns={"URL","Name"};//Order Matters. Data in the common.dataArrayList will be in same order
+        String[] dataColumns={"URL","Name","ID"};//Order Matters. Data in the common.dataArrayList will be in same order
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
@@ -46,6 +46,7 @@ public class CategoryList extends AppCompatActivity
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent intent=new Intent(CategoryList.this,ProductList.class);
+                        intent.putExtra("CategoryCode",common.dataArrayList.get(position)[2]);
                         startActivity(intent);
                     }
                 });

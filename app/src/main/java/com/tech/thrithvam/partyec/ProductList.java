@@ -28,8 +28,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wang.avi.AVLoadingIndicatorView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,16 +67,8 @@ public class ProductList extends AppCompatActivity
 
         //horizontal initial products------------------------
         initialProductsHorizontal=(LinearLayout)findViewById(R.id.initial_products_horizontal);
+        getTopProductsFromServer();
 
-        String[] pData1=new String[2];pData1[0]="Product A";pData1[1]="https://www.partyec.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/b/a/balthazar_3.jpg";
-        String[] pData2=new String[2];pData2[0]="Product B";pData2[1]="https://www.partyec.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/l/e/le_sultan-02.jpg";
-        String[] pData3=new String[2];pData3[0]="Product C";pData3[1]="https://www.partyec.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/c/h/chocolate-fudge_2.jpg";
-
-        initialProducts.add(pData1);initialProducts.add(pData2);initialProducts.add(pData3);
-
-        for(int i=0;i<initialProducts.size();i++){
-            initialProductsHorizontal(i);
-        }
 
         //Navigation Category Listing-----------------------------
         navigationCategoryListView=(ListView)findViewById(R.id.navigation_category_listview);
@@ -136,6 +133,48 @@ public class ProductList extends AppCompatActivity
         common.NavigationBarHeaderClick(this,navigationView);
     }
 
+    void getTopProductsFromServer(){
+        //Threading--------------------------------------------------
+        String webService="api/category/GetCategoryMainPageItems";
+        String postData =  "{\"ID\":\""+getIntent().getExtras().getString("CategoryCode")+"\"}";
+        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
+        String[] dataColumns={};//Order Matters. Data in the common.dataArrayList will be in same order
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                JSONObject jsonRootObject;
+                try {
+                    jsonRootObject = new JSONObject(common.json);
+                    JSONArray jsonArray =jsonRootObject.optJSONArray("Products");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String[] data = new String[3];
+                        data[0] = jsonObject.optString("Name");
+                        data[1] = jsonObject.optString("ImageURL");
+                        data[2] = jsonObject.optString("ID");
+                        initialProducts.add(data);
+                        initialProductsHorizontal(i);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        Runnable postFailThread=new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(ProductList.this, R.string.retrying, Toast.LENGTH_SHORT).show();
+                getTopProductsFromServer();
+            }
+        };
+        common.AsynchronousThread(ProductList.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                postFailThread);
+    }
     void initialProductsHorizontal(int i){
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View productItem=inflater.inflate(R.layout.item_product_grid, null);
@@ -144,6 +183,7 @@ public class ProductList extends AppCompatActivity
         productItem.setLayoutParams(params);
         ((TextView)(productItem.findViewById(R.id.product_name))).setText(initialProducts.get(i)[0]);
         common.LoadImage(ProductList.this,(ImageView)(productItem.findViewById(R.id.product_image)),initialProducts.get(i)[1],R.drawable.dim_icon);
+        (productItem.findViewById(R.id.dim_icon)).setVisibility(View.GONE);
         initialProductsHorizontal.addView(productItem);
     }
 
