@@ -218,13 +218,15 @@ public class ProductList extends AppCompatActivity
             filterMenuLinear.addView(checkBox);
         }
         //Divider
-        View divider = new View(this);
-        LinearLayout.LayoutParams lp =
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
-        divider.setLayoutParams(lp);
-        divider.setBackgroundColor(Color.GRAY);
-        divider.setPadding(0,7,0,7);
-        filterMenuLinear.addView(divider);
+        if(filterCategories.size()>0 && navigationCategories.size()>0) {
+            View divider = new View(this);
+            LinearLayout.LayoutParams lp =
+                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
+            divider.setLayoutParams(lp);
+            divider.setBackgroundColor(Color.GRAY);
+            divider.setPadding(0, 7, 0, 7);
+            filterMenuLinear.addView(divider);
+        }
 
         //navigation categories
         for(int i=0;i<navigationCategories.size();i++){
