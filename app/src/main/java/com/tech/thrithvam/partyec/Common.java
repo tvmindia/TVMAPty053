@@ -80,7 +80,7 @@ class Common {
 
     //Threading: to load data from a server----------------------------------------
     ArrayList<String[]> dataArrayList=new ArrayList<>();
-    String json="";
+    String json;
     void AsynchronousThread(final Context context,
                             final String webService,
                             final String postData,
@@ -99,6 +99,7 @@ class Common {
             protected void onPreExecute() {
                 super.onPreExecute();
                 dataArrayList.clear();
+                json="";
                 if(loadingIndicator!=null) loadingIndicator.setVisibility(View.VISIBLE);
                 //----------encrypting ---------------------------
                 // usernameString=cryptography.Encrypt(usernameString);

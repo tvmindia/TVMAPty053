@@ -27,7 +27,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:padding="10dp"
-        android:id="@+id/items_count" />
+        android:id="@+id/items_count"
+        android:gravity="end"
+        android:layout_centerVertical="true"/>
 
 </RelativeLayout>
 </LinearLayout>

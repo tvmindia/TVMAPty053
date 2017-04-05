@@ -73,17 +73,6 @@ public class ProductList extends AppCompatActivity
         //Navigation Category Listing-----------------------------
         navigationCategoryListView=(ListView)findViewById(R.id.navigation_category_listview);
 
-        String[] nData1=new String[2];nData1[0]="Birthday";nData1[1]="465";
-        String[] nData2=new String[2];nData2[0]="Seasonal cakes";nData2[1]="95";
-        String[] nData3=new String[2];nData3[0]="Corporate events";nData3[1]="64";
-
-        navigationCategories.add(nData1);navigationCategories.add(nData2);navigationCategories.add(nData3);
-
-
-        CustomAdapter adapterNavCats=new CustomAdapter(ProductList.this, navigationCategories,"NavigationCategoryList");
-        navigationCategoryListView.setAdapter(adapterNavCats);
-        loadingIndicator.setVisibility(View.GONE);
-
         //Filter menu------------------------------------------------------------------
         LinearLayout filterMenuLinear=(LinearLayout)findViewById(R.id.filter_menu_linear);
 
@@ -138,7 +127,7 @@ public class ProductList extends AppCompatActivity
         String webService="api/category/GetCategoryMainPageItems";
         String postData =  "{\"ID\":\""+getIntent().getExtras().getString("CategoryCode")+"\"}";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
-        String[] dataColumns={};//Order Matters. Data in the common.dataArrayList will be in same order
+        String[] dataColumns={};
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
@@ -158,6 +147,8 @@ public class ProductList extends AppCompatActivity
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                //Displaying sub categories-------
+                getSubCategories();
             }
         };
         Runnable postFailThread=new Runnable() {
@@ -185,6 +176,26 @@ public class ProductList extends AppCompatActivity
         common.LoadImage(ProductList.this,(ImageView)(productItem.findViewById(R.id.product_image)),initialProducts.get(i)[1],R.drawable.dim_icon);
         (productItem.findViewById(R.id.dim_icon)).setVisibility(View.GONE);
         initialProductsHorizontal.addView(productItem);
+    }
+
+    void getSubCategories(){
+        JSONObject jsonRootObject;
+        try {
+            jsonRootObject = new JSONObject(common.json);
+            JSONArray jsonArray =jsonRootObject.optJSONArray("SubCategories");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String[] data = new String[3];
+                data[0] = jsonObject.optString("ID");
+                data[1] = jsonObject.optString("Name");
+                data[2] = jsonObject.optString("ChildrenCount");
+                navigationCategories.add(data);
+            }
+            CustomAdapter adapterNavCats=new CustomAdapter(ProductList.this, navigationCategories,"NavigationCategoryList");
+            navigationCategoryListView.setAdapter(adapterNavCats);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void viewAll(View view){

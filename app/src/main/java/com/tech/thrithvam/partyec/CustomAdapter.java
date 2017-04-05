@@ -103,8 +103,8 @@ class CustomAdapter extends BaseAdapter{
                     holder = (Holder) convertView.getTag();
                 }
                 //Label loading--------------------
-                holder.navCatName.setText(filteredObjects.get(position)[0]);
-                holder.itemsCount.setText(filteredObjects.get(position)[1]);
+                holder.navCatName.setText(filteredObjects.get(position)[1]);
+                holder.itemsCount.setText(filteredObjects.get(position)[2]);
                 break;
             //--------------------------for All products list items------------------
             case "AllProducts":
