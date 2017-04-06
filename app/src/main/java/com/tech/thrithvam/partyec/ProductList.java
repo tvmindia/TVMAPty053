@@ -115,6 +115,7 @@ public class ProductList extends AppCompatActivity
                     e.printStackTrace();
                 }
                 if(initialProducts.size()==0) (findViewById(R.id.view_all)).setVisibility(View.GONE);
+                else (findViewById(R.id.view_all)).setVisibility(View.VISIBLE);
                 //Displaying sub categories-------
                 getSubCategories();
             }
@@ -174,6 +175,7 @@ public class ProductList extends AppCompatActivity
         navigationCategoryListView.animate()
                 .translationX(navigationCategoryListView.getWidth())
                 .alpha(0.0f)
+                .setDuration(700)
                 .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
@@ -182,40 +184,72 @@ public class ProductList extends AppCompatActivity
                             loadingIndicator.setVisibility(View.VISIBLE);
 
                             //All products and filter categories loading---------------------------------
-
                             allProductsGrid=(GridView) findViewById(R.id.all_products_grid);
 
-                            for(int i=0;i<11;i++){
-                            String[] pData1=new String[2];pData1[0]="Product A";pData1[1]="https://www.partyec.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/b/a/balthazar_3.jpg";
-                            String[] pData2=new String[2];pData2[0]="Product B";pData2[1]="https://www.partyec.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/l/e/le_sultan-02.jpg";
-                            String[] pData3=new String[2];pData3[0]="Product C";pData3[1]="https://www.partyec.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/c/h/chocolate-fudge_2.jpg";
-
-                            allProducts.add(pData1);allProducts.add(pData2);allProducts.add(pData3);
-                            }
-                            Collections.shuffle(allProducts);
-
-                            CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts",0);
-                            allProductsGrid.setAdapter(adapterAllProducts);
-
-                            productsAndNavigationRelativeView.setVisibility(View.GONE);
-                            allProductsRelativeView.setVisibility(View.VISIBLE);
-
+                            //Threading--------------------------------------------------
+                            String webService="api/category/GetProductsOfCategory";
+                            String postData =  "{\"ID\":\""+getIntent().getExtras().getString("CategoryCode")+"\"}";
+                            String[] dataColumns={};
+                            Runnable postThread=new Runnable() {
+                                @Override
+                                public void run() {
+                                    JSONObject jsonRootObject;
+                                    try {
+                                        jsonRootObject = new JSONObject(common.json);
+                                        JSONArray jsonArray =jsonRootObject.optJSONArray("Products");
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                            String[] data = new String[3];
+                                            data[0] = jsonObject.optString("Name");
+                                            data[1] = jsonObject.optString("ImageURL");
+                                            data[2] = jsonObject.optString("ID");
+                                            allProducts.add(data);
+                                            initialProductsHorizontal(i);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    if(allProducts.size()==0) (findViewById(R.id.no_items)).setVisibility(View.VISIBLE);
+                                    else (findViewById(R.id.no_items)).setVisibility(View.GONE);
+                                    CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts",0);
+                                    allProductsGrid.setAdapter(adapterAllProducts);
+                                    productsAndNavigationRelativeView.setVisibility(View.GONE);
+                                    allProductsRelativeView.setVisibility(View.VISIBLE);
+                                    //Displaying filters-------
+                                    setFilterMenu();
+                                }
+                            };
+                            common.AsynchronousThread(ProductList.this,
+                                    webService,
+                                    postData,
+                                    loadingIndicator,
+                                    dataColumns,
+                                    postThread,
+                                    null);
                         }
                     });
-
-        //Filter menu------------------------------------------------------------------
+    }
+    void setFilterMenu(){
         LinearLayout filterMenuLinear=(LinearLayout)findViewById(R.id.filter_menu_linear);
-
-        String[] fData1=new String[2];fData1[0]="Chocolate Flavour";fData1[1]="12";
-        String[] fData2=new String[2];fData2[0]="Cheese";fData2[1]="13";
-        String[] fData3=new String[2];fData3[0]="Honey";fData3[1]="14";
-
-        filterCategories.add(fData1);filterCategories.add(fData2);filterCategories.add(fData3);
-
-        for(int i=0;i<filterCategories.size();i++){
-            CheckBox checkBox= new CheckBox(ProductList.this);
-            checkBox.setText(filterCategories.get(i)[0]);
-            filterMenuLinear.addView(checkBox);
+        JSONObject jsonRootObject;
+        try {
+            jsonRootObject = new JSONObject(common.json);
+            JSONArray jsonArray =jsonRootObject.optJSONArray("Filters");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String[] data = new String[2];
+                data[0] = jsonObject.optString("ID");
+                data[1] = jsonObject.optString("Name");
+                filterCategories.add(data);
+            }
+            //FilterMenu
+            for(int i=0;i<filterCategories.size();i++){
+                CheckBox checkBox= new CheckBox(ProductList.this);
+                checkBox.setText(filterCategories.get(i)[1]);
+                filterMenuLinear.addView(checkBox);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         //Divider
         if(filterCategories.size()>0 && navigationCategories.size()>0) {
