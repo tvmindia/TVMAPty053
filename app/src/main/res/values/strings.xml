@@ -61,4 +61,5 @@
     <string name="retrying">Retrying…</string>
     <string name="success">Success</string>
     <string name="failed">Failed</string>
+    <string name="apply">Apply</string>
 </resources>

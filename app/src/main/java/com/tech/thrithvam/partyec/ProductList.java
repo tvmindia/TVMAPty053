@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -171,6 +172,7 @@ public class ProductList extends AppCompatActivity
     }
 
     public void viewAll(View view){
+        view.setEnabled(false);
         menu.setGroupVisible(R.id.search_n_filter,true);
         navigationCategoryListView.animate()
                 .translationX(navigationCategoryListView.getWidth())
@@ -251,6 +253,22 @@ public class ProductList extends AppCompatActivity
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        //Apply Button
+        if(filterCategories.size()>0){
+            TextView filterApplyButton= new TextView(ProductList.this);
+            filterApplyButton.setText(R.string.apply);
+            filterApplyButton.setBackgroundResource(R.drawable.button);
+            filterApplyButton.setTextColor(Color.WHITE);
+            filterApplyButton.setGravity(Gravity.CENTER);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(100, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.weight = 1.0f;
+            params.setMargins(0,0,0,5);
+            params.gravity = Gravity.END;
+            filterApplyButton.setPadding(7,3,7,3);
+            filterApplyButton.setLayoutParams(params);
+            filterMenuLinear.addView(filterApplyButton);
+        }
         //Divider
         if(filterCategories.size()>0 && navigationCategories.size()>0) {
             View divider = new View(this);
@@ -258,7 +276,7 @@ public class ProductList extends AppCompatActivity
                     new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
             divider.setLayoutParams(lp);
             divider.setBackgroundColor(Color.GRAY);
-            divider.setPadding(0, 7, 0, 7);
+            divider.setPadding(0, 10, 0, 7);
             filterMenuLinear.addView(divider);
         }
 
