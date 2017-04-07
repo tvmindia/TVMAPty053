@@ -39,7 +39,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class ProductList extends AppCompatActivity
@@ -231,6 +233,8 @@ public class ProductList extends AppCompatActivity
                         }
                     });
     }
+
+    ArrayList<CheckBox> filterCheckBoxes=new ArrayList<>();
     void setFilterMenu(){
         LinearLayout filterMenuLinear=(LinearLayout)findViewById(R.id.filter_menu_linear);
         JSONObject jsonRootObject;
@@ -248,8 +252,10 @@ public class ProductList extends AppCompatActivity
             for(int i=0;i<filterCategories.size();i++){
                 CheckBox checkBox= new CheckBox(ProductList.this);
                 checkBox.setText(filterCategories.get(i)[1]);
+                filterCheckBoxes.add(checkBox);
                 filterMenuLinear.addView(checkBox);
             }
+            appliedFiltersBoolean=new boolean[filterCheckBoxes.size()];
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -267,6 +273,12 @@ public class ProductList extends AppCompatActivity
             params.gravity = Gravity.END;
             filterApplyButton.setPadding(7,3,7,3);
             filterApplyButton.setLayoutParams(params);
+            filterApplyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    filterProducts();
+                }
+            });
             filterMenuLinear.addView(filterApplyButton);
         }
         //Divider
@@ -305,6 +317,59 @@ public class ProductList extends AppCompatActivity
             filterMenuLinear.addView(textView);
         }
     }
+    boolean[] appliedFiltersBoolean;
+    void filterProducts(){
+        filterMenu.setVisibility(View.GONE);
+        //Threading--------------------------------------------------
+        String webService="api/category/GetProductsByFiltering";
+
+        String filterCategoryCodes="";
+        String filtersName="";
+        Arrays.fill(appliedFiltersBoolean,false);
+        for(int i=0;i<filterCheckBoxes.size();i++)
+        {
+            if(filterCheckBoxes.get(i).isChecked()){
+                filterCategoryCodes+=filterCategories.get(i)[0]+",";
+                filtersName+=filterCategories.get(i)[1]+",";
+                appliedFiltersBoolean[i]=true;
+            }
+        }
+
+        TextView filterNames=(TextView)findViewById(R.id.filter_names);
+        if(filterCategoryCodes.equals("")){//No filters applied
+            CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts",viewState);
+            allProductsGrid.setAdapter(adapterAllProducts);
+            filterNames.setVisibility(View.GONE);
+            return;
+        }
+        filtersName=filtersName.substring(0,filtersName.lastIndexOf(","));
+        filterNames.setText(filtersName);
+        filterNames.setVisibility(View.VISIBLE);
+
+
+        String postData =  "{\"filterCriteriaCSV\":\""+filterCategoryCodes+"\"}";
+        String[] dataColumns={"Name","ImageURL","ID"};
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, common.dataArrayList,"AllProducts",viewState);
+                allProductsGrid.setAdapter(adapterAllProducts);
+            }
+        };
+        Runnable postFailThread=new Runnable() {
+            @Override
+            public void run() {
+                (findViewById(R.id.no_items)).setVisibility(View.VISIBLE);
+            }
+        };
+        common.AsynchronousThread(ProductList.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                postFailThread);
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -333,6 +398,13 @@ public class ProductList extends AppCompatActivity
             if(filterMenu.getVisibility()==View.VISIBLE){
                 item.getIcon().clearColorFilter();
                 filterMenu.setVisibility(View.GONE);
+                if(appliedFiltersBoolean!=null) {
+                    for (int i = 0; i < appliedFiltersBoolean.length; i++) {
+                        if (appliedFiltersBoolean[i]) {
+                            filterCheckBoxes.get(i).setChecked(true);
+                        }
+                    }
+                }
             }
             else {
                 item.getIcon().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
@@ -376,8 +448,17 @@ public class ProductList extends AppCompatActivity
                 toolbar.getGlobalVisibleRect(outRect2);
                 if(!outRect.contains((int)event.getRawX(), (int)event.getRawY())
                         &&
-                        !outRect2.contains((int)event.getRawX(), (int)event.getRawY()))
+                        !outRect2.contains((int)event.getRawX(), (int)event.getRawY())) {
                     filterMenu.setVisibility(View.GONE);
+                    menu.findItem(R.id.filter).getIcon().clearColorFilter();
+                    if (appliedFiltersBoolean != null) {
+                        for (int i = 0; i < appliedFiltersBoolean.length; i++) {
+                            if (appliedFiltersBoolean[i]) {
+                                filterCheckBoxes.get(i).setChecked(true);
+                            }
+                        }
+                    }
+                }
             }
         }
         return super.dispatchTouchEvent(event);
