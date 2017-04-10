@@ -44,6 +44,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static android.view.View.GONE;
+
 public class ProductList extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Common common=new Common();
@@ -69,7 +71,7 @@ public class ProductList extends AppCompatActivity
         productsAndNavigationRelativeView=(RelativeLayout)findViewById(R.id.products_and_categories);
         allProductsRelativeView=(RelativeLayout)findViewById(R.id.all_products);
         filterMenu=(CardView)findViewById(R.id.filter_menu_card);
-        allProductsRelativeView.setVisibility(View.GONE);
+        allProductsRelativeView.setVisibility(GONE);
 
         //horizontal initial products------------------------
         initialProductsHorizontal=(LinearLayout)findViewById(R.id.initial_products_horizontal);
@@ -117,7 +119,7 @@ public class ProductList extends AppCompatActivity
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                if(initialProducts.size()==0) (findViewById(R.id.view_all)).setVisibility(View.GONE);
+                if(initialProducts.size()==0) (findViewById(R.id.view_all)).setVisibility(GONE);
                 else (findViewById(R.id.view_all)).setVisibility(View.VISIBLE);
                 //Displaying sub categories-------
                 getSubCategories();
@@ -139,7 +141,7 @@ public class ProductList extends AppCompatActivity
         productItem.setLayoutParams(params);
         ((TextView)(productItem.findViewById(R.id.product_name))).setText(initialProducts.get(i)[0]);
         common.LoadImage(ProductList.this,(ImageView)(productItem.findViewById(R.id.product_image)),initialProducts.get(i)[1],R.drawable.dim_icon);
-        (productItem.findViewById(R.id.dim_icon)).setVisibility(View.GONE);
+        (productItem.findViewById(R.id.dim_icon)).setVisibility(GONE);
         initialProductsHorizontal.addView(productItem);
     }
 
@@ -184,7 +186,7 @@ public class ProductList extends AppCompatActivity
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
-                            navigationCategoryListView.setVisibility(View.GONE);
+                            navigationCategoryListView.setVisibility(GONE);
                             loadingIndicator.setVisibility(View.VISIBLE);
 
                             //All products and filter categories loading---------------------------------
@@ -208,16 +210,15 @@ public class ProductList extends AppCompatActivity
                                             data[1] = jsonObject.optString("ImageURL");
                                             data[2] = jsonObject.optString("ID");
                                             allProducts.add(data);
-                                            initialProductsHorizontal(i);
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                     if(allProducts.size()==0) (findViewById(R.id.no_items)).setVisibility(View.VISIBLE);
-                                    else (findViewById(R.id.no_items)).setVisibility(View.GONE);
+                                    else (findViewById(R.id.no_items)).setVisibility(GONE);
                                     CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts",0);
                                     allProductsGrid.setAdapter(adapterAllProducts);
-                                    productsAndNavigationRelativeView.setVisibility(View.GONE);
+                                    productsAndNavigationRelativeView.setVisibility(GONE);
                                     allProductsRelativeView.setVisibility(View.VISIBLE);
                                     //Displaying filters-------
                                     setFilterMenu();
@@ -319,7 +320,9 @@ public class ProductList extends AppCompatActivity
     }
     boolean[] appliedFiltersBoolean;
     void filterProducts(){
-        filterMenu.setVisibility(View.GONE);
+        filterMenu.setVisibility(GONE);
+        (findViewById(R.id.no_items)).setVisibility(View.GONE);
+        allProductsGrid.setVisibility(View.VISIBLE);
         //Threading--------------------------------------------------
         String webService="api/category/GetProductsByFiltering";
 
@@ -339,7 +342,7 @@ public class ProductList extends AppCompatActivity
         if(filterCategoryCodes.equals("")){//No filters applied
             CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts",viewState);
             allProductsGrid.setAdapter(adapterAllProducts);
-            filterNames.setVisibility(View.GONE);
+            filterNames.setVisibility(GONE);
             return;
         }
         filtersName=filtersName.substring(0,filtersName.lastIndexOf(","));
@@ -360,6 +363,7 @@ public class ProductList extends AppCompatActivity
             @Override
             public void run() {
                 (findViewById(R.id.no_items)).setVisibility(View.VISIBLE);
+                allProductsGrid.setVisibility(View.GONE);
             }
         };
         common.AsynchronousThread(ProductList.this,
@@ -397,7 +401,7 @@ public class ProductList extends AppCompatActivity
         if (id == R.id.filter) {
             if(filterMenu.getVisibility()==View.VISIBLE){
                 item.getIcon().clearColorFilter();
-                filterMenu.setVisibility(View.GONE);
+                filterMenu.setVisibility(GONE);
                 if(appliedFiltersBoolean!=null) {
                     for (int i = 0; i < appliedFiltersBoolean.length; i++) {
                         if (appliedFiltersBoolean[i]) {
@@ -449,7 +453,7 @@ public class ProductList extends AppCompatActivity
                 if(!outRect.contains((int)event.getRawX(), (int)event.getRawY())
                         &&
                         !outRect2.contains((int)event.getRawX(), (int)event.getRawY())) {
-                    filterMenu.setVisibility(View.GONE);
+                    filterMenu.setVisibility(GONE);
                     menu.findItem(R.id.filter).getIcon().clearColorFilter();
                     if (appliedFiltersBoolean != null) {
                         for (int i = 0; i < appliedFiltersBoolean.length; i++) {

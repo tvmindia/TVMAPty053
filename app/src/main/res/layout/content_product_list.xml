@@ -9,6 +9,17 @@
     tools:context="com.tech.thrithvam.partyec.ProductList"
     tools:showIn="@layout/app_bar_product_list">
     <!--Products and Navigation categories screen-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_items"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/no_items"
+        android:textColor="@color/secondary_text"
+        android:visibility="gone"
+        android:gravity="center"
+        />
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -45,16 +56,7 @@
         app:indicatorColor="@color/colorAccent"
         android:id="@+id/loading_indicator"
         />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/no_items"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/no_items"
-        android:textColor="@color/secondary_text"
-        android:visibility="gone"
-        />
+
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
