@@ -62,4 +62,12 @@
     <string name="failed">Failed</string>
     <string name="apply">Apply</string>
     <string name="title_activity_product_details">ProductDetails</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="reviews">Reviews</string>
+    <string name="in_stock">In Stock</string>
+    <string name="out_of_stock">Out of stock</string>
+    <string name="price_display">%1$s QR</string>
+    <string name="buy">Buy</string>
+    <string name="book">Book</string>
+    <string name="req_quotation">Request quotation</string>
 </resources>

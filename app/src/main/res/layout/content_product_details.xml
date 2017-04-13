@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,5 +7,163 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.tech.thrithvam.partyec.ProductDetails"
     tools:showIn="@layout/app_bar_product_details">
+    <com.wang.avi.AVLoadingIndicatorView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:indicatorName="BallClipRotateMultipleIndicator"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        app:indicatorColor="@color/colorAccent"
+        android:id="@+id/loading_indicator"
+        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/product_details_scroll_view">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:animateLayoutChanges="true">
 
-</android.support.constraint.ConstraintLayout>
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Supplier Name"
+    android:textColor="@color/primary_text"
+    android:padding="5dp"
+    android:textSize="12sp"
+    android:id="@+id/supplier_name"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/logo"
+        android:background="#323c3c3c"
+        android:id="@+id/product_images"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Product Name"
+                android:textColor="@color/primary_text"
+                android:padding="5dp"
+                android:textSize="12sp"
+                android:id="@+id/product_name"
+                android:gravity="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primary_text"
+        android:text="Short Description"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:id="@+id/short_description"
+        android:textSize="16sp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stock availability"
+        android:textColor="@color/secondary_text"
+        android:padding="5dp"
+        android:layout_above="@+id/actual_price"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:id="@+id/stock_availability"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        android:textColor="@color/primary_text"
+        android:textSize="20sp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:id="@+id/price"
+        android:layout_alignRight="@+id/actual_price"
+        android:layout_alignEnd="@+id/actual_price" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Actual Price"
+        android:textColor="@color/secondary_text"
+        android:textSize="14sp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/price"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp"
+        android:id="@+id/actual_price"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Free Delivery"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="15sp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/actual_price"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="3dp"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp"
+        android:id="@+id/free_delivery"/>
+</RelativeLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="end"
+    android:animateLayoutChanges="true">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:paddingLeft="7dp"
+                    android:paddingRight="7dp"
+                    android:text="@string/add_to_cart"
+                    android:textSize="15sp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/button"
+                    android:onClick="submitRequest"
+                    android:id="@+id/add_to_cart"/>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:paddingLeft="7dp"
+                        android:paddingRight="7dp"
+                        android:text="Buy/Book/Request Quote"
+                        android:textSize="15sp"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/button"
+                        android:onClick="submitRequest"
+                        android:id="@+id/action_button"/>
+</LinearLayout>
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/web_view_description"
+        android:layout_margin="5dp"
+        android:padding="5dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primary_text"
+        android:text="@string/reviews"
+        android:padding="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:id="@+id/reviews_label"
+        android:textSize="16sp"/>
+    </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

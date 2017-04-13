@@ -62,8 +62,9 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ProductDetails"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_product_details"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
