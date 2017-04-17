@@ -158,7 +158,7 @@ class Common {
                     pass = jsonRootObject.optBoolean("Result");
                     if(pass){
                         JSONArray jsonArray = jsonRootObject.optJSONArray("Records");
-                        if(jsonArray!=null) {
+                        if(jsonArray!=null && dataColumns.length!=0) {  //json which can be load into an adapter/array list
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                                 String[] data = new String[dataColumns.length];
@@ -168,7 +168,7 @@ class Common {
                                 dataArrayList.add(data);
                             }
                         }
-                        else {
+                        else {//Take coming jason as it is
                             json=jsonRootObject.optString("Records");
                         }
                     }
@@ -202,7 +202,6 @@ class Common {
                 }
             }
         }
-
         new GetDataFromServer().execute();
     }
 }

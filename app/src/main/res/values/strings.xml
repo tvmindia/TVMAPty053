@@ -70,4 +70,5 @@
     <string name="buy">Buy</string>
     <string name="book">Book</string>
     <string name="req_quotation">Request quotation</string>
+    <string name="ratings_amp_reviews"><![CDATA[Ratings & Reviews]]></string>
 </resources>

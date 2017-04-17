@@ -1,10 +1,15 @@
 package com.tech.thrithvam.partyec;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.SearchView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +21,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.wang.avi.AVLoadingIndicatorView;
@@ -54,6 +61,7 @@ public class ProductDetails extends AppCompatActivity
         common.NavigationBarHeaderClick(ProductDetails.this,navigationView);
     }
     void loadProductDetails(){
+        (findViewById(R.id.product_details_scroll_view)).setVisibility(GONE);
         //Threading--------------------------------------------------
         String webService="api/product/GetProductDetails";
         String postData =  "{\"ID\":\""+productID+"\"}";
@@ -121,6 +129,9 @@ public class ProductDetails extends AppCompatActivity
                 catch (JSONException e) {
                     e.printStackTrace();
                 }
+                (findViewById(R.id.product_details_scroll_view)).setVisibility(View.VISIBLE);
+                //Product rating loading--------------------
+                loadProductRatings();
             }
         };
         common.AsynchronousThread(ProductDetails.this,
@@ -131,7 +142,45 @@ public class ProductDetails extends AppCompatActivity
                 postThread,
                 null);
     }
-
+    void loadProductRatings(){
+        final LinearLayout productRatingLinear=(LinearLayout)findViewById(R.id.ratings_linear);
+        final LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //Threading--------------------------------------------------
+        String webService="api/product/GetProductRatings";
+        String postData =  "{\"ID\":\""+"1002"+"\",\"AttributeSetID\":\""+"1"+"\"}";//replace with product id
+        String[] dataColumns={};
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                JSONObject jsonRootObject;
+                JSONArray firstJSONArray;
+                try {
+                    firstJSONArray= new JSONArray(common.json);
+                    jsonRootObject = firstJSONArray.getJSONObject(0);
+                    JSONArray ratings=jsonRootObject.optJSONArray("ProductRatingAttributes");
+                    for (int i=0;i<ratings.length();i++){
+                        JSONObject jsonObject = ratings.getJSONObject(i);
+                        View ratingBar=inflater.inflate(R.layout.item_rating_bar, null);
+                        ((TextView)ratingBar.findViewById(R.id.rating_label)).setText(jsonObject.optString("Name"));
+                        ((RatingBar)ratingBar.findViewById(R.id.rating_bar)).setRating(Float.parseFloat(jsonObject.optString("Value")));
+                        LayerDrawable stars = (LayerDrawable) ((RatingBar)ratingBar.findViewById(R.id.rating_bar)).getProgressDrawable();
+                        stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);
+                        productRatingLinear.addView(ratingBar);
+                    }
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        common.AsynchronousThread(ProductDetails.this,
+                webService,
+                postData,
+                null,
+                dataColumns,
+                postThread,
+                null);
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

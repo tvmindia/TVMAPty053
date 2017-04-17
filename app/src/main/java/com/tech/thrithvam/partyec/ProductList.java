@@ -220,6 +220,14 @@ public class ProductList extends AppCompatActivity
                                     allProductsGrid.setAdapter(adapterAllProducts);
                                     productsAndNavigationRelativeView.setVisibility(GONE);
                                     allProductsRelativeView.setVisibility(View.VISIBLE);
+                                    allProductsGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                            Intent intent=new Intent(ProductList.this,ProductDetails.class);
+                                            intent.putExtra("productID",allProducts.get(position)[2]);
+                                            startActivity(intent);
+                                        }
+                                    });
                                     //Displaying filters-------
                                     setFilterMenu();
                                 }
