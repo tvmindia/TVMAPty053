@@ -161,7 +161,7 @@ public class ProductDetails extends AppCompatActivity
                     for (int i=0;i<ratings.length();i++){
                         JSONObject jsonObject = ratings.getJSONObject(i);
                         View ratingBar=inflater.inflate(R.layout.item_rating_bar, null);
-                        ((TextView)ratingBar.findViewById(R.id.rating_label)).setText(jsonObject.optString("Name"));
+                        ((TextView)ratingBar.findViewById(R.id.rating_label)).setText(jsonObject.optString("Caption"));
                         ((RatingBar)ratingBar.findViewById(R.id.rating_bar)).setRating(Float.parseFloat(jsonObject.optString("Value")));
                         LayerDrawable stars = (LayerDrawable) ((RatingBar)ratingBar.findViewById(R.id.rating_bar)).getProgressDrawable();
                         stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);
