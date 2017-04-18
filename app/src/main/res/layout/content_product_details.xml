@@ -183,22 +183,45 @@
                 android:padding="5dp"
                 android:layout_marginLeft="7dp"
                 android:layout_marginRight="7dp"/>
+
             <TextView
+                android:id="@+id/reviews_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/primary_text"
-                android:text="@string/ratings_amp_reviews"
-                android:padding="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:id="@+id/reviews_label"
-                android:textSize="16sp"/>
+                android:padding="5dp"
+                android:text="@string/ratings_amp_reviews"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp"
+                android:textStyle="bold" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:id="@+id/ratings_linear"/>
-
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/reviews_linear"/>
+            <com.wang.avi.AVLoadingIndicatorView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:indicatorName="BallPulseIndicator"
+                app:indicatorColor="@color/colorAccent"
+                android:id="@+id/loading_indicator_ball_pulse"
+                android:visibility="visible"
+                android:layout_gravity="center"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/secondary_text"
+                android:padding="5dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"/>
     </LinearLayout>
     </ScrollView>
 </RelativeLayout>

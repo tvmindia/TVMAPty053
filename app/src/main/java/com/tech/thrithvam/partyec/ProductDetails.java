@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -181,6 +182,67 @@ public class ProductDetails extends AppCompatActivity
                 catch (JSONException e) {
                     e.printStackTrace();
                 }
+                //Reviews
+                loadProductReviews();
+            }
+        };
+        Runnable postFailThread=new Runnable() {
+            @Override
+            public void run() {
+                //do nothing
+                //Load reviews
+                loadProductReviews();
+            }
+        };
+        common.AsynchronousThread(ProductDetails.this,
+                webService,
+                postData,
+                null,
+                dataColumns,
+                postThread,
+                postFailThread);
+    }
+    void loadProductReviews(){
+        final LinearLayout productReviewsLinear=(LinearLayout)findViewById(R.id.reviews_linear);
+        final LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        //divider
+        View divider = new View(ProductDetails.this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
+        lp.setMargins(15,0,15,0);
+        divider.setLayoutParams(lp);
+        divider.setBackgroundColor(Color.GRAY);
+        divider.setPadding(0, 5, 0, 5);
+        productReviewsLinear.addView(divider);
+        //Threading--------------------------------------------------
+        String webService="api/product/GetProductReviews";
+        String postData =  "{\"ProductID\":\""+productID+"\",\"count\":\""+"5"+"\"}";
+        String[] dataColumns={"ID","CustomerName","ImageUrl","AvgRating","ReviewCreatedDate","Review"};
+        AVLoadingIndicatorView loadingIndicatorView=(AVLoadingIndicatorView)findViewById(R.id.loading_indicator_ball_pulse);
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                    for (int i=0;i<common.dataArrayList.size();i++) {
+                        View review = inflater.inflate(R.layout.item_review, null);
+                        ((TextView)review.findViewById(R.id.customer_name)).setText(common.dataArrayList.get(i)[1]);
+                        ((TextView)review.findViewById(R.id.date)).setText(common.dataArrayList.get(i)[4]);
+                        ((TextView)review.findViewById(R.id.review)).setText(common.dataArrayList.get(i)[5]);
+                        ((RatingBar)review.findViewById(R.id.avg_rating_bar)).setRating(Float.parseFloat(common.dataArrayList.get(i)[3]));
+                        LayerDrawable stars = (LayerDrawable) ((RatingBar)review.findViewById(R.id.avg_rating_bar)).getProgressDrawable();
+                        stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);
+                        common.LoadImage(ProductDetails.this,
+                                ((ImageView)review.findViewById(R.id.customer_image)),
+                                common.dataArrayList.get(i)[2],
+                                R.drawable.user);
+                        productReviewsLinear.addView(review);
+                        //divider
+                        View divider = new View(ProductDetails.this);
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
+                        lp.setMargins(15,0,15,0);
+                        divider.setLayoutParams(lp);
+                        divider.setBackgroundColor(Color.GRAY);
+//                        divider.setPadding(0, 5, 0, 5);
+                        productReviewsLinear.addView(divider);
+                    }
             }
         };
         Runnable postFailThread=new Runnable() {
@@ -192,7 +254,7 @@ public class ProductDetails extends AppCompatActivity
         common.AsynchronousThread(ProductDetails.this,
                 webService,
                 postData,
-                null,
+                loadingIndicatorView,
                 dataColumns,
                 postThread,
                 postFailThread);
