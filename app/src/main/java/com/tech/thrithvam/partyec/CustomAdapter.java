@@ -1,12 +1,16 @@
 package com.tech.thrithvam.partyec;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -61,11 +65,15 @@ class CustomAdapter extends BaseAdapter{
         //Category list---------------------
         TextView categoryName;
         ImageView categoryImage;
-        //Navigation Category List---------
+        //Navigation Category List----------
         TextView navCatName,itemsCount;
-        //All products list----------------
+        //All products list-----------------
         TextView productName;
         ImageView productImage;
+        //Product Reviews-------------------
+        TextView customerName,reviewDate,review;
+        RatingBar ratingReview;
+        ImageView customerImage;
     }
 
     @Override
@@ -128,6 +136,32 @@ class CustomAdapter extends BaseAdapter{
                         holder.productImage,
                         filteredObjects.get(position)[1],
                         R.drawable.dim_icon);
+                break;
+            //--------------------------for All products list items------------------
+            case "ReviewList":
+                if (convertView == null) {
+                    holder = new Holder();
+                    convertView = inflater.inflate(R.layout.item_review, null);
+                    holder.customerName = (TextView) convertView.findViewById(R.id.customer_name);
+                    holder.customerImage=(ImageView) convertView.findViewById(R.id.customer_image);
+                    holder.reviewDate = (TextView) convertView.findViewById(R.id.date);
+                    holder.review = (TextView) convertView.findViewById(R.id.review);
+                    holder.ratingReview = (RatingBar) convertView.findViewById(R.id.avg_rating_bar);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (Holder) convertView.getTag();
+                }
+                //Label loading--------------------
+                holder.customerName.setText(filteredObjects.get(position)[1]);
+                common.LoadImage(adapterContext,
+                        holder.customerImage,
+                        filteredObjects.get(position)[2],
+                        R.drawable.user);
+                holder.reviewDate.setText(filteredObjects.get(position)[4]);
+                holder.review.setText(filteredObjects.get(position)[5]);
+                holder.ratingReview.setRating(Float.parseFloat(filteredObjects.get(position)[3]));
+                LayerDrawable stars = (LayerDrawable) holder.ratingReview.getProgressDrawable();
+                stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);
                 break;
             default:
                 break;

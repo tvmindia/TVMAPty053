@@ -1,6 +1,7 @@
 package com.tech.thrithvam.partyec;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -41,6 +42,7 @@ public class ProductDetails extends AppCompatActivity
     Common common=new Common();
     TextView actualPrice;
     String productID="4068";
+    String productName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +80,7 @@ public class ProductDetails extends AppCompatActivity
 
                     getSupportActionBar().setTitle(jsonRootObject.getString("Name"));
                     ((TextView)findViewById(R.id.product_name)).setText(jsonRootObject.getString("Name"));
+                    productName=jsonRootObject.getString("Name");
 
                     ((TextView)findViewById(R.id.supplier_name)).setText(jsonRootObject.getString("SupplierName"));
 
@@ -244,6 +247,16 @@ public class ProductDetails extends AppCompatActivity
                         productReviewsLinear.addView(divider);
                     }
                 (findViewById(R.id.view_all_reviews)).setVisibility(View.VISIBLE);
+                (findViewById(R.id.view_all_reviews)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(ProductDetails.this, ListViewsActivity.class);
+                        intent.putExtra("list","reviews");
+                        intent.putExtra("productID",productID);
+                        intent.putExtra("productName",productName);
+                        startActivity(intent);
+                    }
+                });
             }
         };
         Runnable postFailThread=new Runnable() {
