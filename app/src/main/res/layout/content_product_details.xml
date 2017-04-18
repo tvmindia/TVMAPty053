@@ -225,7 +225,7 @@
                 android:layout_marginRight="5dp"
                 android:paddingRight="5dp"
                 android:paddingLeft="5dp"
-                android:id="@+id/view_all_reivews"
+                android:id="@+id/view_all_reviews"
                 android:visibility="gone"
                 android:layout_gravity="end"/>
             <View

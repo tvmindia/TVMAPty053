@@ -243,7 +243,7 @@ public class ProductDetails extends AppCompatActivity
 //                        divider.setPadding(0, 5, 0, 5);
                         productReviewsLinear.addView(divider);
                     }
-                (findViewById(R.id.view_all_reivews)).setVisibility(View.VISIBLE);
+                (findViewById(R.id.view_all_reviews)).setVisibility(View.VISIBLE);
             }
         };
         Runnable postFailThread=new Runnable() {
