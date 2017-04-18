@@ -39,7 +39,7 @@ public class ProductDetails extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Common common=new Common();
     TextView actualPrice;
-    String productID="4067";
+    String productID="4068";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,7 +147,7 @@ public class ProductDetails extends AppCompatActivity
         final LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //Threading--------------------------------------------------
         String webService="api/product/GetProductRatings";
-        String postData =  "{\"ID\":\""+"1002"+"\",\"AttributeSetID\":\""+"1"+"\"}";//replace with product id
+        String postData =  "{\"ID\":\""+productID+"\",\"AttributeSetID\":\""+"3047"+"\"}";//replace with product id
         String[] dataColumns={};
         Runnable postThread=new Runnable() {
             @Override
@@ -158,19 +158,35 @@ public class ProductDetails extends AppCompatActivity
                     firstJSONArray= new JSONArray(common.json);
                     jsonRootObject = firstJSONArray.getJSONObject(0);
                     JSONArray ratings=jsonRootObject.optJSONArray("ProductRatingAttributes");
+                    float sum=0;int ratables=0;
                     for (int i=0;i<ratings.length();i++){
                         JSONObject jsonObject = ratings.getJSONObject(i);
                         View ratingBar=inflater.inflate(R.layout.item_rating_bar, null);
                         ((TextView)ratingBar.findViewById(R.id.rating_label)).setText(jsonObject.optString("Caption"));
                         ((RatingBar)ratingBar.findViewById(R.id.rating_bar)).setRating(Float.parseFloat(jsonObject.optString("Value")));
+                        sum+=Float.parseFloat(jsonObject.optString("Value"));
+                        ratables++;
                         LayerDrawable stars = (LayerDrawable) ((RatingBar)ratingBar.findViewById(R.id.rating_bar)).getProgressDrawable();
                         stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);
                         productRatingLinear.addView(ratingBar);
+                    }
+                    if(ratables>0) {
+                        float avg = sum / ratables;
+                        ((RatingBar)findViewById(R.id.avg_rating_bar)).setRating(avg);
+                        LayerDrawable stars = (LayerDrawable) ((RatingBar)findViewById(R.id.avg_rating_bar)).getProgressDrawable();
+                        stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);
+                        findViewById(R.id.avg_rating_bar).setVisibility(View.VISIBLE);
                     }
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+        };
+        Runnable postFailThread=new Runnable() {
+            @Override
+            public void run() {
+                //do nothing
             }
         };
         common.AsynchronousThread(ProductDetails.this,
@@ -179,7 +195,7 @@ public class ProductDetails extends AppCompatActivity
                 null,
                 dataColumns,
                 postThread,
-                null);
+                postFailThread);
     }
     @Override
     public void onBackPressed() {
