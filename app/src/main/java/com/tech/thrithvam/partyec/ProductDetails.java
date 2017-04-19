@@ -265,7 +265,7 @@ public class ProductDetails extends AppCompatActivity
                     }
                 });
                 //Removing label if no reviews and ratings
-                if(((LinearLayout)findViewById(R.id.ratings_linear)).getChildCount()==0 && ((LinearLayout)findViewById(R.id.reviews_linear)).getChildCount()==0){
+                if(((LinearLayout)findViewById(R.id.ratings_linear)).getChildCount()==0 && ((LinearLayout)findViewById(R.id.reviews_linear)).getChildCount()<=1){
                     (findViewById(R.id.rating_reviews_label)).setVisibility(GONE);
                 }
 
@@ -277,6 +277,11 @@ public class ProductDetails extends AppCompatActivity
             @Override
             public void run() {
                 //do nothing
+                //Removing label if no reviews and ratings
+                if(((LinearLayout)findViewById(R.id.ratings_linear)).getChildCount()==0 && ((LinearLayout)findViewById(R.id.reviews_linear)).getChildCount()<=1){
+                    (findViewById(R.id.rating_reviews_label)).setVisibility(GONE);
+                }
+
                 //Load related products
                 loadRelatedProducts();
             }
