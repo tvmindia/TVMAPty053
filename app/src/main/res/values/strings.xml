@@ -73,4 +73,6 @@
     <string name="ratings_amp_reviews"><![CDATA[Ratings & Reviews]]></string>
     <string name="view_all_reviews">View all reviews</string>
     <string name="title_activity_list_views">ListViewsActivity</string>
+    <string name="related_items">Related Items</string>
+    <string name="view_all_related_items">View all related items</string>
 </resources>

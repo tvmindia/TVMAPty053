@@ -142,6 +142,15 @@ public class ProductList extends AppCompatActivity
         ((TextView)(productItem.findViewById(R.id.product_name))).setText(initialProducts.get(i)[0]);
         common.LoadImage(ProductList.this,(ImageView)(productItem.findViewById(R.id.product_image)),initialProducts.get(i)[1],R.drawable.dim_icon);
         (productItem.findViewById(R.id.dim_icon)).setVisibility(GONE);
+        final int Fi=i;
+        productItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(ProductList.this,ProductDetails.class);
+                intent.putExtra("productID",initialProducts.get(Fi)[2]);
+                startActivity(intent);
+            }
+        });
         initialProductsHorizontal.addView(productItem);
     }
 

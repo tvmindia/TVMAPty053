@@ -137,7 +137,7 @@ class CustomAdapter extends BaseAdapter{
                         filteredObjects.get(position)[1],
                         R.drawable.dim_icon);
                 break;
-            //--------------------------for All products list items------------------
+            //--------------------------for reviews list items------------------
             case "ReviewList":
                 if (convertView == null) {
                     holder = new Holder();
@@ -162,6 +162,24 @@ class CustomAdapter extends BaseAdapter{
                 holder.ratingReview.setRating(Float.parseFloat(filteredObjects.get(position)[3]));
                 LayerDrawable stars = (LayerDrawable) holder.ratingReview.getProgressDrawable();
                 stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);
+                break;
+            //--------------------------for related products list items------------------
+            case "RelatedItemsList":
+                if (convertView == null) {
+                    holder = new Holder();
+                    convertView = inflater.inflate(R.layout.item_product_horizontal, null);
+                    holder.productName = (TextView) convertView.findViewById(R.id.product_name);
+                    holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (Holder) convertView.getTag();
+                }
+                //Label loading--------------------
+                holder.productName.setText(filteredObjects.get(position)[1]);
+                common.LoadImage(adapterContext,
+                        holder.productImage,
+                        filteredObjects.get(position)[2],
+                        R.drawable.dim_icon);
                 break;
             default:
                 break;

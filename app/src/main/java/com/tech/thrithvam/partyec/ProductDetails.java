@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -20,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -41,14 +43,17 @@ public class ProductDetails extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Common common=new Common();
     TextView actualPrice;
-    String productID="4068";
+    String productID;
     String productName;
+    String attributeSetID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        productID=getIntent().getExtras().getString("productID");
+
         actualPrice=(TextView)findViewById(R.id.actual_price);
         actualPrice.setPaintFlags(actualPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         loadProductDetails();
@@ -129,6 +134,8 @@ public class ProductDetails extends AppCompatActivity
                     }
 
                     ((WebView)findViewById(R.id.web_view_description)).loadData(jsonRootObject.optString("LongDescription"), "text/html; charset=UTF-8", null);
+
+                    attributeSetID=jsonRootObject.optString("AttributeSetID");
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
@@ -151,7 +158,7 @@ public class ProductDetails extends AppCompatActivity
         final LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //Threading--------------------------------------------------
         String webService="api/product/GetProductRatings";
-        String postData =  "{\"ID\":\""+productID+"\",\"AttributeSetID\":\""+"3047"+"\"}";//replace with product id
+        String postData =  "{\"ID\":\""+productID+"\",\"AttributeSetID\":\""+attributeSetID+"\"}";//replace with product id
         String[] dataColumns={};
         Runnable postThread=new Runnable() {
             @Override
@@ -257,12 +264,21 @@ public class ProductDetails extends AppCompatActivity
                         startActivity(intent);
                     }
                 });
+                //Removing label if no reviews and ratings
+                if(((LinearLayout)findViewById(R.id.ratings_linear)).getChildCount()==0 && ((LinearLayout)findViewById(R.id.reviews_linear)).getChildCount()==0){
+                    (findViewById(R.id.rating_reviews_label)).setVisibility(GONE);
+                }
+
+                //Load related products
+                loadRelatedProducts();
             }
         };
         Runnable postFailThread=new Runnable() {
             @Override
             public void run() {
                 //do nothing
+                //Load related products
+                loadRelatedProducts();
             }
         };
         common.AsynchronousThread(ProductDetails.this,
@@ -273,6 +289,68 @@ public class ProductDetails extends AppCompatActivity
                 postThread,
                 postFailThread);
     }
+    void loadRelatedProducts(){
+        //Threading--------------------------------------------------
+        String webService="api/product/GetRelatedProducts";
+        String postData =  "{\"ID\":\""+productID+"\",\"count\":\""+"3"+"\"}";
+        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator_ball_pulse2);
+        String[] dataColumns={"ID","Name","ImageURL"};
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                LinearLayout relatedLinear=(LinearLayout)findViewById(R.id.related_products_horizontal);
+                LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                for(int i=0;i<common.dataArrayList.size();i++) {
+                    View productItem = inflater.inflate(R.layout.item_product_grid, null);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
+                    params.setMargins(5, 5, 5, 5);
+                    productItem.setLayoutParams(params);
+                    ((TextView) (productItem.findViewById(R.id.product_name))).setText(common.dataArrayList.get(i)[1]);
+                    ((TextView) (productItem.findViewById(R.id.product_name))).setMaxLines(1);
+                    ((TextView) (productItem.findViewById(R.id.product_name))).setEllipsize(TextUtils.TruncateAt.END);
+                    common.LoadImage(ProductDetails.this, (ImageView) (productItem.findViewById(R.id.product_image)), common.dataArrayList.get(i)[2], R.drawable.dim_icon);
+                    (productItem.findViewById(R.id.dim_icon)).setVisibility(GONE);
+                    final int Fi=i;
+                    productItem.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent=new Intent(ProductDetails.this,ProductDetails.class);
+                            intent.putExtra("productID",common.dataArrayList.get(Fi)[0]);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                    relatedLinear.addView(productItem);
+                }
+                (findViewById(R.id.view_all_related_items)).setVisibility(View.VISIBLE);
+                (findViewById(R.id.view_all_related_items)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(ProductDetails.this, ListViewsActivity.class);
+                        intent.putExtra("list","relatedItems");
+                        intent.putExtra("productID",productID);
+                        intent.putExtra("productName",productName);
+                        startActivity(intent);
+                    }
+                });
+            }
+        };
+        Runnable postFailThread=new Runnable() {
+            @Override
+            public void run() {
+                //do nothing
+                (findViewById(R.id.related_products_label)).setVisibility(GONE);
+            }
+        };
+        common.AsynchronousThread(ProductDetails.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                postFailThread);
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
