@@ -355,7 +355,12 @@ public class ProductDetails extends AppCompatActivity
                 postThread,
                 postFailThread);
     }
-
+    public void buyProduct(View view){
+        Intent intent=new Intent(ProductDetails.this, ProductOrdering.class);
+        intent.putExtra("productID",productID);
+        intent.putExtra("productName",productName);
+        startActivity(intent);
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
