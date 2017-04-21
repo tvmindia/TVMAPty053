@@ -68,7 +68,11 @@
         <activity
             android:name=".ListViewsActivity"
             android:label="@string/title_activity_list_views"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ProductOrdering"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
