@@ -75,4 +75,6 @@
     <string name="title_activity_list_views">ListViewsActivity</string>
     <string name="related_items">Related Items</string>
     <string name="view_all_related_items">View all related items</string>
+    <string name="select_date">Select date</string>
+    <string name="select_from_available_options">Select from available options</string>
 </resources>

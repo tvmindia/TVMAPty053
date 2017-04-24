@@ -32,15 +32,14 @@
            android:layout_height="wrap_content"
            android:orientation="vertical"
            android:id="@+id/prod_attributes_linear"
-           android:padding="5dp">
+           android:padding="5dp"
+           android:layout_margin="5dp">
            <TextView
                android:id="@+id/rating_reviews_label"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:layout_marginLeft="5dp"
-               android:layout_marginRight="5dp"
                android:padding="5dp"
-               android:text="Select from available options"
+               android:text="@string/select_from_available_options"
                android:textAllCaps="false"
                android:textColor="@color/primary_text"
                android:textSize="16sp"
