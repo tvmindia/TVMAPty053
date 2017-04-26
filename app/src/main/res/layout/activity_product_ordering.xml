@@ -26,7 +26,8 @@
         app:cardCornerRadius="4dp"
         app:cardElevation="3dp"
         app:cardUseCompatPadding="true"
-        android:layout_below="@+id/app_bar">
+        android:layout_below="@+id/app_bar"
+        android:id="@+id/select_options">
        <LinearLayout
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
@@ -45,5 +46,71 @@
                android:textSize="16sp"
                android:textStyle="bold" />
        </LinearLayout>
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="3dp"
+        app:cardUseCompatPadding="true"
+        android:id="@+id/price_n_stock"
+        android:layout_below="@+id/select_options">
+            <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stock availability"
+            android:textColor="@color/secondary_text"
+            android:padding="5dp"
+            android:layout_above="@+id/actual_price"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/stock_availability"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price"
+            android:textColor="@color/primary_text"
+            android:textSize="20sp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp"
+            android:paddingLeft="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/price"
+            android:layout_alignParentRight="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Actual Price"
+            android:textColor="@color/secondary_text"
+            android:textSize="14sp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/price"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            android:id="@+id/actual_price"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Free Delivery"
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="15sp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/actual_price"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="3dp"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            android:id="@+id/free_delivery"/>
+    </RelativeLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>

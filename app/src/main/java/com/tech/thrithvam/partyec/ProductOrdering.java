@@ -1,10 +1,12 @@
 package com.tech.thrithvam.partyec;
 
 import android.app.DatePickerDialog;
+import android.graphics.Paint;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,23 +25,32 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
+
+import static android.view.View.GONE;
 
 public class ProductOrdering extends AppCompatActivity {
     Common common=new Common();
     String productID="";
     ArrayList<ProductDetails> productDetailsArrayList=new ArrayList<>();
     ArrayList<Attributes> orderAttributesArrayList=new ArrayList<>();
-
+    boolean showPrice=false;
+    Double baseSellingPrice;
+    String selectedProductDetailID;
+    Boolean inStock=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_ordering);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Order: "+getIntent().getExtras().getString("productName"));
+        getSupportActionBar().setTitle("Order: "+getIntent().getExtras().getString("productName",""));
         productID=getIntent().getExtras().getString("productID");
+        (findViewById(R.id.price_n_stock)).setVisibility(View.GONE);
+        TextView actualPrice=(TextView)findViewById(R.id.actual_price);
+        actualPrice.setPaintFlags(actualPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         getProductDetailsForOrder();
     }
     void getProductDetailsForOrder(){
@@ -53,12 +64,16 @@ public class ProductOrdering extends AppCompatActivity {
             public void run() {
                 JSONObject jsonRootObject;
                 try {
-                    ///TO BE DELETED
-
-                    common.json="{\"ID\":2042,\"Name\":\"samsung LED 4567\",\"SKU\":\"samsung LED 2356\",\"Enabled\":true,\"Unit\":\"number\",\"URL\":null,\"ActionType\":\"A\",\"SupplierID\":1,\"suppliers\":null,\"ManufacturerID\":3,\"manufacturers\":null,\"ProductType\":\"C\",\"AttributeSetID\":2019,\"AttributeSetName\":\"TV\",\"AttributeSets\":null,\"FreeDelivery\":false,\"TotalQty\":0,\"productDetailhdf\":null,\"CostPrice\":0.00,\"BaseSellingPrice\":250.00,\"ShowPrice\":false,\"TaxClass\":null,\"DiscountAmount\":null,\"DiscountStartDate\":null,\"DiscountEndDate\":null,\"ProdutMainImageUpload\":null,\"OtherImagesUpload\":null,\"ProductStickerUpload\":null,\"StickerID\":null,\"ImageID\":0,\"ImageURL\":null,\"ProductDetID\":0,\"MainImage\":false,\"IDSet\":null,\"ShortDescription\":\"sdfdsfds\",\"LongDescription\":\"dsfdsfdsghjhkjhkhj\",\"StockAvailable\":true,\"Qty\":null,\"OutOfStockAlertQty\":null,\"HeaderTags\":\"34,23,45,23,45,12\",\"StickerURL\":null,\"LinkID\":0,\"CategoryID\":0,\"PositionNo\":0.0,\"logDetails\":null,\"ProductDetails\":[{\"ID\":27,\"ProductID\":2042,\"Qty\":5400,\"OutOfStockAlertQty\":570,\"PriceDifference\":null,\"DetailTags\":null,\"Enabled\":true,\"StockAvailable\":true,\"DefaultOption\":false,\"DiscountAmount\":50.00,\"DiscountStartDate\":\"2017-03-05T00:00:00\",\"DiscountEndDate\":\"2017-03-14T00:00:00\",\"logDetails\":{\"CreatedBy\":\"Albert Thomson\",\"CreatedDate\":\"2017-03-24T17:16:00\",\"UpdatedBy\":null,\"UpdatedDate\":null},\"ProductAttributes\":[{\"Name\":\"ScreenSize\",\"Caption\":\"Screen Size\",\"Value\":\"\",\"DataType\":\"C\",\"Isconfigurable\":true},{\"Name\":\"WallMoutable\",\"Caption\":\"WallMoutable\",\"Value\":\"\",\"DataType\":\"C\",\"Isconfigurable\":true}],\"ProductDetailImages\":[],\"ProductName\":\"samsung LED 4567\",\"BaseSellingPrice\":250.00,\"ActualPrice\":null},{\"ID\":28,\"ProductID\":2042,\"Qty\":5400,\"OutOfStockAlertQty\":570,\"PriceDifference\":54321.00,\"DetailTags\":null,\"Enabled\":false,\"StockAvailable\":true,\"DefaultOption\":false,\"DiscountAmount\":50.00,\"DiscountStartDate\":\"2017-03-05T00:00:00\",\"DiscountEndDate\":\"2017-03-14T00:00:00\",\"logDetails\":{\"CreatedBy\":\"Albert Thomson\",\"CreatedDate\":\"2017-03-24T17:16:00\",\"UpdatedBy\":null,\"UpdatedDate\":null},\"ProductAttributes\":[{\"Name\":\"ScreenSize\",\"Caption\":\"Screen Size\",\"Value\":\"20\",\"DataType\":\"C\",\"Isconfigurable\":true},{\"Name\":\"WallMoutable\",\"Caption\":\"WallMoutable\",\"Value\":\"Yes\",\"DataType\":\"C\",\"Isconfigurable\":true}],\"ProductDetailImages\":[],\"ProductName\":\"samsung LED 4567\",\"BaseSellingPrice\":250.00,\"ActualPrice\":54571.00},{\"ID\":29,\"ProductID\":2042,\"Qty\":77,\"OutOfStockAlertQty\":65,\"PriceDifference\":506.00,\"DetailTags\":null,\"Enabled\":false,\"StockAvailable\":true,\"DefaultOption\":false,\"DiscountAmount\":50.00,\"DiscountStartDate\":\"2017-03-29T00:00:00\",\"DiscountEndDate\":\"2017-03-12T00:00:00\",\"logDetails\":{\"CreatedBy\":\"Albert Thomson\",\"CreatedDate\":\"2017-03-24T17:29:00\",\"UpdatedBy\":null,\"UpdatedDate\":null},\"ProductAttributes\":[{\"Name\":\"ScreenSize\",\"Caption\":\"Screen Size\",\"Value\":\"20\",\"DataType\":\"C\",\"Isconfigurable\":true},{\"Name\":\"WallMoutable\",\"Caption\":\"WallMoutable\",\"Value\":\"Yes\",\"DataType\":\"C\",\"Isconfigurable\":true}],\"ProductDetailImages\":[],\"ProductName\":\"samsung LED 4567\",\"BaseSellingPrice\":250.00,\"ActualPrice\":756.00},{\"ID\":30,\"ProductID\":2042,\"Qty\":77,\"OutOfStockAlertQty\":65,\"PriceDifference\":23.00,\"DetailTags\":null,\"Enabled\":false,\"StockAvailable\":true,\"DefaultOption\":false,\"DiscountAmount\":50.00,\"DiscountStartDate\":\"2017-03-29T00:00:00\",\"DiscountEndDate\":\"2017-03-12T00:00:00\",\"logDetails\":{\"CreatedBy\":\"Albert Thomson\",\"CreatedDate\":\"2017-03-24T17:30:00\",\"UpdatedBy\":null,\"UpdatedDate\":null},\"ProductAttributes\":[{\"Name\":\"ScreenSize\",\"Caption\":\"Screen Size\",\"Value\":\"20\",\"DataType\":\"C\",\"Isconfigurable\":true},{\"Name\":\"WallMoutable\",\"Caption\":\"WallMoutable\",\"Value\":\"Yes\",\"DataType\":\"C\",\"Isconfigurable\":true}],\"ProductDetailImages\":[],\"ProductName\":\"samsung LED 4567\",\"BaseSellingPrice\":250.00,\"ActualPrice\":273.00},{\"ID\":31,\"ProductID\":2042,\"Qty\":23,\"OutOfStockAlertQty\":45,\"PriceDifference\":456.00,\"DetailTags\":null,\"Enabled\":false,\"StockAvailable\":true,\"DefaultOption\":false,\"DiscountAmount\":50.00,\"DiscountStartDate\":\"2017-03-29T00:00:00\",\"DiscountEndDate\":\"2017-04-06T00:00:00\",\"logDetails\":{\"CreatedBy\":\"Albert Thomson\",\"CreatedDate\":\"2017-03-24T17:33:00\",\"UpdatedBy\":null,\"UpdatedDate\":null},\"ProductAttributes\":[{\"Name\":\"ScreenSize\",\"Caption\":\"Screen Size\",\"Value\":\"32\",\"DataType\":\"C\",\"Isconfigurable\":true},{\"Name\":\"WallMoutable\",\"Caption\":\"WallMoutable\",\"Value\":\"No\",\"DataType\":\"C\",\"Isconfigurable\":true}],\"ProductDetailImages\":[],\"ProductName\":\"samsung LED 4567\",\"BaseSellingPrice\":250.00,\"ActualPrice\":706.00},{\"ID\":32,\"ProductID\":2042,\"Qty\":435,\"OutOfStockAlertQty\":3443,\"PriceDifference\":654.00,\"DetailTags\":null,\"Enabled\":false,\"StockAvailable\":true,\"DefaultOption\":false,\"DiscountAmount\":50.00,\"DiscountStartDate\":\"2017-03-29T00:00:00\",\"DiscountEndDate\":\"2017-03-19T00:00:00\",\"logDetails\":{\"CreatedBy\":\"Albert Thomson\",\"CreatedDate\":\"2017-03-24T17:41:00\",\"UpdatedBy\":null,\"UpdatedDate\":null},\"ProductAttributes\":[{\"Name\":\"ScreenSize\",\"Caption\":\"Screen Size\",\"Value\":\"20\",\"DataType\":\"C\",\"Isconfigurable\":true},{\"Name\":\"WallMoutable\",\"Caption\":\"WallMoutable\",\"Value\":\"No\",\"DataType\":\"C\",\"Isconfigurable\":true}],\"ProductDetailImages\":[],\"ProductName\":\"samsung LED 4567\",\"BaseSellingPrice\":250.00,\"ActualPrice\":904.00},{\"ID\":34,\"ProductID\":2042,\"Qty\":45,\"OutOfStockAlertQty\":34,\"PriceDifference\":454.00,\"DetailTags\":null,\"Enabled\":false,\"StockAvailable\":true,\"DefaultOption\":false,\"DiscountAmount\":50.00,\"DiscountStartDate\":\"2017-03-28T00:00:00\",\"DiscountEndDate\":\"2017-03-22T00:00:00\",\"logDetails\":{\"CreatedBy\":\"Albert Thomson\",\"CreatedDate\":\"2017-03-27T12:21:00\",\"UpdatedBy\":null,\"UpdatedDate\":null},\"ProductAttributes\":[{\"Name\":\"ScreenSize\",\"Caption\":\"Screen Size\",\"Value\":\"20\",\"DataType\":\"C\",\"Isconfigurable\":true},{\"Name\":\"WallMoutable\",\"Caption\":\"WallMoutable\",\"Value\":\"Yes\",\"DataType\":\"C\",\"Isconfigurable\":true}],\"ProductDetailImages\":[],\"ProductName\":\"samsung LED 4567\",\"BaseSellingPrice\":250.00,\"ActualPrice\":704.00}],\"ProductDetailObj\":null,\"IDList\":null,\"ProductOtherAttributes\":[{\"Name\":\"NoOfUSB\",\"Caption\":\"NoOfUSB\",\"Value\":\"6\",\"DataType\":\"S\",\"Isconfigurable\":false}],\"OrderAttributes\":[{\"Name\":\"numorder\",\"Caption\":\"Numerical Order Attribute\",\"Value\":null,\"DataType\":\"N\",\"Isconfigurable\":false},{\"Name\":\"color\",\"Caption\":\"Color selection\",\"Value\":null,\"DataType\":\"C\",\"Isconfigurable\":false},{\"Name\":\"Message\",\"Caption\":\"Message\",\"Value\":null,\"DataType\":\"S\",\"Isconfigurable\":false},{\"Name\":\"DeliveryDate\",\"Caption\":\"DeliveryDate\",\"Value\":null,\"DataType\":\"D\",\"Isconfigurable\":false}],\"RatingAttributes\":[{\"Name\":\"vfm\",\"Caption\":\"value for money\",\"Value\":null,\"DataType\":\"N\",\"Isconfigurable\":false}],\"SupplierName\":\"Navya Bakerys\"}";
-
-                    ///
                     jsonRootObject = new JSONObject(common.json);
+                    //Product base details
+                    showPrice=jsonRootObject.optBoolean("ShowPrice");
+                    baseSellingPrice=jsonRootObject.optDouble("BaseSellingPrice");
+                    //Free delivery
+                    if(jsonRootObject.optBoolean("FreeDelivery"))
+                        findViewById(R.id.free_delivery).setVisibility(View.VISIBLE);
+                    else
+                        findViewById(R.id.free_delivery).setVisibility(GONE);
+
                     //Product details for product attributes
                     JSONArray productDetails =jsonRootObject.optJSONArray("ProductDetails");
                     for (int i = 0; i < productDetails.length(); i++) {
@@ -66,6 +81,10 @@ public class ProductOrdering extends AppCompatActivity {
 
                         JSONObject jsonObject = productDetails.getJSONObject(i);
                         productDetailsObj.ID=jsonObject.optString("ID");
+                        productDetailsObj.PriceDifference=jsonObject.optDouble("PriceDifference");
+                        productDetailsObj.DiscountAmount=jsonObject.optDouble("DiscountAmount");
+                        productDetailsObj.stockAvailable=jsonObject.optBoolean("StockAvailable");
+                        productDetailsObj.quantity=jsonObject.optInt("Qty");
 
                         JSONArray productAttributes=jsonObject.optJSONArray("ProductAttributes");
                         if(productAttributes!=null) {
@@ -83,7 +102,7 @@ public class ProductOrdering extends AppCompatActivity {
                         }
                     }
 
-                    //OtherAttributes
+                    //OrderAttributes
                     JSONArray orderAttributes=jsonRootObject.optJSONArray("OrderAttributes");
                     if(orderAttributes!=null){
                         for (int i = 0; i < orderAttributes.length(); i++) {
@@ -150,14 +169,26 @@ public class ProductOrdering extends AppCompatActivity {
                                     if (!arrayList.contains(productDetailsArrayList.get(i).productAttributes.get(Fi + 1).Value)) {
                                         arrayList.add(productDetailsArrayList.get(i).productAttributes.get(Fi + 1).Value);
                                     }
+                                    //display changes
+                                    if(productDetailsArrayList.get(i).stockAvailable){
+                                        if(productDetailsArrayList.get(i).quantity>0){
+                                            inStock=true;
+                                        }
+                                        else {
+                                            inStock=false;
+                                        }
+                                    }
+                                    else {
+                                        inStock=false;
+                                    }
+                                    calculatePrice(productDetailsArrayList.get(i).PriceDifference,productDetailsArrayList.get(i).DiscountAmount);
+                                    selectedProductDetailID=productDetailsArrayList.get(i).ID;
                                 }
                             }
                             ArrayAdapter adapter = new ArrayAdapter<String>(ProductOrdering.this, android.R.layout.simple_spinner_item, arrayList);
                             spinners.get(Fi + 1).setAdapter(adapter);
-
                         }
                     }
-
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
 
@@ -176,6 +207,13 @@ public class ProductOrdering extends AppCompatActivity {
 
                 switch (orderAttributesArrayList.get(i).DataType){
                     case "C":
+                        Spinner spinner=new Spinner(ProductOrdering.this);
+                        ArrayList<String> arrayListForSpinner = new ArrayList<>(Arrays.asList(orderAttributesArrayList.get(i).Value.split("\\s*,\\s*")));
+                        ArrayAdapter adapter = new ArrayAdapter<String>(ProductOrdering.this, android.R.layout.simple_spinner_item, arrayListForSpinner);
+                        spinner.setAdapter(adapter);
+
+                        orderAttributesUserInputs.add(spinner);
+                        attributesLinear.addView(spinner);
                         break;
                     case "S":
                         EditText stringText=new EditText(ProductOrdering.this);
@@ -185,6 +223,12 @@ public class ProductOrdering extends AppCompatActivity {
                         attributesLinear.addView(stringText);
                         break;
                     case "N":
+                        EditText stringNumber=new EditText(ProductOrdering.this);
+                        stringNumber.setPadding(5,0,5,5);
+                        stringNumber.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+                        orderAttributesUserInputs.add(stringNumber);
+                        attributesLinear.addView(stringNumber);
                         break;
                     case "D":
                         final TextView date=new TextView(ProductOrdering.this);
@@ -228,8 +272,42 @@ public class ProductOrdering extends AppCompatActivity {
             }
         }
     }
+    void calculatePrice(Double priceDifference, Double discountAmount){
+        (findViewById(R.id.price_n_stock)).setVisibility(View.VISIBLE);
+        if(showPrice) {
+            String priceString = String.format(Locale.US, "%.2f",
+                    baseSellingPrice
+                    + priceDifference
+                    - discountAmount);
+            ((TextView) findViewById(R.id.price)).setText(getString(R.string.price_display, priceString));
+            if (discountAmount != 0) {
+                String actualPriceString = String.format(Locale.US, "%.2f",
+                        baseSellingPrice
+                        + priceDifference);
+                ((TextView) findViewById(R.id.actual_price)).setText(getString(R.string.price_display, actualPriceString));
+            }
+            else {
+                (findViewById(R.id.actual_price)).setVisibility(GONE);
+            }
+        }
+        else {
+            (findViewById(R.id.price)).setVisibility(GONE);
+            (findViewById(R.id.actual_price)).setVisibility(GONE);
+        }
+        if (inStock) {
+            ((TextView) findViewById(R.id.stock_availability)).setText(R.string.in_stock);
+            ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+        }
+        else {
+            ((TextView) findViewById(R.id.stock_availability)).setText(R.string.out_of_stock);
+            ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_red_light));
+        }
+    }
     private class ProductDetails{
         String ID;
+        Double PriceDifference=0.0,DiscountAmount=0.0;
+        Boolean stockAvailable;
+        int quantity;
         ArrayList<Attributes> productAttributes;
     }
     private class Attributes

@@ -359,6 +359,14 @@ public class ProductDetails extends AppCompatActivity
         Intent intent=new Intent(ProductDetails.this, ProductOrdering.class);
         intent.putExtra("productID",productID);
         intent.putExtra("productName",productName);
+        intent.putExtra("cartORbuy","buy");
+        startActivity(intent);
+    }
+    public void addToCart(View view){
+        Intent intent=new Intent(ProductDetails.this, ProductOrdering.class);
+        intent.putExtra("productID",productID);
+        intent.putExtra("productName",productName);
+        intent.putExtra("cartORbuy","cart");
         startActivity(intent);
     }
     @Override

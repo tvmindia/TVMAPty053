@@ -99,6 +99,8 @@
         android:paddingRight="5dp"
         android:paddingTop="5dp"
         android:paddingLeft="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:id="@+id/price"
         android:layout_alignParentRight="true"/>
     <TextView
@@ -147,7 +149,7 @@
                     android:textSize="15sp"
                     android:textColor="@android:color/white"
                     android:background="@drawable/button"
-                    android:onClick="submitRequest"
+                    android:onClick="addToCart"
                     android:id="@+id/add_to_cart"/>
                     <Button
                         android:layout_width="wrap_content"
