@@ -7,22 +7,19 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.SearchView;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.AdapterViewFlipper;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,6 +32,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import static android.view.View.GONE;
@@ -141,6 +139,8 @@ public class ProductDetails extends AppCompatActivity
                     e.printStackTrace();
                 }
                 (findViewById(R.id.product_details_scroll_view)).setVisibility(View.VISIBLE);
+                //Product Images Loading------------------
+                loadProductImages();
                 //Product rating loading--------------------
                 loadProductRatings();
             }
@@ -153,12 +153,84 @@ public class ProductDetails extends AppCompatActivity
                 postThread,
                 null);
     }
+    void loadProductImages(){
+        final Common common=new Common();
+        final AdapterViewFlipper imageSlides=(AdapterViewFlipper)findViewById(R.id.product_images);
+        final ImageView nextImageButton=(ImageView)findViewById(R.id.next_image);
+        final ImageView previousImageButton=(ImageView)findViewById(R.id.previous_image);
+        final ArrayList<String[]> productImages=new ArrayList<>();
+        //Threading--------------------------------------------------
+        String webService="api/product/GetProductImages";
+        String postData =  "{\"ID\":\""+productID+"\"}";
+        String[] dataColumns={};
+        AVLoadingIndicatorView imageLoadingIndicator=(AVLoadingIndicatorView)findViewById(R.id.image_loading);
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                JSONObject jsonRootObject;
+                try {
+                    jsonRootObject= new JSONObject(common.json);
+                    JSONArray jsonArray =jsonRootObject.optJSONArray("Images");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String[] data = new String[2];
+                        data[0] = jsonObject.optString("ID");
+                        data[1] = jsonObject.optString("URL");
+                        productImages.add(data);
+                    }
+                    CustomAdapter imagesAdapter=new CustomAdapter(ProductDetails.this,productImages,"ProductImages");
+                    imageSlides.setAdapter(imagesAdapter);
+                    imageSlides.setFlipInterval(2000);
+                    imageSlides.startFlipping();
+                    //Next and Previous buttons
+                    if(productImages.size()>1){
+                        nextImageButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                imageSlides.stopFlipping();
+                                imageSlides.showNext();
+                            }
+                        });
+                        previousImageButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                imageSlides.stopFlipping();
+                                imageSlides.showPrevious();
+                            }
+                        });
+                    }
+                    else {
+                        nextImageButton.setVisibility(GONE);
+                        previousImageButton.setVisibility(GONE);
+                    }
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        Runnable postFailThread=new Runnable() {
+            @Override
+            public void run() {
+                imageSlides.setVisibility(GONE);
+                nextImageButton.setVisibility(GONE);
+                previousImageButton.setVisibility(GONE);
+            }
+        };
+        common.AsynchronousThread(ProductDetails.this,
+                webService,
+                postData,
+                imageLoadingIndicator,
+                dataColumns,
+                postThread,
+                postFailThread);
+    }
     void loadProductRatings(){
         final LinearLayout productRatingLinear=(LinearLayout)findViewById(R.id.ratings_linear);
         final LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //Threading--------------------------------------------------
         String webService="api/product/GetProductRatings";
-        String postData =  "{\"ID\":\""+productID+"\",\"AttributeSetID\":\""+attributeSetID+"\"}";//replace with product id
+        String postData =  "{\"ID\":\""+productID+"\",\"AttributeSetID\":\""+attributeSetID+"\"}";
         String[] dataColumns={};
         Runnable postThread=new Runnable() {
             @Override

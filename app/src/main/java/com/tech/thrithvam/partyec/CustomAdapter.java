@@ -134,7 +134,7 @@ class CustomAdapter extends BaseAdapter{
                 holder.productName.setText(filteredObjects.get(position)[0]);
                 common.LoadImage(adapterContext,
                         holder.productImage,
-                        filteredObjects.get(position)[1],
+                        adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[1],
                         R.drawable.dim_icon);
                 break;
             //--------------------------for reviews list items------------------
@@ -155,7 +155,7 @@ class CustomAdapter extends BaseAdapter{
                 holder.customerName.setText(filteredObjects.get(position)[1]);
                 common.LoadImage(adapterContext,
                         holder.customerImage,
-                        filteredObjects.get(position)[2],
+                        adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[2],
                         R.drawable.user);
                 holder.reviewDate.setText(filteredObjects.get(position)[4]);
                 holder.review.setText(filteredObjects.get(position)[5]);
@@ -178,7 +178,23 @@ class CustomAdapter extends BaseAdapter{
                 holder.productName.setText(filteredObjects.get(position)[1]);
                 common.LoadImage(adapterContext,
                         holder.productImage,
-                        filteredObjects.get(position)[2],
+                        adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[2],
+                        R.drawable.dim_icon);
+                break;
+            //-------------------------for product images slider-----------------------------
+            case "ProductImages":
+                if (convertView == null) {
+                    holder = new Holder();
+                    convertView = inflater.inflate(R.layout.item_product_images, null);
+                    holder.productImage=(ImageView) convertView.findViewById(R.id.image);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (Holder) convertView.getTag();
+                }
+                //Label loading--------------------
+                common.LoadImage(adapterContext,
+                        holder.productImage,
+                        adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[1],
                         R.drawable.dim_icon);
                 break;
             default:

@@ -140,7 +140,10 @@ public class ProductList extends AppCompatActivity
         params.setMargins(5,5,5,5);
         productItem.setLayoutParams(params);
         ((TextView)(productItem.findViewById(R.id.product_name))).setText(initialProducts.get(i)[0]);
-        common.LoadImage(ProductList.this,(ImageView)(productItem.findViewById(R.id.product_image)),initialProducts.get(i)[1],R.drawable.dim_icon);
+        common.LoadImage(ProductList.this,
+                (ImageView)(productItem.findViewById(R.id.product_image)),
+                getResources().getString(R.string.url)+initialProducts.get(i)[1],
+                R.drawable.dim_icon);
         (productItem.findViewById(R.id.dim_icon)).setVisibility(GONE);
         final int Fi=i;
         productItem.setOnClickListener(new View.OnClickListener() {

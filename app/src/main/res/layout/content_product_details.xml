@@ -49,13 +49,42 @@
                 android:layout_margin="5dp"
                 android:visibility="invisible"/>
 </RelativeLayout>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:src="@drawable/logo"
-        android:background="#323c3c3c"
-        android:id="@+id/product_images"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                    <AdapterViewFlipper
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:id="@+id/product_images"/>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:padding="5dp"
+                        android:id="@+id/previous_image"
+                        android:src="@drawable/previous"
+                        android:tint="@color/colorAccent"
+                        android:layout_centerVertical="true"/>
+                <com.wang.avi.AVLoadingIndicatorView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:indicatorName="BallScaleIndicator"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    app:indicatorColor="@color/colorAccent"
+                    android:id="@+id/image_loading"
+                    />
+                    <ImageView
+                        android:id="@+id/next_image"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:padding="5dp"
+                        android:layout_gravity="end"
+                        android:src="@drawable/next"
+                        android:tint="@color/colorAccent"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"/>
+            </RelativeLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
