@@ -37,7 +37,7 @@ public class ProductOrdering extends AppCompatActivity {
     ArrayList<ProductDetails> productDetailsArrayList=new ArrayList<>();
     ArrayList<Attributes> orderAttributesArrayList=new ArrayList<>();
     boolean showPrice=false;
-    Double baseSellingPrice;
+    Double baseSellingPrice=0.0;
     String selectedProductDetailID;
     Boolean inStock=true;
     @Override
@@ -81,8 +81,8 @@ public class ProductOrdering extends AppCompatActivity {
 
                         JSONObject jsonObject = productDetails.getJSONObject(i);
                         productDetailsObj.ID=jsonObject.optString("ID");
-                        productDetailsObj.PriceDifference=jsonObject.optDouble("PriceDifference");
-                        productDetailsObj.DiscountAmount=jsonObject.optDouble("DiscountAmount");
+                        productDetailsObj.PriceDifference=(jsonObject.optString("PriceDifference").equals("null")?0:jsonObject.optDouble("PriceDifference"));
+                        productDetailsObj.DiscountAmount=(jsonObject.optString("DiscountAmount").equals("null")?0:jsonObject.optDouble("DiscountAmount"));
                         productDetailsObj.stockAvailable=jsonObject.optBoolean("StockAvailable");
                         productDetailsObj.quantity=jsonObject.optInt("Qty");
 

@@ -56,7 +56,7 @@
         app:cardUseCompatPadding="true"
         android:id="@+id/price_n_stock"
         android:layout_below="@+id/select_options">
-            <RelativeLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView

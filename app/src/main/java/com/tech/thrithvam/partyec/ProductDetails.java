@@ -85,27 +85,30 @@ public class ProductDetails extends AppCompatActivity
                     ((TextView)findViewById(R.id.product_name)).setText(jsonRootObject.getString("Name"));
                     productName=jsonRootObject.getString("Name");
 
-                    ((TextView)findViewById(R.id.supplier_name)).setText(jsonRootObject.getString("SupplierName"));
+                    ((TextView)findViewById(R.id.supplier_name)).setText(jsonRootObject.getString("SupplierName").equals("null")?"-":jsonRootObject.getString("SupplierName"));
 
-                    ((TextView)findViewById(R.id.short_description)).setText(jsonRootObject.getString("ShortDescription"));
+                    ((TextView)findViewById(R.id.short_description)).setText(jsonRootObject.getString("ShortDescription").equals("null")?"-":jsonRootObject.getString("ShortDescription"));
 
-                    if (jsonRootObject.optBoolean("StockAvailable")) {
-                        ((TextView) findViewById(R.id.stock_availability)).setText(R.string.in_stock);
-                        ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+                    if(!jsonRootObject.optString("StockAvailable").equals("null")) {
+                        if (jsonRootObject.optBoolean("StockAvailable")) {
+                            ((TextView) findViewById(R.id.stock_availability)).setText(R.string.in_stock);
+                            ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+                        } else {
+                            ((TextView) findViewById(R.id.stock_availability)).setText(R.string.out_of_stock);
+                            ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_red_light));
+                        }
                     }
-                    else {
-                        ((TextView) findViewById(R.id.stock_availability)).setText(R.string.out_of_stock);
-                        ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_red_light));
-                    }
 
-                    if(jsonRootObject.optBoolean("ShowPrice")) {
-                        String priceString = String.format(Locale.US, "%.2f", jsonRootObject.optDouble("BaseSellingPrice")
-                                + jsonRootObject.optDouble("PriceDifference")
-                                - jsonRootObject.optDouble("DiscountAmount"));
+                    if(jsonRootObject.optBoolean("ShowPrice")&&jsonRootObject.optDouble("BaseSellingPrice")!=0) {
+                        String priceString = String.format(Locale.US, "%.2f",
+                                jsonRootObject.optDouble("BaseSellingPrice")
+                                + (jsonRootObject.optString("PriceDifference").equals("null")?0:jsonRootObject.optDouble("PriceDifference"))
+                                - (jsonRootObject.optString("DiscountAmount").equals("null")?0:jsonRootObject.optDouble("DiscountAmount")));
                         ((TextView) findViewById(R.id.price)).setText(getString(R.string.price_display, priceString));
                         if (jsonRootObject.optDouble("DiscountAmount") != 0) {
-                            String actualPriceString = String.format(Locale.US, "%.2f", jsonRootObject.optDouble("BaseSellingPrice")
-                                    + jsonRootObject.optDouble("PriceDifference"));
+                            String actualPriceString = String.format(Locale.US, "%.2f",
+                                    jsonRootObject.optDouble("BaseSellingPrice")
+                                    + (jsonRootObject.optString("PriceDifference").equals("null")?0:jsonRootObject.optDouble("PriceDifference")));
                             ((TextView) findViewById(R.id.actual_price)).setText(getString(R.string.price_display, actualPriceString));
                         }
                         else {
@@ -131,8 +134,12 @@ public class ProductDetails extends AppCompatActivity
                             break;
                     }
 
-                    ((WebView)findViewById(R.id.web_view_description)).loadData(jsonRootObject.optString("LongDescription"), "text/html; charset=UTF-8", null);
-
+                    if(!jsonRootObject.optString("LongDescription").equals("null")) {
+                        ((WebView) findViewById(R.id.web_view_description)).loadData(jsonRootObject.optString("LongDescription"), "text/html; charset=UTF-8", null);
+                    }
+                    else {
+                        (findViewById(R.id.web_view_description)).setVisibility(GONE);
+                    }
                     attributeSetID=jsonRootObject.optString("AttributeSetID");
                 }
                 catch (JSONException e) {
