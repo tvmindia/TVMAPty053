@@ -47,6 +47,7 @@ public class ProductDetails extends AppCompatActivity
     String productName;
     String attributeSetID;
     Boolean isFav=false;
+    String actionType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,50 +93,58 @@ public class ProductDetails extends AppCompatActivity
 
                     ((TextView)findViewById(R.id.short_description)).setText(jsonRootObject.getString("ShortDescription").equals("null")?"-":jsonRootObject.getString("ShortDescription"));
 
-                    if(!jsonRootObject.optString("StockAvailable").equals("null")) {
-                        if (jsonRootObject.optBoolean("StockAvailable")) {
-                            ((TextView) findViewById(R.id.stock_availability)).setText(R.string.in_stock);
-                            ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_green_dark));
-                        } else {
-                            ((TextView) findViewById(R.id.stock_availability)).setText(R.string.out_of_stock);
-                            ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_red_light));
-                        }
-                    }
-
-                    if(jsonRootObject.optBoolean("ShowPrice")&&jsonRootObject.optDouble("BaseSellingPrice")!=0) {
-                        String priceString = String.format(Locale.US, "%.2f",
-                                jsonRootObject.optDouble("BaseSellingPrice")
-                                + (jsonRootObject.optString("PriceDifference").equals("null")?0:jsonRootObject.optDouble("PriceDifference"))
-                                - (jsonRootObject.optString("DiscountAmount").equals("null")?0:jsonRootObject.optDouble("DiscountAmount")));
-                        ((TextView) findViewById(R.id.price)).setText(getString(R.string.price_display, priceString));
-                        if (jsonRootObject.optDouble("DiscountAmount") != 0) {
-                            String actualPriceString = String.format(Locale.US, "%.2f",
-                                    jsonRootObject.optDouble("BaseSellingPrice")
-                                    + (jsonRootObject.optString("PriceDifference").equals("null")?0:jsonRootObject.optDouble("PriceDifference")));
-                            ((TextView) findViewById(R.id.actual_price)).setText(getString(R.string.price_display, actualPriceString));
-                        }
-                        else {
-                            (findViewById(R.id.actual_price)).setVisibility(GONE);
-                        }
-                    }
-                    else {
-                        (findViewById(R.id.price)).setVisibility(GONE);
-                        (findViewById(R.id.actual_price)).setVisibility(GONE);
-                    }
-
-                    if(jsonRootObject.optBoolean("FreeDelivery"))
-                        findViewById(R.id.free_delivery).setVisibility(View.VISIBLE);
-                    else
-                        findViewById(R.id.free_delivery).setVisibility(GONE);
-
                     switch (jsonRootObject.optString("ActionType")){
                         case "A":((Button)findViewById(R.id.action_button)).setText(R.string.buy);
+                            actionType="A";
                             break;
                         case "B":((Button)findViewById(R.id.action_button)).setText(R.string.book);
+                            actionType="B";
                             break;
                         case "Q":((Button)findViewById(R.id.action_button)).setText(R.string.req_quotation);
+                            actionType="Q";
                             break;
                     }
+
+                    if(actionType.equals("A")) {// product that can buy
+                        if (!jsonRootObject.optString("StockAvailable").equals("null")) {
+                            if (jsonRootObject.optBoolean("StockAvailable")) {
+                                ((TextView) findViewById(R.id.stock_availability)).setText(R.string.in_stock);
+                                ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+                            } else {
+                                ((TextView) findViewById(R.id.stock_availability)).setText(R.string.out_of_stock);
+                                ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_red_light));
+                            }
+                        }
+
+                        if (jsonRootObject.optBoolean("ShowPrice") && jsonRootObject.optDouble("BaseSellingPrice") != 0) {
+                            String priceString = String.format(Locale.US, "%.2f",
+                                    jsonRootObject.optDouble("BaseSellingPrice")
+                                            + (jsonRootObject.optString("PriceDifference").equals("null") ? 0 : jsonRootObject.optDouble("PriceDifference"))
+                                            - (jsonRootObject.optString("DiscountAmount").equals("null") ? 0 : jsonRootObject.optDouble("DiscountAmount")));
+                            ((TextView) findViewById(R.id.price)).setText(getString(R.string.price_display, priceString));
+                            if (jsonRootObject.optDouble("DiscountAmount") != 0) {
+                                String actualPriceString = String.format(Locale.US, "%.2f",
+                                        jsonRootObject.optDouble("BaseSellingPrice")
+                                                + (jsonRootObject.optString("PriceDifference").equals("null") ? 0 : jsonRootObject.optDouble("PriceDifference")));
+                                ((TextView) findViewById(R.id.actual_price)).setText(getString(R.string.price_display, actualPriceString));
+                            } else {
+                                (findViewById(R.id.actual_price)).setVisibility(GONE);
+                            }
+                        } else {
+                            (findViewById(R.id.price)).setVisibility(GONE);
+                            (findViewById(R.id.actual_price)).setVisibility(GONE);
+                        }
+
+                        if (jsonRootObject.optBoolean("FreeDelivery"))
+                            findViewById(R.id.free_delivery).setVisibility(View.VISIBLE);
+                        else
+                            findViewById(R.id.free_delivery).setVisibility(GONE);
+                    }
+                    else {
+                        (findViewById(R.id.price_n_stock)).setVisibility(GONE);
+                        (findViewById(R.id.add_to_cart)).setVisibility(GONE);
+                    }
+
 
                     if(!jsonRootObject.optString("LongDescription").equals("null")) {
                         ((WebView) findViewById(R.id.web_view_description)).loadData(jsonRootObject.optString("LongDescription"), "text/html; charset=UTF-8", null);
@@ -160,7 +169,7 @@ public class ProductDetails extends AppCompatActivity
                     if(productOtherAttributes!=null){
                         for(int i=0;i<productOtherAttributes.length();i++){
                             JSONObject jsonObject=productOtherAttributes.getJSONObject(i);
-                            String productAttribute=jsonObject.optString("Caption")+" : "+jsonObject.optString("Value");
+                            String productAttribute=jsonObject.optString("Caption")+" : "+(jsonObject.optString("Value").equals("null")?"-":jsonObject.optString("Value"));
                             TextView attributeText=new TextView(ProductDetails.this);
                             attributeText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                             attributeText.setText(productAttribute);
@@ -479,6 +488,7 @@ public class ProductDetails extends AppCompatActivity
         intent.putExtra("productID",productID);
         intent.putExtra("productName",productName);
         intent.putExtra("cartORbuy","buy");
+        intent.putExtra("actionType",actionType);
         startActivity(intent);
     }
     public void addToCart(View view){

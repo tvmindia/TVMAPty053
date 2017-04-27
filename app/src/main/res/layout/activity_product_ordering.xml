@@ -19,6 +19,14 @@
             android:id="@+id/toolbar"/>
 
     </android.support.design.widget.AppBarLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_bar">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,7 +34,6 @@
         app:cardCornerRadius="4dp"
         app:cardElevation="3dp"
         app:cardUseCompatPadding="true"
-        android:layout_below="@+id/app_bar"
         android:id="@+id/select_options">
        <LinearLayout
            android:layout_width="match_parent"
@@ -54,8 +61,7 @@
         app:cardCornerRadius="4dp"
         app:cardElevation="3dp"
         app:cardUseCompatPadding="true"
-        android:id="@+id/price_n_stock"
-        android:layout_below="@+id/select_options">
+        android:id="@+id/price_n_stock">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -113,4 +119,7 @@
             android:id="@+id/free_delivery"/>
     </RelativeLayout>
     </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

@@ -51,7 +51,12 @@ public class ProductOrdering extends AppCompatActivity {
         (findViewById(R.id.price_n_stock)).setVisibility(View.GONE);
         TextView actualPrice=(TextView)findViewById(R.id.actual_price);
         actualPrice.setPaintFlags(actualPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        getProductDetailsForOrder();
+        if(getIntent().getExtras().getString("actionType").equals("A")){
+            getProductDetailsForOrder();
+        }
+        else {
+            (findViewById(R.id.price_n_stock)).setVisibility(GONE);
+        }
     }
     void getProductDetailsForOrder(){
         //Threading--------------------------------------------------
