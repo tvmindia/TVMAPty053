@@ -51,12 +51,10 @@ public class ProductOrdering extends AppCompatActivity {
         (findViewById(R.id.price_n_stock)).setVisibility(View.GONE);
         TextView actualPrice=(TextView)findViewById(R.id.actual_price);
         actualPrice.setPaintFlags(actualPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        if(getIntent().getExtras().getString("actionType").equals("A")){
-            getProductDetailsForOrder();
-        }
-        else {
+        if(!getIntent().getExtras().getString("actionType").equals("A")){//Not a buyable product
             (findViewById(R.id.price_n_stock)).setVisibility(GONE);
         }
+        getProductDetailsForOrder();
     }
     void getProductDetailsForOrder(){
         //Threading--------------------------------------------------
@@ -120,10 +118,20 @@ public class ProductOrdering extends AppCompatActivity {
                             orderAttributesArrayList.add(attributeObj);
                         }
                     }
+
+                    if(productDetailsArrayList.get(0).productAttributes.size() ==0 && orderAttributesArrayList.size()==0){
+                        (findViewById(R.id.select_options)).setVisibility(GONE);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 setupUserControls();
+            }
+        };
+        Runnable postFailThread=new Runnable() {
+            @Override
+            public void run() {
+                (findViewById(R.id.select_options)).setVisibility(GONE);
             }
         };
         common.AsynchronousThread(ProductOrdering.this,
@@ -132,7 +140,7 @@ public class ProductOrdering extends AppCompatActivity {
                 loadingIndicator,
                 dataColumns,
                 postThread,
-                null);
+                postFailThread);
     }
     void setupUserControls(){
         //Attributes

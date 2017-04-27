@@ -515,6 +515,12 @@ public class ProductDetails extends AppCompatActivity
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
+                if(isFav){
+                    Toast.makeText(ProductDetails.this, R.string.added_to_wishlist, Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(ProductDetails.this, R.string.removed_from_wishlist, Toast.LENGTH_SHORT).show();
+                }
             }
         };
         Runnable postFailThread=new Runnable() {

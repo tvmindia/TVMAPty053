@@ -78,4 +78,6 @@
     <string name="select_date">Select date</string>
     <string name="select_from_available_options">Select from available options</string>
     <string name="some_error_at_server">Some error at server</string>
+    <string name="added_to_wishlist">Added to Wishlist</string>
+    <string name="removed_from_wishlist">Removed from Wishlist</string>
 </resources>
