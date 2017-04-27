@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -44,6 +45,7 @@ public class ProductDetails extends AppCompatActivity
     String productID;
     String productName;
     String attributeSetID;
+    Boolean isFav=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +72,7 @@ public class ProductDetails extends AppCompatActivity
         (findViewById(R.id.product_details_scroll_view)).setVisibility(GONE);
         //Threading--------------------------------------------------
         String webService="api/product/GetProductDetails";
-        String postData =  "{\"ID\":\""+productID+"\"}";
+        String postData =  "{\"ID\":\""+productID+"\",\"CustomerID\":\""+1010+"\"}";//Replace with customerID TODO
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
         String[] dataColumns={};
         Runnable postThread=new Runnable() {
@@ -141,6 +143,16 @@ public class ProductDetails extends AppCompatActivity
                         (findViewById(R.id.web_view_description)).setVisibility(GONE);
                     }
                     attributeSetID=jsonRootObject.optString("AttributeSetID");
+
+                    if(!jsonRootObject.optString("IsFav").equals("null")){
+                        isFav=jsonRootObject.optBoolean("IsFav");
+                        if(isFav){
+                            ((ImageView)findViewById(R.id.is_fav_image)).setImageResource(R.drawable.wishlist_filled);
+                        }
+                        else {
+                            ((ImageView)findViewById(R.id.is_fav_image)).setImageResource(R.drawable.wishlist);
+                        }
+                    }
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
@@ -447,6 +459,39 @@ public class ProductDetails extends AppCompatActivity
         intent.putExtra("productName",productName);
         intent.putExtra("cartORbuy","cart");
         startActivity(intent);
+    }
+    public void toggleWishlist(View view){
+        if(isFav){
+            isFav=false;
+            ((ImageView)view).setImageResource(R.drawable.wishlist);
+        }
+        else {
+            isFav=true;
+            ((ImageView)view).setImageResource(R.drawable.wishlist_filled);
+        }
+        final Common common=new Common();
+        //Threading--------------------------------------------------
+        String webService="api/product/UpdateWishlist";
+        String postData =  "{\"CustomerID\":\""+1010+"\",\"ProductID\":\""+productID+"\"}";//Replace with customerID TODO
+        String[] dataColumns={};
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+            }
+        };
+        Runnable postFailThread=new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(ProductDetails.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+            }
+        };
+        common.AsynchronousThread(ProductDetails.this,
+                webService,
+                postData,
+                null,
+                dataColumns,
+                postThread,
+                postFailThread);
     }
     @Override
     public void onBackPressed() {
