@@ -231,6 +231,21 @@
         android:id="@+id/web_view_description"
         android:layout_margin="5dp"
         android:padding="5dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/other_attributes_linear"
+                android:gravity="center"
+                android:padding="5dp">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorAccent"
+                    android:padding="5dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="7dp"/>
+                </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -302,11 +317,6 @@
         android:textColor="@color/primary_text"
         android:textSize="16sp"
         android:textStyle="bold" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/related_products_horizontal"/>
             <com.wang.avi.AVLoadingIndicatorView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -316,6 +326,13 @@
                 android:visibility="visible"
                 android:layout_gravity="center"
                 />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/related_products_horizontal"
+            />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

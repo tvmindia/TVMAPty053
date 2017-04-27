@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -152,6 +153,29 @@ public class ProductDetails extends AppCompatActivity
                         else {
                             ((ImageView)findViewById(R.id.is_fav_image)).setImageResource(R.drawable.wishlist);
                         }
+                    }
+
+                    JSONArray productOtherAttributes=jsonRootObject.optJSONArray("ProductOtherAttributes");
+                    LinearLayout otherAttributes=(LinearLayout)findViewById(R.id.other_attributes_linear);
+                    if(productOtherAttributes!=null){
+                        for(int i=0;i<productOtherAttributes.length();i++){
+                            JSONObject jsonObject=productOtherAttributes.getJSONObject(i);
+                            String productAttribute=jsonObject.optString("Caption")+" : "+jsonObject.optString("Value");
+                            TextView attributeText=new TextView(ProductDetails.this);
+                            attributeText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                            attributeText.setText(productAttribute);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                attributeText.setTextColor(getColor(R.color.primary_text));
+                            }
+                            else {
+                                attributeText.setTextColor(getResources().getColor(R.color.primary_text));
+                            }
+                            attributeText.setTextSize(14);
+                            otherAttributes.addView(attributeText);
+                        }
+                    }
+                    else {
+                        otherAttributes.setVisibility(GONE);
                     }
                 }
                 catch (JSONException e) {
@@ -386,6 +410,7 @@ public class ProductDetails extends AppCompatActivity
                 postFailThread);
     }
     void loadRelatedProducts(){
+        final LinearLayout relatedLinear=(LinearLayout)findViewById(R.id.related_products_horizontal);
         //Threading--------------------------------------------------
         String webService="api/product/GetRelatedProducts";
         String postData =  "{\"ID\":\""+productID+"\",\"count\":\""+"3"+"\"}";
@@ -394,7 +419,7 @@ public class ProductDetails extends AppCompatActivity
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
-                LinearLayout relatedLinear=(LinearLayout)findViewById(R.id.related_products_horizontal);
+
                 LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 for(int i=0;i<common.dataArrayList.size();i++) {
                     View productItem = inflater.inflate(R.layout.item_product_grid, null);
@@ -404,7 +429,9 @@ public class ProductDetails extends AppCompatActivity
                     ((TextView) (productItem.findViewById(R.id.product_name))).setText(common.dataArrayList.get(i)[1]);
                     ((TextView) (productItem.findViewById(R.id.product_name))).setMaxLines(1);
                     ((TextView) (productItem.findViewById(R.id.product_name))).setEllipsize(TextUtils.TruncateAt.END);
-                    common.LoadImage(ProductDetails.this, (ImageView) (productItem.findViewById(R.id.product_image)), common.dataArrayList.get(i)[2], R.drawable.dim_icon);
+                    ImageView relatedProductImage=(ImageView) productItem.findViewById(R.id.product_image);
+                    relatedProductImage.getLayoutParams().height = 120;
+                    common.LoadImage(ProductDetails.this, relatedProductImage ,getResources().getString(R.string.url)+common.dataArrayList.get(i)[2], R.drawable.dim_icon);
                     (productItem.findViewById(R.id.dim_icon)).setVisibility(GONE);
                     final int Fi=i;
                     productItem.setOnClickListener(new View.OnClickListener() {
@@ -436,6 +463,7 @@ public class ProductDetails extends AppCompatActivity
             public void run() {
                 //do nothing
                 (findViewById(R.id.related_products_label)).setVisibility(GONE);
+                relatedLinear.setVisibility(GONE);
             }
         };
         common.AsynchronousThread(ProductDetails.this,
