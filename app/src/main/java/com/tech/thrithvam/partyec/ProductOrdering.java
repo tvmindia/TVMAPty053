@@ -122,6 +122,9 @@ public class ProductOrdering extends AppCompatActivity {
                     if(productDetailsArrayList.get(0).productAttributes.size() ==0 && orderAttributesArrayList.size()==0){
                         (findViewById(R.id.select_options)).setVisibility(GONE);
                     }
+                    else {
+                        (findViewById(R.id.select_options)).setVisibility(View.VISIBLE);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
