@@ -27,6 +27,47 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="3dp"
+            app:cardUseCompatPadding="true"
+            android:id="@+id/quote_options">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/quote_options_linear"
+            android:padding="5dp"
+            android:layout_margin="5dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/required_date"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
+                android:id="@+id/required_date"
+                android:focusable="false"
+                android:hint="@string/select_date"
+                android:textSize="15sp"
+                android:maxLines="1"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/message"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
+                android:id="@+id/quote_message"
+                android:hint="@string/optional"
+                android:textSize="15sp"/>
+            </LinearLayout>
+            </android.support.v7.widget.CardView>
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,7 +89,7 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:padding="5dp"
-               android:text="@string/select_from_available_options"
+               android:text="@string/available_options"
                android:textAllCaps="false"
                android:textColor="@color/primary_text"
                android:textSize="16sp"

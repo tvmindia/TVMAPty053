@@ -2,11 +2,14 @@ package com.tech.thrithvam.partyec;
 
 import android.app.DatePickerDialog;
 import android.graphics.Paint;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.text.format.Formatter;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,10 +26,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Enumeration;
 import java.util.Locale;
 
 import static android.view.View.GONE;
@@ -53,6 +60,38 @@ public class ProductOrdering extends AppCompatActivity {
         actualPrice.setPaintFlags(actualPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         if(!getIntent().getExtras().getString("actionType").equals("A")){//Not a buyable product
             (findViewById(R.id.price_n_stock)).setVisibility(GONE);
+            if(getIntent().getExtras().getString("actionType").equals("Q")){//Quotable product
+                (findViewById(R.id.quote_options)).setVisibility(View.VISIBLE);
+
+                final EditText requiredDate=(EditText)findViewById(R.id.required_date);
+                requiredDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Calendar today = Calendar.getInstance();
+                        final Calendar selectedDate=Calendar.getInstance();
+                        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                selectedDate.set(Calendar.YEAR, year);
+                                selectedDate.set(Calendar.MONTH, monthOfYear);
+                                selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                                //Validation--------------
+                                if(selectedDate.before(today)){
+                                    Toast.makeText(ProductOrdering.this, R.string.give_valid, Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                //Setting display text-------
+                                SimpleDateFormat formatted = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
+                                requiredDate.setText(formatted.format(selectedDate.getTime()));
+                            }
+                        };
+                        new DatePickerDialog(ProductOrdering.this, dateSetListener, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH)).show();
+                    }
+                });
+            }
+        }
+        else {
+            (findViewById(R.id.quote_options)).setVisibility(GONE);
         }
         getProductDetailsForOrder();
     }
@@ -247,15 +286,11 @@ public class ProductOrdering extends AppCompatActivity {
                         attributesLinear.addView(stringNumber);
                         break;
                     case "D":
-                        final TextView date=new TextView(ProductOrdering.this);
-                        date.setText(R.string.select_date);
+                        final EditText date=new EditText(ProductOrdering.this);
+                        date.setHint(R.string.select_date);
                         date.setPadding(5,0,5,5);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            date.setTextColor(getColor(R.color.colorAccent));
-                        }
-                        else {
-                            date.setTextColor(getResources().getColor(R.color.colorAccent));
-                        }
+                        date.setFocusable(false);
+                        date.setTextSize(15);
                         date.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -318,6 +353,24 @@ public class ProductOrdering extends AppCompatActivity {
             ((TextView) findViewById(R.id.stock_availability)).setText(R.string.out_of_stock);
             ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_red_light));
         }
+    }
+    public String getLocalIpAddress() {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                        String ip = Formatter.formatIpAddress(inetAddress.hashCode());
+                        return ip;
+                    }
+                }
+            }
+
+        } catch (SocketException ex) {
+            Log.e("", ex.toString());
+        }
+        return null;
     }
     private class ProductDetails{
         String ID;
