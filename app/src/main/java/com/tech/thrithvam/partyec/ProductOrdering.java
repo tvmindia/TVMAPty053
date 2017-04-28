@@ -41,8 +41,12 @@ import static android.view.View.GONE;
 public class ProductOrdering extends AppCompatActivity {
     Common common=new Common();
     String productID="";
+
     ArrayList<ProductDetails> productDetailsArrayList=new ArrayList<>();
+
     ArrayList<Attributes> orderAttributesArrayList=new ArrayList<>();
+    ArrayList<View> orderAttributesUserInputs=new ArrayList<>();
+
     boolean showPrice=false;
     Double baseSellingPrice=0.0;
     String selectedProductDetailID;
@@ -253,7 +257,6 @@ public class ProductOrdering extends AppCompatActivity {
         }
         //Order attributes
         if(orderAttributesArrayList.size()!=0){
-            ArrayList<View> orderAttributesUserInputs=new ArrayList<>();
             for (int i=0;i<orderAttributesArrayList.size();i++){
                 TextView label = new TextView(ProductOrdering.this);
                 label.setText(orderAttributesArrayList.get(i).Caption);
@@ -385,5 +388,28 @@ public class ProductOrdering extends AppCompatActivity {
     String Caption;
     String Value;
     String DataType;
+    }
+    public void proceedClick(View view){
+        String attributeValuesJSON="\"AttributeValues\":[";
+//        public string Name { get; set; }
+//        public string Caption { get; set; }
+//        public string Value { get; set; }
+//        public string DataType { get; set; }
+//        public bool Isconfigurable { get; set; }
+        for (int i=0;i<orderAttributesArrayList.size();i++){
+                String attributeJsonObject="{"+
+                                                "\"Name\":\"" + orderAttributesArrayList.get(i).Name + "\"," +
+                                                "\"Caption\":\"" + orderAttributesArrayList.get(i).Caption + "\"," +
+                                                "\"Value\":\"" + ( (orderAttributesArrayList.get(i).DataType.equals("C")) ? (((Spinner)orderAttributesUserInputs.get(i)).getSelectedItem().toString()) : (((EditText)orderAttributesUserInputs.get(i)).getText().toString()) ) + "\"," +
+                                                "\"DataType\":\"" + orderAttributesArrayList.get(i).DataType + "\"," +
+                                                "\"Isconfigurable\":\"false\"" +
+                                            "}";
+                attributeValuesJSON+=attributeJsonObject+",";
+        }
+        if(attributeValuesJSON.lastIndexOf(",")>0){
+            attributeValuesJSON=attributeValuesJSON.substring(0,attributeValuesJSON.lastIndexOf(","));
+        }
+        attributeValuesJSON+="]";
+        ((EditText)findViewById(R.id.quote_message)).setText(attributeValuesJSON);
     }
 }
