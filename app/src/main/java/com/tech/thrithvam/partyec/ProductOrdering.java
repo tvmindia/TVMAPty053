@@ -389,13 +389,19 @@ public class ProductOrdering extends AppCompatActivity {
     String Value;
     String DataType;
     }
-    public void proceedClick(View view){
+    public void proceedClick(final View view){
+        //Validation----
+        EditText requiredDate=(EditText)findViewById(R.id.required_date);
+        if(requiredDate.getText().toString().equals("")){
+            requiredDate.setError(getResources().getString(R.string.give_valid));
+            requiredDate.requestFocus();
+            return;
+        }
+
+
+        view.setVisibility(GONE);
+        //JSON Making---
         String attributeValuesJSON="\"AttributeValues\":[";
-//        public string Name { get; set; }
-//        public string Caption { get; set; }
-//        public string Value { get; set; }
-//        public string DataType { get; set; }
-//        public bool Isconfigurable { get; set; }
         for (int i=0;i<orderAttributesArrayList.size();i++){
                 String attributeJsonObject="{"+
                                                 "\"Name\":\"" + orderAttributesArrayList.get(i).Name + "\"," +
@@ -410,6 +416,38 @@ public class ProductOrdering extends AppCompatActivity {
             attributeValuesJSON=attributeValuesJSON.substring(0,attributeValuesJSON.lastIndexOf(","));
         }
         attributeValuesJSON+="]";
-        ((EditText)findViewById(R.id.quote_message)).setText(attributeValuesJSON);
+
+
+        //Threading--------------------------------------------------
+        String webService="api/Order/InsertQuotations";
+        String postData =  "{\"ProductID\":\""+productID
+                            +"\",\"CustomerID\":\""+1010
+                            +"\",\"RequiredDate\":\""+ requiredDate.getText().toString()
+                            +"\",\"SourceIP\":\""+ getLocalIpAddress()
+                            +"\",\"Message\":\""+ ((EditText)findViewById(R.id.quote_message)).getText().toString()
+                            +"\","+attributeValuesJSON
+                            +"}";//Replace with customer id TODO
+        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator_proceed);
+        String[] dataColumns={};
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(ProductOrdering.this, R.string.success, Toast.LENGTH_SHORT).show();//TODO navigate to quotations
+            }
+        };
+        Runnable postFailThread=new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(ProductOrdering.this, R.string.failed, Toast.LENGTH_SHORT).show();
+                view.setVisibility(View.VISIBLE);
+            }
+        };
+        common.AsynchronousThread(ProductOrdering.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                postFailThread);
     }
 }
