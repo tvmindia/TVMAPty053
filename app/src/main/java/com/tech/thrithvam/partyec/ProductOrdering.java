@@ -1,6 +1,7 @@
 package com.tech.thrithvam.partyec;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -42,8 +43,11 @@ public class ProductOrdering extends AppCompatActivity {
     Common common=new Common();
     String productID="";
 
+    //Product detail attributes
     ArrayList<ProductDetails> productDetailsArrayList=new ArrayList<>();
+    ArrayList<Spinner> spinners = new ArrayList<>();
 
+    //Order attributes
     ArrayList<Attributes> orderAttributesArrayList=new ArrayList<>();
     ArrayList<View> orderAttributesUserInputs=new ArrayList<>();
 
@@ -100,6 +104,7 @@ public class ProductOrdering extends AppCompatActivity {
         getProductDetailsForOrder();
     }
     void getProductDetailsForOrder(){
+        (findViewById(R.id.proceed_button)).setVisibility(View.INVISIBLE);
         //Threading--------------------------------------------------
         String webService="api/product/GetProductDetailsForOrder";
         String postData =  "{\"ID\":\""+productID+"\"}";
@@ -172,6 +177,7 @@ public class ProductOrdering extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 setupUserControls();
+                (findViewById(R.id.proceed_button)).setVisibility(View.VISIBLE);
             }
         };
         Runnable postFailThread=new Runnable() {
@@ -194,7 +200,6 @@ public class ProductOrdering extends AppCompatActivity {
         //arrange user controls
         //Product Attributes
         if(productDetailsArrayList.size()!=0) {
-            final ArrayList<Spinner> spinners = new ArrayList<>();
             for (int i = 0; i < productDetailsArrayList.get(0).productAttributes.size(); i++) {
                 TextView label = new TextView(ProductOrdering.this);
                 label.setText(productDetailsArrayList.get(0).productAttributes.get(i).Caption);
@@ -390,64 +395,88 @@ public class ProductOrdering extends AppCompatActivity {
     String DataType;
     }
     public void proceedClick(final View view){
-        //Validation----
-        EditText requiredDate=(EditText)findViewById(R.id.required_date);
-        if(requiredDate.getText().toString().equals("")){
-            requiredDate.setError(getResources().getString(R.string.give_valid));
-            requiredDate.requestFocus();
-            return;
-        }
-
-
-        view.setVisibility(GONE);
-        //JSON Making---
-        String attributeValuesJSON="\"AttributeValues\":[";
-        for (int i=0;i<orderAttributesArrayList.size();i++){
-                String attributeJsonObject="{"+
-                                                "\"Name\":\"" + orderAttributesArrayList.get(i).Name + "\"," +
-                                                "\"Caption\":\"" + orderAttributesArrayList.get(i).Caption + "\"," +
-                                                "\"Value\":\"" + ( (orderAttributesArrayList.get(i).DataType.equals("C")) ? (((Spinner)orderAttributesUserInputs.get(i)).getSelectedItem().toString()) : (((EditText)orderAttributesUserInputs.get(i)).getText().toString()) ) + "\"," +
-                                                "\"DataType\":\"" + orderAttributesArrayList.get(i).DataType + "\"," +
-                                                "\"Isconfigurable\":\"false\"" +
-                                            "}";
-                attributeValuesJSON+=attributeJsonObject+",";
-        }
-        if(attributeValuesJSON.lastIndexOf(",")>0){
-            attributeValuesJSON=attributeValuesJSON.substring(0,attributeValuesJSON.lastIndexOf(","));
-        }
-        attributeValuesJSON+="]";
-
-
-        //Threading--------------------------------------------------
-        String webService="api/Order/InsertQuotations";
-        String postData =  "{\"ProductID\":\""+productID
-                            +"\",\"CustomerID\":\""+1010
-                            +"\",\"RequiredDate\":\""+ requiredDate.getText().toString()
-                            +"\",\"SourceIP\":\""+ getLocalIpAddress()
-                            +"\",\"Message\":\""+ ((EditText)findViewById(R.id.quote_message)).getText().toString()
-                            +"\","+attributeValuesJSON
-                            +"}";//Replace with customer id TODO
-        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator_proceed);
-        String[] dataColumns={};
-        Runnable postThread=new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(ProductOrdering.this, R.string.success, Toast.LENGTH_SHORT).show();//TODO navigate to quotations
+        if(getIntent().getExtras().getString("actionType").equals("Q")) {
+            //Validation----
+            EditText requiredDate = (EditText) findViewById(R.id.required_date);
+            if (requiredDate.getText().toString().equals("")) {
+                requiredDate.setError(getResources().getString(R.string.give_valid));
+                requiredDate.requestFocus();
+                return;
             }
-        };
-        Runnable postFailThread=new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(ProductOrdering.this, R.string.failed, Toast.LENGTH_SHORT).show();
-                view.setVisibility(View.VISIBLE);
+
+            view.setVisibility(GONE);
+            //----------------------JSON Making---------------------------
+            String attributeValuesJSON = "\"AttributeValues\":[";
+
+            //Product detail attributes------------
+            String productDetailAttributeJson=getProductDetailAttributeValuesFromSpinners();
+            attributeValuesJSON+=productDetailAttributeJson;
+            //OrderAttributes
+            for (int i = 0; i < orderAttributesArrayList.size(); i++) {
+                String attributeJsonObject = "{" +
+                        "\"Name\":\"" + orderAttributesArrayList.get(i).Name + "\"," +
+                        "\"Caption\":\"" + orderAttributesArrayList.get(i).Caption + "\"," +
+                        "\"Value\":\"" + ((orderAttributesArrayList.get(i).DataType.equals("C")) ? (((Spinner) orderAttributesUserInputs.get(i)).getSelectedItem().toString()) : (((EditText) orderAttributesUserInputs.get(i)).getText().toString())) + "\"," +
+                        "\"DataType\":\"" + orderAttributesArrayList.get(i).DataType + "\"," +
+                        "\"Isconfigurable\":\"false\"" +
+                        "}";
+                attributeValuesJSON += attributeJsonObject + ",";
             }
-        };
-        common.AsynchronousThread(ProductOrdering.this,
-                webService,
-                postData,
-                loadingIndicator,
-                dataColumns,
-                postThread,
-                postFailThread);
+            if (attributeValuesJSON.lastIndexOf(",") > 0) {
+                attributeValuesJSON = attributeValuesJSON.substring(0, attributeValuesJSON.lastIndexOf(","));
+            }
+            attributeValuesJSON += "]";
+
+
+            //Threading--------------------------------------------------
+            String webService = "api/Order/InsertQuotations";
+            String postData = "{\"ProductID\":\"" + productID
+                    + "\",\"CustomerID\":\"" + 1010
+                    + "\",\"RequiredDate\":\"" + requiredDate.getText().toString()
+                    + "\",\"SourceIP\":\"" + getLocalIpAddress()
+                    + "\",\"Message\":\"" + ((EditText) findViewById(R.id.quote_message)).getText().toString()
+                    + "\"," + attributeValuesJSON
+                    + "}";//Replace with customer id TODO
+            AVLoadingIndicatorView loadingIndicator = (AVLoadingIndicatorView) findViewById(R.id.loading_indicator_proceed);
+            String[] dataColumns = {};
+            Runnable postThread = new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(ProductOrdering.this, R.string.success, Toast.LENGTH_SHORT).show();//TODO navigate to quotations
+                    Intent clearIntent=new Intent(ProductOrdering.this,Home.class);
+                    clearIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(clearIntent);
+                    finish();
+                }
+            };
+            Runnable postFailThread = new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(ProductOrdering.this, R.string.failed, Toast.LENGTH_SHORT).show();
+                    view.setVisibility(View.VISIBLE);
+                }
+            };
+            common.AsynchronousThread(ProductOrdering.this,
+                    webService,
+                    postData,
+                    loadingIndicator,
+                    dataColumns,
+                    postThread,
+                    postFailThread);
+        }
+    }
+    String getProductDetailAttributeValuesFromSpinners(){
+        String json="";
+        for (int i = 0; i < spinners.size(); i++) {
+            String attributeJsonObject = "{" +
+                    "\"Name\":\"" + productDetailsArrayList.get(0).productAttributes.get(i).Name + "\"," +
+                    "\"Caption\":\"" + productDetailsArrayList.get(0).productAttributes.get(i).Caption + "\"," +
+                    "\"Value\":\"" + spinners.get(i).getSelectedItem().toString() + "\"," +
+                    "\"DataType\":\"" + productDetailsArrayList.get(0).productAttributes.get(i).DataType + "\"," +
+                    "\"Isconfigurable\":\"false\"" +
+                    "}";
+            json += attributeJsonObject + ",";
+        }
+        return json;
     }
 }
