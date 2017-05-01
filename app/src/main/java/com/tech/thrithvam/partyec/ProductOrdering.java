@@ -1,14 +1,19 @@
 package com.tech.thrithvam.partyec;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.format.Formatter;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,6 +39,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.Locale;
+import java.util.zip.Inflater;
 
 import static android.view.View.GONE;
 
@@ -94,6 +100,9 @@ public class ProductOrdering extends AppCompatActivity {
                         new DatePickerDialog(ProductOrdering.this, dateSetListener, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH)).show();
                     }
                 });
+                if(getIntent().getExtras().getString("actionType").equals("B")){
+                    getCustomerAddress();
+                }
             }
         }
         else {
@@ -195,7 +204,7 @@ public class ProductOrdering extends AppCompatActivity {
     void setupUserControls(){
         //Attributes
         LinearLayout attributesLinear=(LinearLayout)findViewById(R.id.prod_attributes_linear);
-        //arrange user controls
+        //-------------------arrange user controls---------------------
         //Product Attributes
         if(productDetailsArrayList.size()!=0) {
             for (int i = 0; i < productDetailsArrayList.get(0).productAttributes.size(); i++) {
@@ -359,6 +368,114 @@ public class ProductOrdering extends AppCompatActivity {
             ((TextView) findViewById(R.id.stock_availability)).setText(R.string.out_of_stock);
             ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_red_light));
         }
+    }
+    int selectedAddress;
+    void getCustomerAddress(){
+        final Common common=new Common();
+        //Threading--------------------------------------------------
+        String webService="api/customer/GetCustomerAddress";
+        String postData =  "{\"CustomerID\":\""+1009+"\"}";
+        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
+        String[] dataColumns={"ID",//0
+                "Prefix",//1
+                "FirstName",//2
+                "MidName",//3
+                "LastName",//4
+                "Address",//5
+                "Location",//6
+                "City",//7
+                "StateProvince",//8
+                "country",//9
+                "ContactNo",//10
+                "BillDefaultYN",//11
+                "ShipDefaultYN"//12
+                };
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                for (int i=0;i<common.dataArrayList.size();i++){
+                    if(common.dataArrayList.get(i)[11].equals("true")){
+                        selectedAddress=i;
+                        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        final View addressView=inflater.inflate(R.layout.item_address, null);
+                        String name=(common.dataArrayList.get(i)[1].equals("null")?"":common.dataArrayList.get(i)[1])
+                                +   (common.dataArrayList.get(i)[2].equals("null")?"":common.dataArrayList.get(i)[2])
+                                +   (common.dataArrayList.get(i)[3].equals("null")?"":common.dataArrayList.get(i)[3])
+                                +   (common.dataArrayList.get(i)[4].equals("null")?"":common.dataArrayList.get(i)[4]);
+                        ((TextView)addressView.findViewById(R.id.name)).setText(name);
+                        ((TextView)addressView.findViewById(R.id.address)).setText(common.dataArrayList.get(i)[5].equals("null")?"":common.dataArrayList.get(i)[5]);
+                        ((TextView)addressView.findViewById(R.id.location)).setText(common.dataArrayList.get(i)[6].equals("null")?"-":common.dataArrayList.get(i)[6]);
+                        ((TextView)addressView.findViewById(R.id.city)).setText(common.dataArrayList.get(i)[7].equals("null")?"-":common.dataArrayList.get(i)[7]);
+                        ((TextView)addressView.findViewById(R.id.stateprovince)).setText(common.dataArrayList.get(i)[8].equals("null")?"-":common.dataArrayList.get(i)[8]);
+                        String country="";
+                        try {
+                            JSONObject jsonObjectCountry=new JSONObject(common.dataArrayList.get(i)[9]);
+                            country=jsonObjectCountry.getString("Name");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        ((TextView)addressView.findViewById(R.id.country)).setText(country.equals("null")?"-":country);
+                        ((TextView)addressView.findViewById(R.id.contact_no)).setText(common.dataArrayList.get(i)[10].equals("null")?"-":common.dataArrayList.get(i)[10]);
+                        ((LinearLayout)findViewById(R.id.customer_address_linear)).addView(addressView);
+                         final int Fi=i;
+                        (findViewById(R.id.change_address)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                AlertDialog.Builder builderSingle = new AlertDialog.Builder(ProductOrdering.this);
+                                builderSingle.setIcon(R.drawable.user);
+                                builderSingle.setTitle("Select address");
+                                CustomAdapter customAdapter=new CustomAdapter(ProductOrdering.this,common.dataArrayList,"Address");
+                                builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                builderSingle.setAdapter(customAdapter, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        String name=(common.dataArrayList.get(which)[1].equals("null")?"":common.dataArrayList.get(which)[1])
+                                                +   (common.dataArrayList.get(which)[2].equals("null")?"":common.dataArrayList.get(which)[2])
+                                                +   (common.dataArrayList.get(which)[3].equals("null")?"":common.dataArrayList.get(which)[3])
+                                                +   (common.dataArrayList.get(which)[4].equals("null")?"":common.dataArrayList.get(which)[4]);
+                                        ((TextView)addressView.findViewById(R.id.name)).setText(name);
+                                        ((TextView)addressView.findViewById(R.id.address)).setText(common.dataArrayList.get(which)[5].equals("null")?"":common.dataArrayList.get(which)[5]);
+                                        ((TextView)addressView.findViewById(R.id.location)).setText(common.dataArrayList.get(which)[6].equals("null")?"-":common.dataArrayList.get(which)[6]);
+                                        ((TextView)addressView.findViewById(R.id.city)).setText(common.dataArrayList.get(which)[7].equals("null")?"-":common.dataArrayList.get(which)[7]);
+                                        ((TextView)addressView.findViewById(R.id.stateprovince)).setText(common.dataArrayList.get(which)[8].equals("null")?"-":common.dataArrayList.get(which)[8]);
+                                        String country="";
+                                        try {
+                                            JSONObject jsonObjectCountry=new JSONObject(common.dataArrayList.get(which)[9]);
+                                            country=jsonObjectCountry.getString("Name");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        ((TextView)addressView.findViewById(R.id.country)).setText(country.equals("null")?"-":country);
+                                        ((TextView)addressView.findViewById(R.id.contact_no)).setText(common.dataArrayList.get(which)[10].equals("null")?"-":common.dataArrayList.get(which)[10]);
+                                    }
+                                });
+                                builderSingle.show();
+                            }
+                        });
+                        break;
+                    }
+                }
+                findViewById(R.id.customer_address).setVisibility(View.VISIBLE);
+            }
+        };
+        Runnable postFailThread=new Runnable() {
+            @Override
+            public void run() {
+                (findViewById(R.id.customer_address)).setVisibility(GONE);
+            }
+        };
+        common.AsynchronousThread(ProductOrdering.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                postFailThread);
     }
     public String getLocalIpAddress() {
         try {

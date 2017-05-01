@@ -27,7 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:animateLayoutChanges="true">
+            android:animateLayoutChanges="true"
+            android:paddingBottom="10dp">
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,17 +70,7 @@
                 android:textSize="15sp"/>
             </LinearLayout>
             </android.support.v7.widget.CardView>
-            <com.wang.avi.AVLoadingIndicatorView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:indicatorName="BallPulseIndicator"
-                app:indicatorColor="@color/colorAccent"
-                android:id="@+id/loading_indicator"
-                android:visibility="gone"
-                android:layout_marginRight="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_gravity="center"
-                />
+
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -174,6 +165,54 @@
             android:id="@+id/free_delivery"/>
     </RelativeLayout>
     </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="3dp"
+        app:cardUseCompatPadding="true"
+        android:id="@+id/customer_address"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/customer_address_linear"
+            android:padding="5dp"
+            android:layout_margin="5dp">
+            <TextView
+                android:id="@+id/address_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="@string/billing_address"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+            </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change"
+            android:textColor="@color/colorAccent"
+            android:padding="5dp"
+            android:layout_gravity="end"
+            android:id="@+id/change_address"/>
+    </android.support.v7.widget.CardView>
+
+            <com.wang.avi.AVLoadingIndicatorView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:indicatorName="BallPulseIndicator"
+                app:indicatorColor="@color/colorAccent"
+                android:id="@+id/loading_indicator"
+                android:visibility="visible"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="center"
+                />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"

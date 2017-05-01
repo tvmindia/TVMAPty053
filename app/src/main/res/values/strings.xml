@@ -82,4 +82,10 @@
     <string name="removed_from_wishlist">Removed from Wishlist</string>
     <string name="required_date">Required date</string>
     <string name="optional">Optional</string>
+    <string name="location_colon">Location :</string>
+    <string name="city_colon">City :</string>
+    <string name="country_colon">Country :</string>
+    <string name="contact_no_colon">Contact No :</string>
+    <string name="billing_address">Billing Address</string>
+    <string name="change">Change</string>
 </resources>
