@@ -3,8 +3,6 @@ package com.tech.thrithvam.partyec;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Paint;
-import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -68,8 +66,8 @@ public class ProductOrdering extends AppCompatActivity {
         actualPrice.setPaintFlags(actualPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         if(!getIntent().getExtras().getString("actionType").equals("A")){//Not a buyable product
             (findViewById(R.id.price_n_stock)).setVisibility(GONE);
-            if(getIntent().getExtras().getString("actionType").equals("Q")){//Quotable product
-                (findViewById(R.id.quote_options)).setVisibility(View.VISIBLE);
+            if(getIntent().getExtras().getString("actionType").equals("Q")||getIntent().getExtras().getString("actionType").equals("B")){//Quotable or Bookable product
+                (findViewById(R.id.quote_book_options)).setVisibility(View.VISIBLE);
 
                 final EditText requiredDate=(EditText)findViewById(R.id.required_date);
                 requiredDate.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +97,7 @@ public class ProductOrdering extends AppCompatActivity {
             }
         }
         else {
-            (findViewById(R.id.quote_options)).setVisibility(GONE);
+            (findViewById(R.id.quote_book_options)).setVisibility(GONE);
         }
         getProductDetailsForOrder();
     }
