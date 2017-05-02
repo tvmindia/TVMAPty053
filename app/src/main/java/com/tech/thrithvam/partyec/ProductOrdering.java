@@ -396,7 +396,7 @@ public class ProductOrdering extends AppCompatActivity {
                 for (int i=0;i<common.dataArrayList.size();i++){
                     if(common.dataArrayList.get(i)[11].equals("true")){
                         selectedAddress=i;
-                        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        final LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         final View addressView=inflater.inflate(R.layout.item_address, null);
                         String name=(common.dataArrayList.get(i)[1].equals("null")?"":common.dataArrayList.get(i)[1])
                                 +   (common.dataArrayList.get(i)[2].equals("null")?"":common.dataArrayList.get(i)[2])
@@ -421,17 +421,17 @@ public class ProductOrdering extends AppCompatActivity {
                         (findViewById(R.id.change_address)).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                AlertDialog.Builder builderSingle = new AlertDialog.Builder(ProductOrdering.this);
-                                builderSingle.setIcon(R.drawable.user);
-                                builderSingle.setTitle("Select address");
+                                AlertDialog.Builder selectAddressAlert = new AlertDialog.Builder(ProductOrdering.this);
+                                selectAddressAlert.setIcon(R.drawable.user);
+                                selectAddressAlert.setTitle(R.string.select_address);
                                 CustomAdapter customAdapter=new CustomAdapter(ProductOrdering.this,common.dataArrayList,"Address");
-                                builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                                selectAddressAlert.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
                                     }
                                 });
-                                builderSingle.setAdapter(customAdapter, new DialogInterface.OnClickListener() {
+                                selectAddressAlert.setAdapter(customAdapter, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         String name=(common.dataArrayList.get(which)[1].equals("null")?"":common.dataArrayList.get(which)[1])
@@ -454,7 +454,30 @@ public class ProductOrdering extends AppCompatActivity {
                                         ((TextView)addressView.findViewById(R.id.contact_no)).setText(common.dataArrayList.get(which)[10].equals("null")?"-":common.dataArrayList.get(which)[10]);
                                     }
                                 });
-                                builderSingle.show();
+                                selectAddressAlert.setPositiveButton(R.string.new_address,  new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        AlertDialog.Builder newAddressDialogue = new AlertDialog.Builder(ProductOrdering.this);
+                                        newAddressDialogue.setIcon(R.drawable.user);
+                                        newAddressDialogue.setTitle(R.string.new_address);
+                                        View newAddressView=inflater.inflate(R.layout.item_address_input, null);
+                                        newAddressDialogue.setView(newAddressView);
+                                        newAddressDialogue.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                        newAddressDialogue.setPositiveButton(R.string.ok_button,  new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                            }
+                                        });
+                                        newAddressDialogue.show();
+                                    }
+                                });
+                                selectAddressAlert.show();
                             }
                         });
                         break;

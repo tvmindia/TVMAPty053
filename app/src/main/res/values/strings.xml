@@ -88,4 +88,12 @@
     <string name="contact_no_colon">Contact No :</string>
     <string name="billing_address">Billing Address</string>
     <string name="change">Change</string>
+    <string name="address">Address</string>
+    <string name="new_address">New address</string>
+    <string name="select_address">Select Address</string>
+    <string name="cancel">Cancel</string>
+    <string name="first_name">First Name</string>
+    <string name="mid_name">Mid Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="state_province_colon">State/Province :</string>
 </resources>

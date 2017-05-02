@@ -62,7 +62,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="State/Province : "
+            android:text="@string/state_province_colon"
             android:textColor="@color/primary_text"
             android:padding="2dp"/>
         <TextView
