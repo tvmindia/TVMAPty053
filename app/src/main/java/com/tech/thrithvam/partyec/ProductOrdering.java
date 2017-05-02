@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -61,6 +62,9 @@ public class ProductOrdering extends AppCompatActivity {
     Double baseSellingPrice=0.0;
     String selectedProductDetailID;
     Boolean inStock=true;
+
+    CustomerAddress customerAddress;
+    String customerID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +73,7 @@ public class ProductOrdering extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Order: "+getIntent().getExtras().getString("productName",""));
         productID=getIntent().getExtras().getString("productID");
+        customerID="1009";//TODO change
         inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         (findViewById(R.id.price_n_stock)).setVisibility(View.GONE);
         TextView actualPrice=(TextView)findViewById(R.id.actual_price);
@@ -373,13 +378,15 @@ public class ProductOrdering extends AppCompatActivity {
         }
     }
     //Address--------------------------------------------------------------------------------------------------------------------
-    int selectedAddress;
-
+    View addressView;
     void getCustomerAddress(){
         final Common common=new Common();
+        customerAddress=new CustomerAddress();
+        addressView=inflater.inflate(R.layout.item_address, null);
+        ((LinearLayout)findViewById(R.id.customer_address_linear)).addView(addressView);
         //Threading--------------------------------------------------
         String webService="api/customer/GetCustomerAddress";
-        String postData =  "{\"CustomerID\":\""+1009+"\"}";
+        String postData =  "{\"CustomerID\":\""+customerID+"\"}";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
         String[] dataColumns={"ID",//0
                 "Prefix",//1
@@ -393,35 +400,29 @@ public class ProductOrdering extends AppCompatActivity {
                 "country",//9
                 "ContactNo",//10
                 "BillDefaultYN",//11
-                "ShipDefaultYN"//12
+                "ShipDefaultYN",//12
+                "LocationID"//13
                 };
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
                 for (int i=0;i<common.dataArrayList.size();i++){
                     if(common.dataArrayList.get(i)[11].equals("true")){
-                        selectedAddress=i;
-                        final View addressView=inflater.inflate(R.layout.item_address, null);
-                        String name=(common.dataArrayList.get(i)[1].equals("null")?"":common.dataArrayList.get(i)[1])
-                                +   (common.dataArrayList.get(i)[2].equals("null")?"":common.dataArrayList.get(i)[2])
-                                +   (common.dataArrayList.get(i)[3].equals("null")?"":common.dataArrayList.get(i)[3])
-                                +   (common.dataArrayList.get(i)[4].equals("null")?"":common.dataArrayList.get(i)[4]);
-                        ((TextView)addressView.findViewById(R.id.name)).setText(name);
-                        ((TextView)addressView.findViewById(R.id.address)).setText(common.dataArrayList.get(i)[5].equals("null")?"":common.dataArrayList.get(i)[5]);
-                        ((TextView)addressView.findViewById(R.id.location)).setText(common.dataArrayList.get(i)[6].equals("null")?"-":common.dataArrayList.get(i)[6]);
-                        ((TextView)addressView.findViewById(R.id.city)).setText(common.dataArrayList.get(i)[7].equals("null")?"-":common.dataArrayList.get(i)[7]);
-                        ((TextView)addressView.findViewById(R.id.stateprovince)).setText(common.dataArrayList.get(i)[8].equals("null")?"-":common.dataArrayList.get(i)[8]);
-                        String country="";
-                        try {
-                            JSONObject jsonObjectCountry=new JSONObject(common.dataArrayList.get(i)[9]);
-                            country=jsonObjectCountry.getString("Name");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        ((TextView)addressView.findViewById(R.id.country)).setText(country.equals("null")?"-":country);
-                        ((TextView)addressView.findViewById(R.id.contact_no)).setText(common.dataArrayList.get(i)[10].equals("null")?"-":common.dataArrayList.get(i)[10]);
-                        ((LinearLayout)findViewById(R.id.customer_address_linear)).addView(addressView);
-                         final int Fi=i;
+                        setAddressDisplayAndObject(addressView,
+                                common.dataArrayList.get(i)[0],
+                                common.dataArrayList.get(i)[1],
+                                common.dataArrayList.get(i)[2],
+                                common.dataArrayList.get(i)[3],
+                                common.dataArrayList.get(i)[4],
+                                common.dataArrayList.get(i)[5],
+                                common.dataArrayList.get(i)[6],
+                                common.dataArrayList.get(i)[7],
+                                common.dataArrayList.get(i)[8],
+                                common.dataArrayList.get(i)[9],
+                                common.dataArrayList.get(i)[10],
+                                common.dataArrayList.get(i)[13]
+                                );
+
                         (findViewById(R.id.change_address)).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -438,24 +439,20 @@ public class ProductOrdering extends AppCompatActivity {
                                 selectAddressAlert.setAdapter(customAdapter, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        String name=(common.dataArrayList.get(which)[1].equals("null")?"":common.dataArrayList.get(which)[1])
-                                                +   (common.dataArrayList.get(which)[2].equals("null")?"":common.dataArrayList.get(which)[2])
-                                                +   (common.dataArrayList.get(which)[3].equals("null")?"":common.dataArrayList.get(which)[3])
-                                                +   (common.dataArrayList.get(which)[4].equals("null")?"":common.dataArrayList.get(which)[4]);
-                                        ((TextView)addressView.findViewById(R.id.name)).setText(name);
-                                        ((TextView)addressView.findViewById(R.id.address)).setText(common.dataArrayList.get(which)[5].equals("null")?"":common.dataArrayList.get(which)[5]);
-                                        ((TextView)addressView.findViewById(R.id.location)).setText(common.dataArrayList.get(which)[6].equals("null")?"-":common.dataArrayList.get(which)[6]);
-                                        ((TextView)addressView.findViewById(R.id.city)).setText(common.dataArrayList.get(which)[7].equals("null")?"-":common.dataArrayList.get(which)[7]);
-                                        ((TextView)addressView.findViewById(R.id.stateprovince)).setText(common.dataArrayList.get(which)[8].equals("null")?"-":common.dataArrayList.get(which)[8]);
-                                        String country="";
-                                        try {
-                                            JSONObject jsonObjectCountry=new JSONObject(common.dataArrayList.get(which)[9]);
-                                            country=jsonObjectCountry.getString("Name");
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                        ((TextView)addressView.findViewById(R.id.country)).setText(country.equals("null")?"-":country);
-                                        ((TextView)addressView.findViewById(R.id.contact_no)).setText(common.dataArrayList.get(which)[10].equals("null")?"-":common.dataArrayList.get(which)[10]);
+                                        setAddressDisplayAndObject(addressView,
+                                                common.dataArrayList.get(which)[0],
+                                                common.dataArrayList.get(which)[1],
+                                                common.dataArrayList.get(which)[2],
+                                                common.dataArrayList.get(which)[3],
+                                                common.dataArrayList.get(which)[4],
+                                                common.dataArrayList.get(which)[5],
+                                                common.dataArrayList.get(which)[6],
+                                                common.dataArrayList.get(which)[7],
+                                                common.dataArrayList.get(which)[8],
+                                                common.dataArrayList.get(which)[9],
+                                                common.dataArrayList.get(which)[10],
+                                                common.dataArrayList.get(which)[13]
+                                        );
                                     }
                                 });
                                 selectAddressAlert.setPositiveButton(R.string.new_address,  new DialogInterface.OnClickListener() {
@@ -502,6 +499,8 @@ public class ProductOrdering extends AppCompatActivity {
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
+                String[] notSelect={"",getResources().getString(R.string.not_selecting)};
+                common1.dataArrayList.add(notSelect);
                 for(int i=0;i<common1.dataArrayList.size();i++){
                     locations.add(common1.dataArrayList.get(i)[1]);
                 }
@@ -516,12 +515,11 @@ public class ProductOrdering extends AppCompatActivity {
                                             countries.add(common2.dataArrayList.get(i)[1]);
                                         }
 
-
                                         //New address alert dialogue box---------------------------------
                                         AlertDialog.Builder newAddressDialogue = new AlertDialog.Builder(ProductOrdering.this);
                                         newAddressDialogue.setIcon(R.drawable.user);
                                         newAddressDialogue.setTitle(R.string.new_address);
-                                        View newAddressView=inflater.inflate(R.layout.item_address_input, null);
+                                        final View newAddressView=inflater.inflate(R.layout.item_address_input, null);
                                         ArrayAdapter locationAdapter = new ArrayAdapter<String>(ProductOrdering.this, android.R.layout.simple_spinner_item, locations);
                                         ArrayAdapter countryAdapter = new ArrayAdapter<String>(ProductOrdering.this, android.R.layout.simple_spinner_item, countries);
                                         Spinner locationSpinner=(Spinner) newAddressView.findViewById(R.id.location);
@@ -537,13 +535,55 @@ public class ProductOrdering extends AppCompatActivity {
                                             }
                                         });
 
-                                        newAddressDialogue.setPositiveButton(R.string.ok_button,  new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
+                                        newAddressDialogue.setPositiveButton(R.string.ok_button, null);
+                                        AlertDialog getAddress=newAddressDialogue.create();
+                                        getAddress.setOnShowListener(new DialogInterface.OnShowListener() {
 
+                                            @Override
+                                            public void onShow(final DialogInterface dialog) {
+                                                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                                                button.setOnClickListener(new View.OnClickListener() {
+
+                                                    @Override
+                                                    public void onClick(View view) {
+                                                        //New address--
+                                                        if(((EditText)newAddressView.findViewById(R.id.first_name)).getText().toString().length()==0){
+                                                            ((EditText)newAddressView.findViewById(R.id.first_name)).setError(getResources().getString(R.string.give_valid));
+                                                        }
+                                                        else if(((EditText)newAddressView.findViewById(R.id.address)).getText().toString().length()==0){
+                                                            ((EditText)newAddressView.findViewById(R.id.address)).setError(getResources().getString(R.string.give_valid));
+                                                        }
+                                                        else if(((EditText)newAddressView.findViewById(R.id.city)).getText().toString().length()==0){
+                                                            ((EditText)newAddressView.findViewById(R.id.city)).setError(getResources().getString(R.string.give_valid));
+                                                        }
+                                                        else if(((EditText)newAddressView.findViewById(R.id.stateprovince)).getText().toString().length()==0){
+                                                            ((EditText)newAddressView.findViewById(R.id.stateprovince)).setError(getResources().getString(R.string.give_valid));
+                                                        }
+                                                        else if(((EditText)newAddressView.findViewById(R.id.contact_no)).getText().toString().length()==0){
+                                                            ((EditText)newAddressView.findViewById(R.id.contact_no)).setError(getResources().getString(R.string.give_valid));
+                                                        }
+                                                        else {
+                                                            setAddressDisplayAndObject(addressView,
+                                                                    "null",
+                                                                    ((EditText)newAddressView.findViewById(R.id.prefix)).getText().toString(),
+                                                                    ((EditText)newAddressView.findViewById(R.id.first_name)).getText().toString(),
+                                                                    ((EditText)newAddressView.findViewById(R.id.mid_name)).getText().toString(),
+                                                                    ((EditText)newAddressView.findViewById(R.id.last_name)).getText().toString(),
+                                                                    ((EditText)newAddressView.findViewById(R.id.address)).getText().toString(),
+                                                                    ((Spinner)newAddressView.findViewById(R.id.location)).getSelectedItem().toString(),
+                                                                    ((EditText)newAddressView.findViewById(R.id.city)).getText().toString(),
+                                                                    ((EditText)newAddressView.findViewById(R.id.stateprovince)).getText().toString(),
+                                                                    "{\"Code\":\""+common2.dataArrayList.get(((Spinner)newAddressView.findViewById(R.id.country)).getSelectedItemPosition())[0]+"\",\"Name\":\""+common2.dataArrayList.get(((Spinner)newAddressView.findViewById(R.id.country)).getSelectedItemPosition())[1]+"\"}",
+                                                                    ((EditText)newAddressView.findViewById(R.id.contact_no)).getText().toString(),
+                                                                    common1.dataArrayList.get(((Spinner)newAddressView.findViewById(R.id.location)).getSelectedItemPosition())[0]
+                                                            );
+                                                            dialog.dismiss();
+                                                        }
+                                                    }
+                                                });
                                             }
                                         });
-                                        newAddressDialogue.show();
+                                        getAddress.show();
                                         if (progressDialog.isShowing())
                                             progressDialog.dismiss();
                                     }
@@ -582,6 +622,42 @@ public class ProductOrdering extends AppCompatActivity {
                 postThread,
                 postFailThread);
     }
+    void setAddressDisplayAndObject(View addressView,String ID,String Prefix,String FirstName,String MidName,String LastName,String Address,String Location,String City,String StateProvince,String countryJson,String ContactNo,String LocationID){
+        String name=(Prefix.equals("null")?"":Prefix)           +   " "
+                +   (FirstName.equals("null")?"":FirstName)     +   " "
+                +   (MidName.equals("null")?"":MidName)         +   " "
+                +   (LastName.equals("null")?"":LastName);
+        ((TextView)addressView.findViewById(R.id.name)).setText(name);
+        ((TextView)addressView.findViewById(R.id.address)).setText(Address.equals("null")?"":Address);
+        ((TextView)addressView.findViewById(R.id.location)).setText(Location.equals("null")?"-":Location);
+        ((TextView)addressView.findViewById(R.id.city)).setText(City.equals("null")?"-":City);
+        ((TextView)addressView.findViewById(R.id.stateprovince)).setText(StateProvince.equals("null")?"-":StateProvince);
+        String country="";
+        String countryCode="";
+        try {
+            JSONObject jsonObjectCountry=new JSONObject(countryJson);
+            country=jsonObjectCountry.getString("Name");
+            countryCode=jsonObjectCountry.getString("Code");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ((TextView)addressView.findViewById(R.id.country)).setText(country.equals("null")?"-":country);
+        ((TextView)addressView.findViewById(R.id.contact_no)).setText(ContactNo.equals("null")?"-":ContactNo);
+
+
+        customerAddress.ID=(ID.equals("null")?"":ID);
+        customerAddress.CustomerID=customerID;
+        customerAddress.Prefix=(Prefix.equals("null")?"":Prefix);
+        customerAddress.FirstName=(FirstName.equals("null")?"":FirstName);
+        customerAddress.MidName=(MidName.equals("null")?"":MidName);
+        customerAddress.LastName=(LastName.equals("null")?"":LastName);
+        customerAddress.Address=(Address.equals("null")?"":Address);
+        customerAddress.LocationID=(LocationID.equals("null")?"":LocationID);
+        customerAddress.City=(City.equals("null")?"":City);
+        customerAddress.CountryCode=countryCode;
+        customerAddress.StateProvince=(StateProvince.equals("null")?"":StateProvince);
+        customerAddress.ContactNo=(ContactNo.equals("null")?"":ContactNo);
+    }
     public String getLocalIpAddress() {
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
@@ -613,6 +689,20 @@ public class ProductOrdering extends AppCompatActivity {
     String Caption;
     String Value;
     String DataType;
+    }
+    private class CustomerAddress{
+        String ID="";
+        String CustomerID="";
+        String Prefix="";
+        String FirstName="";
+        String MidName="";
+        String LastName="";
+        String Address="";
+        String LocationID="";
+        String City="";
+        String CountryCode="";
+        String StateProvince="";
+        String ContactNo="";
     }
     public void proceedClick(final View view){
         if(getIntent().getExtras().getString("actionType").equals("Q")) {
@@ -651,7 +741,7 @@ public class ProductOrdering extends AppCompatActivity {
             //Threading--------------------------------------------------
             String webService = "api/Order/InsertQuotations";
             String postData = "{\"ProductID\":\"" + productID
-                    + "\",\"CustomerID\":\"" + 1010
+                    + "\",\"CustomerID\":\"" + customerID
                     + "\",\"RequiredDate\":\"" + requiredDate.getText().toString()
                     + "\",\"SourceIP\":\"" + getLocalIpAddress()
                     + "\",\"Message\":\"" + ((EditText) findViewById(R.id.quote_message)).getText().toString()

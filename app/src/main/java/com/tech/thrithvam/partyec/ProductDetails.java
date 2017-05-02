@@ -484,6 +484,7 @@ public class ProductDetails extends AppCompatActivity
                 postFailThread);
     }
     public void buyProduct(View view){
+        //Check whether logged int TODO
         Intent intent=new Intent(ProductDetails.this, ProductOrdering.class);
         intent.putExtra("productID",productID);
         intent.putExtra("productName",productName);

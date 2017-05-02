@@ -219,9 +219,9 @@ class CustomAdapter extends BaseAdapter{
                     holder = (Holder) convertView.getTag();
                 }
                 //Label loading--------------------
-                String name=(filteredObjects.get(position)[1].equals("null")?"":filteredObjects.get(position)[1])
-                        +   (filteredObjects.get(position)[2].equals("null")?"":filteredObjects.get(position)[2])
-                        +   (filteredObjects.get(position)[3].equals("null")?"":filteredObjects.get(position)[3])
+                String name=(filteredObjects.get(position)[1].equals("null")?"":filteredObjects.get(position)[1])+   " "
+                        +   (filteredObjects.get(position)[2].equals("null")?"":filteredObjects.get(position)[2])+   " "
+                        +   (filteredObjects.get(position)[3].equals("null")?"":filteredObjects.get(position)[3])+   " "
                         +   (filteredObjects.get(position)[4].equals("null")?"":filteredObjects.get(position)[4]);
                 holder.customerName.setText(name);
                 holder.address.setText(filteredObjects.get(position)[5].equals("null")?"":filteredObjects.get(position)[5]);
