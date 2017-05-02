@@ -96,4 +96,5 @@
     <string name="mid_name">Mid Name</string>
     <string name="last_name">Last Name</string>
     <string name="state_province_colon">State/Province :</string>
+    <string name="please_wait">Please wait…</string>
 </resources>

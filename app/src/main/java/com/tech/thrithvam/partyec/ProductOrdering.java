@@ -1,6 +1,7 @@
 package com.tech.thrithvam.partyec;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,6 +47,7 @@ import static android.view.View.GONE;
 public class ProductOrdering extends AppCompatActivity {
     Common common=new Common();
     String productID="";
+    LayoutInflater inflater;
 
     //Product detail attributes
     ArrayList<ProductDetails> productDetailsArrayList=new ArrayList<>();
@@ -67,6 +69,7 @@ public class ProductOrdering extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Order: "+getIntent().getExtras().getString("productName",""));
         productID=getIntent().getExtras().getString("productID");
+        inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         (findViewById(R.id.price_n_stock)).setVisibility(View.GONE);
         TextView actualPrice=(TextView)findViewById(R.id.actual_price);
         actualPrice.setPaintFlags(actualPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -369,7 +372,9 @@ public class ProductOrdering extends AppCompatActivity {
             ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_red_light));
         }
     }
+    //Address--------------------------------------------------------------------------------------------------------------------
     int selectedAddress;
+
     void getCustomerAddress(){
         final Common common=new Common();
         //Threading--------------------------------------------------
@@ -396,7 +401,6 @@ public class ProductOrdering extends AppCompatActivity {
                 for (int i=0;i<common.dataArrayList.size();i++){
                     if(common.dataArrayList.get(i)[11].equals("true")){
                         selectedAddress=i;
-                        final LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         final View addressView=inflater.inflate(R.layout.item_address, null);
                         String name=(common.dataArrayList.get(i)[1].equals("null")?"":common.dataArrayList.get(i)[1])
                                 +   (common.dataArrayList.get(i)[2].equals("null")?"":common.dataArrayList.get(i)[2])
@@ -457,24 +461,7 @@ public class ProductOrdering extends AppCompatActivity {
                                 selectAddressAlert.setPositiveButton(R.string.new_address,  new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        AlertDialog.Builder newAddressDialogue = new AlertDialog.Builder(ProductOrdering.this);
-                                        newAddressDialogue.setIcon(R.drawable.user);
-                                        newAddressDialogue.setTitle(R.string.new_address);
-                                        View newAddressView=inflater.inflate(R.layout.item_address_input, null);
-                                        newAddressDialogue.setView(newAddressView);
-                                        newAddressDialogue.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                            }
-                                        });
-                                        newAddressDialogue.setPositiveButton(R.string.ok_button,  new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-
-                                            }
-                                        });
-                                        newAddressDialogue.show();
+                                        inputNewAddress();
                                     }
                                 });
                                 selectAddressAlert.show();
@@ -496,6 +483,101 @@ public class ProductOrdering extends AppCompatActivity {
                 webService,
                 postData,
                 loadingIndicator,
+                dataColumns,
+                postThread,
+                postFailThread);
+    }
+    void inputNewAddress(){
+        final Common common1=new Common();
+        final Common common2=new Common();
+        final ArrayList<String> locations=new ArrayList<>();
+        final ArrayList<String> countries=new ArrayList<>();
+        //Threading for locations--------------------------------------------------
+        String webService="api/customer/GetShippingLocations";
+        String postData =  "";
+        final ProgressDialog progressDialog=new ProgressDialog(ProductOrdering.this);
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+        progressDialog.setCancelable(false);progressDialog.show();
+        String[] dataColumns={"ID","Name"};
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                for(int i=0;i<common1.dataArrayList.size();i++){
+                    locations.add(common1.dataArrayList.get(i)[1]);
+                }
+                //Threading for countries--------------------------------------------------
+                                String webService="api/customer/GetCountries";
+                                String postData =  "";
+                                String[] dataColumns={"Code","Name"};
+                                Runnable postThread=new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        for(int i=0;i<common2.dataArrayList.size();i++){
+                                            countries.add(common2.dataArrayList.get(i)[1]);
+                                        }
+
+
+                                        //New address alert dialogue box---------------------------------
+                                        AlertDialog.Builder newAddressDialogue = new AlertDialog.Builder(ProductOrdering.this);
+                                        newAddressDialogue.setIcon(R.drawable.user);
+                                        newAddressDialogue.setTitle(R.string.new_address);
+                                        View newAddressView=inflater.inflate(R.layout.item_address_input, null);
+                                        ArrayAdapter locationAdapter = new ArrayAdapter<String>(ProductOrdering.this, android.R.layout.simple_spinner_item, locations);
+                                        ArrayAdapter countryAdapter = new ArrayAdapter<String>(ProductOrdering.this, android.R.layout.simple_spinner_item, countries);
+                                        Spinner locationSpinner=(Spinner) newAddressView.findViewById(R.id.location);
+                                        Spinner countrySpinner=(Spinner) newAddressView.findViewById(R.id.country);
+                                        locationSpinner.setAdapter(locationAdapter);
+                                        countrySpinner.setAdapter(countryAdapter);
+                                        newAddressDialogue.setView(newAddressView);
+
+                                        newAddressDialogue.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+
+                                        newAddressDialogue.setPositiveButton(R.string.ok_button,  new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                            }
+                                        });
+                                        newAddressDialogue.show();
+                                        if (progressDialog.isShowing())
+                                            progressDialog.dismiss();
+                                    }
+                                };
+                                Runnable postFailThread=new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (progressDialog.isShowing())
+                                            progressDialog.dismiss();
+                                        Toast.makeText(ProductOrdering.this,R.string.some_error_at_server,Toast.LENGTH_SHORT).show();
+                                    }
+                                };
+                                common2.AsynchronousThread(ProductOrdering.this,
+                                        webService,
+                                        postData,
+                                        null,
+                                        dataColumns,
+                                        postThread,
+                                        postFailThread);
+
+            }
+        };
+        Runnable postFailThread=new Runnable() {
+            @Override
+            public void run() {
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
+                Toast.makeText(ProductOrdering.this,R.string.some_error_at_server,Toast.LENGTH_SHORT).show();
+            }
+        };
+        common1.AsynchronousThread(ProductOrdering.this,
+                webService,
+                postData,
+                null,
                 dataColumns,
                 postThread,
                 postFailThread);
