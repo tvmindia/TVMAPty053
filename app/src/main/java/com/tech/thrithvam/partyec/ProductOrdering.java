@@ -243,14 +243,14 @@ public class ProductOrdering extends AppCompatActivity {
                         if (Fi + 1 < spinners.size()) {
                             //setup values
                             ArrayList<String> arrayList = new ArrayList<>();
-                            for (int i = 0; i < productDetailsArrayList.size(); i++) {
-                                if (productDetailsArrayList.get(i).productAttributes.get(Fi).Value.equals(spinners.get(Fi).getSelectedItem().toString())) {
-                                    if (!arrayList.contains(productDetailsArrayList.get(i).productAttributes.get(Fi + 1).Value)) {
-                                        arrayList.add(productDetailsArrayList.get(i).productAttributes.get(Fi + 1).Value);
+                            for (int j = 0; j < productDetailsArrayList.size(); j++) {
+                                if (productDetailsArrayList.get(j).productAttributes.get(Fi).Value.equals(spinners.get(Fi).getSelectedItem().toString())) {
+                                    if (!arrayList.contains(productDetailsArrayList.get(j).productAttributes.get(Fi + 1).Value)) {
+                                        arrayList.add(productDetailsArrayList.get(j).productAttributes.get(Fi + 1).Value);
                                     }
                                     //display changes
-                                    if(productDetailsArrayList.get(i).stockAvailable){
-                                        if(productDetailsArrayList.get(i).quantity>0){
+                                    if(productDetailsArrayList.get(j).stockAvailable){
+                                        if(productDetailsArrayList.get(j).quantity>0){
                                             inStock=true;
                                         }
                                         else {
@@ -260,8 +260,8 @@ public class ProductOrdering extends AppCompatActivity {
                                     else {
                                         inStock=false;
                                     }
-                                    calculatePrice(productDetailsArrayList.get(i).PriceDifference,productDetailsArrayList.get(i).DiscountAmount);
-                                    selectedProductDetailID=productDetailsArrayList.get(i).ID;
+                                    calculatePrice(productDetailsArrayList.get(j).PriceDifference,productDetailsArrayList.get(j).DiscountAmount);
+                                    selectedProductDetailID=productDetailsArrayList.get(j).ID;
                                 }
                             }
                             ArrayAdapter adapter = new ArrayAdapter<String>(ProductOrdering.this, android.R.layout.simple_spinner_item, arrayList);
