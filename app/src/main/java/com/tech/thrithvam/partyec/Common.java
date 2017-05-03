@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -114,6 +115,8 @@ class Common {
                     c.setRequestMethod("POST");
                     c.setRequestProperty("Content-type", "application/json");
                     c.setRequestProperty("Content-length", Integer.toString(postData.length()));
+                    String basicAuth = "Basic " + Base64.encodeToString("partyec@tvm-2017:".getBytes(), Base64.NO_WRAP);
+                    c.setRequestProperty ("Authorization", basicAuth);
                     c.setDoInput(true);
                     c.setDoOutput(true);
                     c.setUseCaches(false);
