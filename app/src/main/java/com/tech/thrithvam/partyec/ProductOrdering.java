@@ -65,6 +65,7 @@ public class ProductOrdering extends AppCompatActivity {
 
     CustomerAddress customerAddress;
     String customerID;
+    String actionType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,9 +79,10 @@ public class ProductOrdering extends AppCompatActivity {
         (findViewById(R.id.price_n_stock)).setVisibility(View.GONE);
         TextView actualPrice=(TextView)findViewById(R.id.actual_price);
         actualPrice.setPaintFlags(actualPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        if(!getIntent().getExtras().getString("actionType").equals("A")){//Not a buyable product
+        actionType=getIntent().getExtras().getString("actionType");
+        if(!actionType.equals("A")){//Not a buyable product
             (findViewById(R.id.price_n_stock)).setVisibility(GONE);
-            if(getIntent().getExtras().getString("actionType").equals("Q")||getIntent().getExtras().getString("actionType").equals("B")){//Quotable or Bookable product
+            if(actionType.equals("Q")||actionType.equals("B")){//Quotable or Bookable product
                 (findViewById(R.id.quote_book_options)).setVisibility(View.VISIBLE);
 
                 final EditText requiredDate=(EditText)findViewById(R.id.required_date);
@@ -108,7 +110,7 @@ public class ProductOrdering extends AppCompatActivity {
                         new DatePickerDialog(ProductOrdering.this, dateSetListener, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH)).show();
                     }
                 });
-                if(getIntent().getExtras().getString("actionType").equals("B")){
+                if(actionType.equals("B")){
                     getCustomerAddress();
                 }
             }
@@ -248,6 +250,26 @@ public class ProductOrdering extends AppCompatActivity {
                                     if (!arrayList.contains(productDetailsArrayList.get(j).productAttributes.get(Fi + 1).Value)) {
                                         arrayList.add(productDetailsArrayList.get(j).productAttributes.get(Fi + 1).Value);
                                     }
+
+                                }
+                            }
+                            ArrayAdapter adapter = new ArrayAdapter<String>(ProductOrdering.this, android.R.layout.simple_spinner_item, arrayList);
+                            spinners.get(Fi + 1).setAdapter(adapter);
+                        }
+                        //Checking price and stock
+                        if(!actionType.equals("Q")){ //Quotable product doesn't show price and stock info
+                            for (int j = 0; j < productDetailsArrayList.size(); j++) {
+                                Boolean flag=true;
+                                for (int k=0;k<productDetailsArrayList.get(j).productAttributes.size();k++){
+                                    if(productDetailsArrayList.get(j).productAttributes.get(k).Value
+                                        .equals(spinners.get(k).getSelectedItem().toString())){
+                                    }
+                                    else {
+                                        flag=false;
+                                        break;
+                                    }
+                                }
+                                if(flag){
                                     //display changes
                                     if(productDetailsArrayList.get(j).stockAvailable){
                                         if(productDetailsArrayList.get(j).quantity>0){
@@ -264,8 +286,6 @@ public class ProductOrdering extends AppCompatActivity {
                                     selectedProductDetailID=productDetailsArrayList.get(j).ID;
                                 }
                             }
-                            ArrayAdapter adapter = new ArrayAdapter<String>(ProductOrdering.this, android.R.layout.simple_spinner_item, arrayList);
-                            spinners.get(Fi + 1).setAdapter(adapter);
                         }
                     }
                     @Override
@@ -705,7 +725,7 @@ public class ProductOrdering extends AppCompatActivity {
         String ContactNo="";
     }
     public void proceedClick(final View view){
-        if(getIntent().getExtras().getString("actionType").equals("Q")) {
+        if(actionType.equals("Q")) {
             //Validation----
             EditText requiredDate = (EditText) findViewById(R.id.required_date);
             if (requiredDate.getText().toString().equals("")) {
