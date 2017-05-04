@@ -244,13 +244,21 @@ public class ProductOrdering extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         if (Fi + 1 < spinners.size()) {
                             //setup values
-                            ArrayList<String> arrayList = new ArrayList<>();
+
+                        ArrayList<String> arrayList = new ArrayList<>();
                             for (int j = 0; j < productDetailsArrayList.size(); j++) {
-                                if (productDetailsArrayList.get(j).productAttributes.get(Fi).Value.equals(spinners.get(Fi).getSelectedItem().toString())) {
+                                Boolean flag1 = true;
+                                for (int k = 0; k <= Fi; k++) {
+                                        if(!(productDetailsArrayList.get(j).productAttributes.get(k).Value
+                                                .equals(spinners.get(k).getSelectedItem().toString()))){
+                                            flag1=false;
+                                            break;
+                                        }
+                                }
+                                if(flag1){
                                     if (!arrayList.contains(productDetailsArrayList.get(j).productAttributes.get(Fi + 1).Value)) {
                                         arrayList.add(productDetailsArrayList.get(j).productAttributes.get(Fi + 1).Value);
                                     }
-
                                 }
                             }
                             ArrayAdapter adapter = new ArrayAdapter<String>(ProductOrdering.this, android.R.layout.simple_spinner_item, arrayList);
