@@ -43,6 +43,9 @@ public class ListViewsActivity extends AppCompatActivity
             case "relatedItems":
                 loadRelatedProducts();
                 break;
+            case "wishlist":
+                loadWishlistProducts();
+                break;
             default:
                 finish();
         }
@@ -106,6 +109,40 @@ public class ListViewsActivity extends AppCompatActivity
                 postThread,
                 null);
     }
+    void loadWishlistProducts(){
+        getSupportActionBar().setTitle("WishList Items ");
+        listView.setSelector(android.R.color.transparent);
+        //Threading-------------------------------------------------------------------------
+        String webService="api/Customer/GetCustomerWishlist";
+        String postData =  "{\"CustomerID\":\""+1009+"\"}";
+        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
+        String[] dataColumns={"ProductID","ProductName","ImageURL","DaysinWL","Price"};
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                CustomAdapter adapter=new CustomAdapter(ListViewsActivity.this, common.dataArrayList,"WishList");
+                listView.setAdapter(adapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent=new Intent(ListViewsActivity.this,ProductDetails.class);
+                        intent.putExtra("productID",common.dataArrayList.get(position)[0]);
+                        startActivity(intent);
+                    }
+                });
+            }
+        };
+        common.AsynchronousThread(ListViewsActivity.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                null);
+    }
+
+
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

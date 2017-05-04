@@ -79,6 +79,9 @@ class CustomAdapter extends BaseAdapter{
         ImageView customerImage;
         //Address-------------------------
         TextView address,location,city,state,country,contactNo;
+        //WishList-------------------------
+        TextView daysCount,price;
+
     }
 
     @Override
@@ -238,6 +241,28 @@ class CustomAdapter extends BaseAdapter{
                 holder.country.setText(country.equals("null")?"-":country);
                 holder.contactNo.setText(filteredObjects.get(position)[10].equals("null")?"-":filteredObjects.get(position)[10]);
 
+                break;
+            case "WishList":
+                if (convertView == null) {
+                    holder = new Holder();
+                    convertView = inflater.inflate(R.layout.item_wishlist, null);
+                    holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
+                    holder.productName=(TextView)convertView.findViewById(R.id.product_name);
+                    holder.daysCount =(TextView)convertView.findViewById(R.id.days_Count);
+                    holder.price =(TextView)convertView.findViewById(R.id.price);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (Holder) convertView.getTag();
+                }
+                //Label loading--------------------
+                common.LoadImage(adapterContext,
+                        holder.productImage,
+                        adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[2],
+                        R.drawable.dim_icon);
+                holder.productName.setText(filteredObjects.get(position)[1].equals("null")?"":filteredObjects.get(position)[1]);
+
+                holder.daysCount.setText(filteredObjects.get(position)[3].equals("null")?"":adapterContext.getResources().getString(R.string.wishlist_days,filteredObjects.get(position)[3]));
+                holder.price.setText(filteredObjects.get(position)[4].equals("null")?"":adapterContext.getResources().getString(R.string.price_display,filteredObjects.get(position)[4]));
                 break;
             default:
                 break;

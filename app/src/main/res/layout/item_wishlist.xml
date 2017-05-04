@@ -9,10 +9,10 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:src="@drawable/dim_icon"
-            android:id="@+id/customer_image"
+            android:id="@+id/product_image"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:paddingLeft="5dp"
@@ -24,49 +24,51 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Customer Name"
+            android:text="Product Name"
             android:textColor="@color/primary_text"
-            android:textSize="14sp"
-            android:id="@+id/customer_name"
-            android:layout_toRightOf="@+id/customer_image"
-            android:layout_toEndOf="@id/customer_image"
-            android:layout_toLeftOf="@+id/date"
-            android:layout_toStartOf="@+id/date"
+            android:textSize="18sp"
+            android:id="@+id/product_name"
+            android:layout_toRightOf="@+id/product_image"
+            android:layout_toEndOf="@id/product_image"
+            android:layout_toLeftOf="@+id/days_Count"
+            android:layout_toStartOf="@+id/days_Count"
             android:maxLines="1"
             android:ellipsize="end"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="date"
+            android:text="@string/wishlist_days"
             android:textColor="@color/secondary_text"
             android:textSize="10sp"
-            android:id="@+id/date"
+            android:id="@+id/days_Count"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="5dp"
             android:layout_marginEnd="5dp"/>
-        <android.support.v7.widget.AppCompatRatingBar
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            style="?android:attr/ratingBarStyleSmall"
-            android:id="@+id/avg_rating_bar"
-            android:numStars="5"
-            android:stepSize="0.1"
-            android:isIndicator="true"
-            android:layout_below="@id/customer_name"
-            android:layout_toRightOf="@+id/customer_image"
-            android:layout_toEndOf="@+id/customer_image"/>
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Review"
+            android:text="@string/price"
             android:textColor="@color/primary_text"
             android:textSize="14sp"
-            android:id="@+id/review"
-            android:layout_toRightOf="@+id/customer_image"
-            android:layout_toEndOf="@+id/customer_image"
-            android:layout_below="@id/avg_rating_bar"
+            android:id="@+id/price_Text"
+            android:paddingTop="10dp"
+            android:layout_toRightOf="@+id/product_image"
+            android:layout_toEndOf="@+id/product_image"
+            android:layout_below="@id/product_name"
             android:layout_marginBottom="5dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Amount"
+            android:textColor="@color/primary_text"
+            android:textSize="14sp"
+            android:id="@+id/price"
+            android:layout_alignBaseline="@+id/price_Text"
+            android:layout_alignBottom="@+id/price_Text"
+            android:layout_toRightOf="@+id/product_image"
+            android:layout_toEndOf="@+id/product_image"
+            android:layout_marginLeft="37dp"
+            android:layout_marginStart="37dp" />
     </RelativeLayout>
 </LinearLayout>
