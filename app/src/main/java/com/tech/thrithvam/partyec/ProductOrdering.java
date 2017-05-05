@@ -735,7 +735,68 @@ public class ProductOrdering extends AppCompatActivity {
         String ContactNo="";
     }
     public void proceedClick(final View view){
-        if(actionType.equals("B")) {
+        if(actionType.equals("A")) {//------------------------------------------Buying--------------------------------------
+
+            view.setVisibility(GONE);
+            //----------------------JSON Making---------------------------
+            String attributeValuesJSON = "\"AttributeValues\":[";
+
+            //Product detail attributes------------
+            String productDetailAttributeJson=getProductDetailAttributeValuesFromSpinners();
+            attributeValuesJSON+=productDetailAttributeJson;
+            //OrderAttributes
+            for (int i = 0; i < orderAttributesArrayList.size(); i++) {
+                String attributeJsonObject = "{" +
+                        "\"Name\":\"" + orderAttributesArrayList.get(i).Name + "\"," +
+                        "\"Caption\":\"" + orderAttributesArrayList.get(i).Caption + "\"," +
+                        "\"Value\":\"" + ((orderAttributesArrayList.get(i).DataType.equals("C")) ? (((Spinner) orderAttributesUserInputs.get(i)).getSelectedItem().toString()) : (((EditText) orderAttributesUserInputs.get(i)).getText().toString())) + "\"," +
+                        "\"DataType\":\"" + orderAttributesArrayList.get(i).DataType + "\"," +
+                        "\"Isconfigurable\":\"false\"" +
+                        "}";
+                attributeValuesJSON += attributeJsonObject + ",";
+            }
+            if (attributeValuesJSON.lastIndexOf(",") > 0) {
+                attributeValuesJSON = attributeValuesJSON.substring(0, attributeValuesJSON.lastIndexOf(","));
+            }
+            attributeValuesJSON += "]";
+
+
+            //Threading--------------------------------------------------
+            String webService = "api/Order/AddProductToCart";
+            String postData = "{\"ProductID\":\"" + productID
+                    + "\",\"CustomerID\":\"" + customerID
+                    + "\",\"Price\":\"" + price
+                    + "\",\"Qty\":\"" + 1
+                    + "\"," + attributeValuesJSON
+                    + "}";//Replace with customer id TODO
+            AVLoadingIndicatorView loadingIndicator = (AVLoadingIndicatorView) findViewById(R.id.loading_indicator_proceed);
+            String[] dataColumns = {};
+            Runnable postThread = new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(ProductOrdering.this, R.string.success, Toast.LENGTH_SHORT).show();//TODO navigate
+                    Intent clearIntent=new Intent(ProductOrdering.this,Home.class);
+                    clearIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(clearIntent);
+                    finish();
+                }
+            };
+            Runnable postFailThread = new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(ProductOrdering.this, R.string.failed, Toast.LENGTH_SHORT).show();
+                    view.setVisibility(View.VISIBLE);
+                }
+            };
+            common.AsynchronousThread(ProductOrdering.this,
+                    webService,
+                    postData,
+                    loadingIndicator,
+                    dataColumns,
+                    postThread,
+                    postFailThread);
+        }
+        else if(actionType.equals("B")) {//--------------------------------------Booking--------------------------------------
             //Validation----
             EditText requiredDate = (EditText) findViewById(R.id.required_date);
             if (requiredDate.getText().toString().equals("")) {
@@ -821,7 +882,7 @@ public class ProductOrdering extends AppCompatActivity {
                     postThread,
                     postFailThread);
         }
-        else if(actionType.equals("Q")) {
+        else if(actionType.equals("Q")) {//--------------------------------Quotation-------------------------------------------------
             //Validation----
             EditText requiredDate = (EditText) findViewById(R.id.required_date);
             if (requiredDate.getText().toString().equals("")) {
