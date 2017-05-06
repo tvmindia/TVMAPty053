@@ -81,10 +81,12 @@ class CustomAdapter extends BaseAdapter{
         TextView address,location,city,state,country,contactNo;
         //WishList-------------------------
         TextView daysCount,price;
-        //Bookings
+        //Bookings----------------------------
         TextView bookingNo,RequiredDate,Status,BookingDate;
-        //Quotations
+        //Quotations-------------------------
         TextView quotationNo,quotationDate;
+        //Cart---------------------------------
+        TextView shipping,quantity;
 
     }
 
@@ -320,6 +322,30 @@ class CustomAdapter extends BaseAdapter{
                 holder.RequiredDate.setText(filteredObjects.get(position)[2].equals("null")?"":adapterContext.getResources().getString(R.string.required_dates,filteredObjects.get(position)[2]));
                 holder.quotationDate.setText(filteredObjects.get(position)[3].equals("null")?"":adapterContext.getResources().getString(R.string.quotation_dates,filteredObjects.get(position)[3]));
                 holder.Status.setText(filteredObjects.get(position)[4].equals("null")?"":adapterContext.getResources().getString(R.string.quotation_status,filteredObjects.get(position)[4]));
+                break;
+            //---------------------------------------- Shopping Cart --------------------------------------
+            case "Cart":
+                if (convertView == null) {
+                    holder = new Holder();
+                    convertView = inflater.inflate(R.layout.item_cart, null);
+                    holder.productName = (TextView) convertView.findViewById(R.id.product_name);
+                    holder.quantity=(TextView) convertView.findViewById(R.id.quantity);
+                    holder.price=(TextView) convertView.findViewById(R.id.price);
+                    holder.shipping=(TextView) convertView.findViewById(R.id.shipping);
+                    holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (Holder) convertView.getTag();
+                }
+                //Label loading--------------------
+                holder.productName.setText(filteredObjects.get(position)[2]);
+                common.LoadImage(adapterContext,
+                        holder.productImage,
+                        adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[3],
+                        R.drawable.dim_icon);
+                holder.quantity.setText(filteredObjects.get(position)[5].equals("null")?"":filteredObjects.get(position)[5]);
+                holder.price.setText(filteredObjects.get(position)[6].equals("null")?"":filteredObjects.get(position)[6]);
+                holder.shipping.setText(filteredObjects.get(position)[7].equals("null")?"":filteredObjects.get(position)[7]);
                 break;
             default:
                 break;
