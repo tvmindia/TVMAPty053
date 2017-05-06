@@ -83,6 +83,8 @@ class CustomAdapter extends BaseAdapter{
         TextView daysCount,price;
         //Bookings
         TextView bookingNo,RequiredDate,Status,BookingDate;
+        //Quotations
+        TextView quotationNo,quotationDate;
 
     }
 
@@ -244,6 +246,7 @@ class CustomAdapter extends BaseAdapter{
                 holder.contactNo.setText(filteredObjects.get(position)[10].equals("null")?"-":filteredObjects.get(position)[10]);
 
                 break;
+            //----------------------------------  WishList  ------------------------------
             case "WishList":
                 if (convertView == null) {
                     holder = new Holder();
@@ -266,6 +269,7 @@ class CustomAdapter extends BaseAdapter{
                 holder.daysCount.setText(filteredObjects.get(position)[3].equals("null")?"":adapterContext.getResources().getString(R.string.wishlist_days,filteredObjects.get(position)[3]));
                 holder.price.setText(filteredObjects.get(position)[4].equals("null")?"":adapterContext.getResources().getString(R.string.price_display,filteredObjects.get(position)[4]));
                 break;
+            //----------------------------------  Bookings  ------------------------------
             case "Bookings":
                 if (convertView == null) {
                     holder = new Holder();
@@ -290,6 +294,32 @@ class CustomAdapter extends BaseAdapter{
                 holder.RequiredDate.setText(filteredObjects.get(position)[2].equals("null")?"":adapterContext.getResources().getString(R.string.required_dates,filteredObjects.get(position)[2]));
                 holder.BookingDate.setText(filteredObjects.get(position)[3].equals("null")?"":adapterContext.getResources().getString(R.string.booking_dates,filteredObjects.get(position)[3]));
                 holder.Status.setText(filteredObjects.get(position)[4].equals("null")?"":adapterContext.getResources().getString(R.string.booking_status,filteredObjects.get(position)[4]));
+                break;
+            //----------------------------------  Quotations  ------------------------------
+            case "Quotations":
+                if (convertView == null) {
+                    holder = new Holder();
+                    convertView = inflater.inflate(R.layout.item_quotations, null);
+                    holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
+                    holder.quotationNo=(TextView)convertView.findViewById(R.id.quotation_No);
+                    holder.productName=(TextView)convertView.findViewById(R.id.product_name);
+                    holder.RequiredDate =(TextView)convertView.findViewById(R.id.required_Date);
+                    holder.quotationDate =(TextView)convertView.findViewById(R.id.quotation_Date);
+                    holder.Status =(TextView)convertView.findViewById(R.id.quotation_status);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (Holder) convertView.getTag();
+                }
+                //Label loading--------------------
+                common.LoadImage(adapterContext,
+                        holder.productImage,
+                        adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[6],
+                        R.drawable.dim_icon);
+                holder.productName.setText(filteredObjects.get(position)[5].equals("null")?"":filteredObjects.get(position)[5]);
+                holder.quotationNo.setText(filteredObjects.get(position)[0].equals("null")?"":adapterContext.getResources().getString(R.string.quotation_no,filteredObjects.get(position)[0]));
+                holder.RequiredDate.setText(filteredObjects.get(position)[2].equals("null")?"":adapterContext.getResources().getString(R.string.required_dates,filteredObjects.get(position)[2]));
+                holder.quotationDate.setText(filteredObjects.get(position)[3].equals("null")?"":adapterContext.getResources().getString(R.string.quotation_dates,filteredObjects.get(position)[3]));
+                holder.Status.setText(filteredObjects.get(position)[4].equals("null")?"":adapterContext.getResources().getString(R.string.quotation_status,filteredObjects.get(position)[4]));
                 break;
             default:
                 break;
