@@ -270,7 +270,7 @@ class CustomAdapter extends BaseAdapter{
                 if (convertView == null) {
                     holder = new Holder();
                     convertView = inflater.inflate(R.layout.item_bookings, null);
-                    //holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
+                    holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
                     holder.bookingNo=(TextView)convertView.findViewById(R.id.booking_No);
                     holder.productName=(TextView)convertView.findViewById(R.id.product_name);
                     holder.RequiredDate =(TextView)convertView.findViewById(R.id.required_Date);
@@ -281,10 +281,10 @@ class CustomAdapter extends BaseAdapter{
                     holder = (Holder) convertView.getTag();
                 }
                 //Label loading--------------------
-               /* common.LoadImage(adapterContext,
+                common.LoadImage(adapterContext,
                         holder.productImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[6],
-                        R.drawable.dim_icon);*/
+                        R.drawable.dim_icon);
                 holder.productName.setText(filteredObjects.get(position)[5].equals("null")?"":filteredObjects.get(position)[5]);
                 holder.bookingNo.setText(filteredObjects.get(position)[0].equals("null")?"":adapterContext.getResources().getString(R.string.booking_no,filteredObjects.get(position)[0]));
                 holder.RequiredDate.setText(filteredObjects.get(position)[2].equals("null")?"":adapterContext.getResources().getString(R.string.required_dates,filteredObjects.get(position)[2]));

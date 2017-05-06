@@ -150,7 +150,7 @@ public class ListViewsActivity extends AppCompatActivity
         String webService="api/Customer/GetCustomerBookings";
         String postData =  "{\"CustomerID\":\""+1009+"\"}";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
-        String[] dataColumns={"BookingNo","ProductID","RequiredDate","BookingDate","Status","ProductName"};
+        String[] dataColumns={"BookingNo","ProductID","RequiredDate","BookingDate","StatusText","ProductName","ImageUrl"};
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
