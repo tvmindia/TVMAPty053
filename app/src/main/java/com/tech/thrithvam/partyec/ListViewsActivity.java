@@ -47,7 +47,10 @@ public class ListViewsActivity extends AppCompatActivity
                 loadWishlistProducts();
                 break;
             case "bookings":
-                loadbookings();
+                loadBookings();
+                break;
+            case "quotations":
+                loadQuotations();
                 break;
             default:
                 finish();
@@ -143,7 +146,7 @@ public class ListViewsActivity extends AppCompatActivity
                 postThread,
                 null);
     }
-    void loadbookings(){
+    void loadBookings(){
         getSupportActionBar().setTitle("Bookings ");
         listView.setSelector(android.R.color.transparent);
         //Threading-------------------------------------------------------------------------
@@ -155,6 +158,37 @@ public class ListViewsActivity extends AppCompatActivity
             @Override
             public void run() {
                 CustomAdapter adapter=new CustomAdapter(ListViewsActivity.this, common.dataArrayList,"Bookings");
+                listView.setAdapter(adapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent=new Intent(ListViewsActivity.this,ProductDetails.class);
+                        intent.putExtra("productID",common.dataArrayList.get(position)[1]);
+                        startActivity(intent);
+                    }
+                });
+            }
+        };
+        common.AsynchronousThread(ListViewsActivity.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                null);
+    }
+    void loadQuotations(){
+        getSupportActionBar().setTitle("Quotations");
+        listView.setSelector(android.R.color.transparent);
+        //Threading-------------------------------------------------------------------------
+        String webService="api/Customer/GetCustomerQuotations";
+        String postData =  "{\"CustomerID\":\""+1009+"\"}";
+        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
+        String[] dataColumns={"QuotationNo","ProductID","RequiredDate","QuotationDate","StatusText","ProductName","ImageUrl"};
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                CustomAdapter adapter=new CustomAdapter(ListViewsActivity.this, common.dataArrayList,"Quotations");
                 listView.setAdapter(adapter);
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
