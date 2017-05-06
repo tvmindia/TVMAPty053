@@ -69,6 +69,10 @@
     <string name="price_display">%1$s QR</string>
     <string name="wishlist_days">%1$s days in Wishlist</string>
     <string name="price">Price:</string>
+    <string name="required_dates">Required Date: %1$s</string>
+    <string name="booking_dates">Booking Date: %1$s</string>
+    <string name="booking_status">Booking Status: %1$s</string>
+    <string name="booking_no">Booking No: %1$s</string>
     <string name="buy">Buy</string>
     <string name="book">Book</string>
     <string name="req_quotation">Request quotation</string>

@@ -81,6 +81,8 @@ class CustomAdapter extends BaseAdapter{
         TextView address,location,city,state,country,contactNo;
         //WishList-------------------------
         TextView daysCount,price;
+        //Bookings
+        TextView bookingNo,RequiredDate,Status,BookingDate;
 
     }
 
@@ -263,6 +265,31 @@ class CustomAdapter extends BaseAdapter{
 
                 holder.daysCount.setText(filteredObjects.get(position)[3].equals("null")?"":adapterContext.getResources().getString(R.string.wishlist_days,filteredObjects.get(position)[3]));
                 holder.price.setText(filteredObjects.get(position)[4].equals("null")?"":adapterContext.getResources().getString(R.string.price_display,filteredObjects.get(position)[4]));
+                break;
+            case "Bookings":
+                if (convertView == null) {
+                    holder = new Holder();
+                    convertView = inflater.inflate(R.layout.item_bookings, null);
+                    //holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
+                    holder.bookingNo=(TextView)convertView.findViewById(R.id.booking_No);
+                    holder.productName=(TextView)convertView.findViewById(R.id.product_name);
+                    holder.RequiredDate =(TextView)convertView.findViewById(R.id.required_Date);
+                    holder.BookingDate =(TextView)convertView.findViewById(R.id.booking_Date);
+                    holder.Status =(TextView)convertView.findViewById(R.id.booking_status);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (Holder) convertView.getTag();
+                }
+                //Label loading--------------------
+               /* common.LoadImage(adapterContext,
+                        holder.productImage,
+                        adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[6],
+                        R.drawable.dim_icon);*/
+                holder.productName.setText(filteredObjects.get(position)[5].equals("null")?"":filteredObjects.get(position)[5]);
+                holder.bookingNo.setText(filteredObjects.get(position)[0].equals("null")?"":adapterContext.getResources().getString(R.string.booking_no,filteredObjects.get(position)[0]));
+                holder.RequiredDate.setText(filteredObjects.get(position)[2].equals("null")?"":adapterContext.getResources().getString(R.string.required_dates,filteredObjects.get(position)[2]));
+                holder.BookingDate.setText(filteredObjects.get(position)[3].equals("null")?"":adapterContext.getResources().getString(R.string.booking_dates,filteredObjects.get(position)[3]));
+                holder.Status.setText(filteredObjects.get(position)[4].equals("null")?"":adapterContext.getResources().getString(R.string.booking_status,filteredObjects.get(position)[4]));
                 break;
             default:
                 break;

@@ -46,6 +46,9 @@ public class ListViewsActivity extends AppCompatActivity
             case "wishlist":
                 loadWishlistProducts();
                 break;
+            case "bookings":
+                loadbookings();
+                break;
             default:
                 finish();
         }
@@ -127,6 +130,37 @@ public class ListViewsActivity extends AppCompatActivity
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent intent=new Intent(ListViewsActivity.this,ProductDetails.class);
                         intent.putExtra("productID",common.dataArrayList.get(position)[0]);
+                        startActivity(intent);
+                    }
+                });
+            }
+        };
+        common.AsynchronousThread(ListViewsActivity.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                null);
+    }
+    void loadbookings(){
+        getSupportActionBar().setTitle("Bookings ");
+        listView.setSelector(android.R.color.transparent);
+        //Threading-------------------------------------------------------------------------
+        String webService="api/Customer/GetCustomerBookings";
+        String postData =  "{\"CustomerID\":\""+1009+"\"}";
+        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
+        String[] dataColumns={"BookingNo","ProductID","RequiredDate","BookingDate","Status","ProductName"};
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                CustomAdapter adapter=new CustomAdapter(ListViewsActivity.this, common.dataArrayList,"Bookings");
+                listView.setAdapter(adapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent=new Intent(ListViewsActivity.this,ProductDetails.class);
+                        intent.putExtra("productID",common.dataArrayList.get(position)[1]);
                         startActivity(intent);
                     }
                 });
