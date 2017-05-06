@@ -159,14 +159,14 @@ public class ListViewsActivity extends AppCompatActivity
             public void run() {
                 CustomAdapter adapter=new CustomAdapter(ListViewsActivity.this, common.dataArrayList,"Bookings");
                 listView.setAdapter(adapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent intent=new Intent(ListViewsActivity.this,ProductDetails.class);
                         intent.putExtra("productID",common.dataArrayList.get(position)[1]);
                         startActivity(intent);
                     }
-                });
+                });*/
             }
         };
         common.AsynchronousThread(ListViewsActivity.this,
@@ -190,14 +190,14 @@ public class ListViewsActivity extends AppCompatActivity
             public void run() {
                 CustomAdapter adapter=new CustomAdapter(ListViewsActivity.this, common.dataArrayList,"Quotations");
                 listView.setAdapter(adapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+               /* listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent intent=new Intent(ListViewsActivity.this,ProductDetails.class);
                         intent.putExtra("productID",common.dataArrayList.get(position)[1]);
                         startActivity(intent);
                     }
-                });
+                });*/
             }
         };
         common.AsynchronousThread(ListViewsActivity.this,
