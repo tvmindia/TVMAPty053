@@ -20,9 +20,10 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean welcomeScreenShown = mPrefs.getBoolean(welcomeScreenShownPref, false);
+        if (!welcomeScreenShown) {
         final ImageView myView = (ImageView) findViewById(R.id.test);
-
-
 
         // Android native animator
         myView.post(new Runnable(){
@@ -49,9 +50,7 @@ public class SplashScreen extends AppCompatActivity {
             }
         });
 
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Boolean welcomeScreenShown = mPrefs.getBoolean(welcomeScreenShownPref, false);
-        if (!welcomeScreenShown) {
+
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
