@@ -104,4 +104,5 @@
     <string name="state_province_colon">State/Province :</string>
     <string name="please_wait">Please wait…</string>
     <string name="not_selecting">Not selected</string>
+    <string name="cart">Cart</string>
 </resources>
