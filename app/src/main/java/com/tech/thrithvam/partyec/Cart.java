@@ -35,6 +35,7 @@ String customerID;
     CustomerAddress customerAddress;
     LayoutInflater inflater;
     Double totalPrice =0.0,totalShipping=0.0;
+    String locationID="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,17 +45,25 @@ String customerID;
         getSupportActionBar().setTitle(R.string.cart);
         inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         customerID="1009";//TODO replace with customer ID
+        //Load customer's shopping cart-------------------------
         loadCart();
+        //Load customer address-----------------------------------
+        getCustomerAddress();
     }
     void loadCart(){
         final Common common=new Common();
         final ListView cartListView=(ListView) findViewById(R.id.listview);
-
-
         (findViewById(R.id.cart_scrollview)).setVisibility(View.GONE);
         //Threading-------------------------------------------------------------------------
         String webService="api/Customer/GetCustomerShoppingCart";
-        String postData =  "{\"CustomerID\":\""+customerID+"\"}";
+        String postData;
+        if(locationID.equals("")){
+            postData =  "{\"CustomerID\":\""+customerID+"\"}";
+        }
+        else {
+            postData =  "{\"CustomerID\":\""+customerID+"\",\"LocationID\":\""+locationID+"\"}";
+        }
+
         String[] dataColumns={"ID",//0
                 "ProductID",//1
                 "ProductName",//2
@@ -129,8 +138,6 @@ String customerID;
                 ((TextView)findViewById(R.id.total_shipping)).setText(getString(R.string.total_shipping,String.format(Locale.US, "%.2f",totalShipping)));
                 ((TextView)findViewById(R.id.total_amount)).setText(getString(R.string.total_amount,String.format(Locale.US, "%.2f",totalAmount)));
                 (findViewById(R.id.total_amount_card_view)).setVisibility(View.VISIBLE);
-              //Load customer address-----------------------------------
-                getCustomerAddress();
             }
         };
         common.AsynchronousThread(Cart.this,
@@ -421,6 +428,10 @@ String customerID;
         customerAddress.CountryCode=countryCode;
         customerAddress.StateProvince=(StateProvince.equals("null")?"":StateProvince);
         customerAddress.ContactNo=(ContactNo.equals("null")?"":ContactNo);
+
+        //Refresh Cart----------------------
+        this.locationID=customerAddress.LocationID;
+        loadCart();
     }
     private class CustomerAddress{
         String ID="";
