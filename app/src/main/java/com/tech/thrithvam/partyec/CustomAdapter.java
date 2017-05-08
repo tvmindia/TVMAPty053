@@ -86,7 +86,7 @@ class CustomAdapter extends BaseAdapter{
         //Quotations-------------------------
         TextView quotationNo,quotationDate;
         //Cart---------------------------------
-        TextView shipping,quantity,attributes;
+        TextView shipping,quantity;
 
     }
 
@@ -332,7 +332,6 @@ class CustomAdapter extends BaseAdapter{
                     holder.quantity=(TextView) convertView.findViewById(R.id.quantity);
                     holder.price=(TextView) convertView.findViewById(R.id.price);
                     holder.shipping=(TextView) convertView.findViewById(R.id.shipping);
-                    holder.attributes=(TextView) convertView.findViewById(R.id.attributes);
                     holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
                     convertView.setTag(holder);
                 } else {
@@ -347,7 +346,6 @@ class CustomAdapter extends BaseAdapter{
                 holder.quantity.setText(adapterContext.getResources().getString(R.string.quantity,filteredObjects.get(position)[5].equals("null")?"-":filteredObjects.get(position)[5]));
                 holder.price.setText(adapterContext.getResources().getString(R.string.price_display_2,filteredObjects.get(position)[6].equals("null")?"-":filteredObjects.get(position)[6]));
                 holder.shipping.setText(adapterContext.getResources().getString(R.string.shipping_charge,filteredObjects.get(position)[7].equals("null")?"-":filteredObjects.get(position)[7]));
-                holder.attributes.setText(filteredObjects.get(position)[4]);
                 break;
             default:
                 break;

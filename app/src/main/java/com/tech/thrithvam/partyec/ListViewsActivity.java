@@ -52,6 +52,9 @@ public class ListViewsActivity extends AppCompatActivity
             case "quotations":
                 loadQuotations();
                 break;
+            case "orders":
+                loadOrder();
+                break;
             default:
                 finish();
         }
@@ -189,6 +192,37 @@ public class ListViewsActivity extends AppCompatActivity
             @Override
             public void run() {
                 CustomAdapter adapter=new CustomAdapter(ListViewsActivity.this, common.dataArrayList,"Quotations");
+                listView.setAdapter(adapter);
+               /* listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent=new Intent(ListViewsActivity.this,ProductDetails.class);
+                        intent.putExtra("productID",common.dataArrayList.get(position)[1]);
+                        startActivity(intent);
+                    }
+                });*/
+            }
+        };
+        common.AsynchronousThread(ListViewsActivity.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                null);
+    }
+    void loadOrder(){
+        getSupportActionBar().setTitle("Orders");
+        listView.setSelector(android.R.color.transparent);
+        //Threading-------------------------------------------------------------------------
+        String webService="api/Customer/GetCustomerOrders";
+        String postData =  "{\"CustomerID\":\""+1007+"\"}";
+        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
+        String[] dataColumns={"OrderNo","OrderDate","OrderStatus","TotalOrderAmt"};
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                CustomAdapter adapter=new CustomAdapter(ListViewsActivity.this, common.dataArrayList,"Orders");
                 listView.setAdapter(adapter);
                /* listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
