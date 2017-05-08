@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -17,6 +18,7 @@ public class ContactUs extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Common common=new Common();
     EditText name,email,phone,comment;
+    String Name,Email,Phone,Comments;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +58,45 @@ public class ContactUs extends AppCompatActivity
             AVLoadingIndicatorView loadingIndicatorView=(AVLoadingIndicatorView)findViewById(R.id.loading_indicator);
             loadingIndicatorView.setVisibility(View.VISIBLE);
             view.setVisibility(View.GONE);
+            loadQuotations();
+
         }
+    }
+
+
+    void loadQuotations(){
+
+        Name= name.getText().toString();
+        Email= email.getText().toString();
+        Phone= phone.getText().toString();
+        Comments= comment.getText().toString();
+        //Threading-------------------------------------------------------------------------
+        String webService="api/Customer/SendContactUsEmail";
+        String postData =  "{\"Name\":\""+Name+"\",\"Email\":\""+Email+"\",\"Phone\":\""+Phone+"\",\"Comments\":\""+Comments+"\"}";
+        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
+        String[] dataColumns={};
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+
+                    Toast.makeText(ContactUs.this, R.string.contact_us_email, Toast.LENGTH_SHORT).show();
+            }
+        };
+        Runnable postFailThread=new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(ContactUs.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                (findViewById(R.id.btn_send)).setVisibility(View.VISIBLE);
+            }
+        };
+        common.AsynchronousThread(ContactUs.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                postFailThread
+                );
     }
     @Override
     public void onBackPressed() {

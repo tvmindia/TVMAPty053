@@ -88,6 +88,7 @@
     <string name="available_options">Available options</string>
     <string name="some_error_at_server">Some error at server</string>
     <string name="added_to_wishlist">Added to Wishlist</string>
+    <string name="contact_us_email">Contact Us Request Send Successfully</string>
     <string name="removed_from_wishlist">Removed from Wishlist</string>
     <string name="required_date">Required date</string>
     <string name="optional">Optional</string>
