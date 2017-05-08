@@ -112,6 +112,7 @@
     <string name="quantity">Quantity : %1$s</string>
     <string name="price_display_2">Price : %1$s QR</string>
     <string name="shipping_charge">Shipping charge : %1$s QR</string>
+    <string name="total_price">Total price : %1$s QR</string>
     <string name="total_amount">Total Amount : %1$s QR</string>
     <string name="total_shipping">Total delivery charges : %1$s QR</string>
 </resources>

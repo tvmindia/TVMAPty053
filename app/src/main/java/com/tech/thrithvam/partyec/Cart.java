@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -22,6 +21,7 @@ import android.widget.Toast;
 
 import com.wang.avi.AVLoadingIndicatorView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,7 +34,7 @@ public class Cart extends AppCompatActivity {
 String customerID;
     CustomerAddress customerAddress;
     LayoutInflater inflater;
-    Double totalAmount=0.0,totalShipping=0.0;
+    Double totalPrice =0.0,totalShipping=0.0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +68,30 @@ String customerID;
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
-                (findViewById(R.id.cart_scrollview)).setVisibility(View.VISIBLE);
+                //Attributes parsing
+                String attributesString="";
+                for (int i=0;i<common.dataArrayList.size();i++){
+                    try {
+                        JSONArray jsonArray=new JSONArray(common.dataArrayList.get(i)[4]);
+                        if(jsonArray.length()!=0){
+                            for (int j=0;j<jsonArray.length();j++){
+                                JSONObject attribute=jsonArray.getJSONObject(j);
+                                attributesString+=attribute.optString("Caption")+" : "+attribute.optString("Value")+"\n";
+                            }
+                            if (attributesString.lastIndexOf("\n") > 0) {
+                                attributesString = attributesString.substring(0, attributesString.lastIndexOf("\n"));
+                                common.dataArrayList.get(i)[4]=attributesString;
+                            }
+                        }
+                        else {
+                            common.dataArrayList.get(i)[4]="";
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                //cart list
                 CustomAdapter adapter=new CustomAdapter(Cart.this, common.dataArrayList,"Cart");
                 cartListView.setAdapter(adapter);
                 cartListView.setSelector(android.R.color.transparent);
@@ -95,13 +118,16 @@ String customerID;
                         return false;
                     }
                 });*/
+              (findViewById(R.id.cart_scrollview)).setVisibility(View.VISIBLE);
               //Totaling-----------------------------------
                 for(int i=0;i<common.dataArrayList.size();i++){
-                    totalAmount+=Double.parseDouble(common.dataArrayList.get(i)[6].equals("null")?"0":common.dataArrayList.get(i)[6]);
+                    totalPrice +=Double.parseDouble(common.dataArrayList.get(i)[6].equals("null")?"0":common.dataArrayList.get(i)[6]);
                     totalShipping+=Double.parseDouble(common.dataArrayList.get(i)[7].equals("null")?"0":common.dataArrayList.get(i)[7]);
                 }
-                ((TextView)findViewById(R.id.total_amount)).setText(getString(R.string.total_amount,String.format(Locale.US, "%.2f",totalAmount)));
+                Double totalAmount=totalPrice+totalShipping;
+                ((TextView)findViewById(R.id.total_price)).setText(getString(R.string.total_price,String.format(Locale.US, "%.2f", totalPrice)));
                 ((TextView)findViewById(R.id.total_shipping)).setText(getString(R.string.total_shipping,String.format(Locale.US, "%.2f",totalShipping)));
+                ((TextView)findViewById(R.id.total_amount)).setText(getString(R.string.total_amount,String.format(Locale.US, "%.2f",totalAmount)));
                 (findViewById(R.id.total_amount_card_view)).setVisibility(View.VISIBLE);
               //Load customer address-----------------------------------
                 getCustomerAddress();

@@ -62,6 +62,15 @@
             android:textColor="@color/primary_text"
             android:textSize="13sp"
             android:id="@+id/shipping"
+            android:paddingBottom="3dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Attributes"
+            android:textColor="@color/secondary_text"
+            android:textSize="14sp"
+            android:id="@+id/attributes"
             android:paddingBottom="5dp"
             />
 </LinearLayout>
