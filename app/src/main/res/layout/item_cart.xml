@@ -60,9 +60,9 @@
             android:layout_height="wrap_content"
             android:text="@string/shipping_charge"
             android:textColor="@color/primary_text"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:id="@+id/shipping"
-            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             />
 </LinearLayout>
     </RelativeLayout>
