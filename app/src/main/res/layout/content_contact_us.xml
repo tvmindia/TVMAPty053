@@ -106,7 +106,8 @@
                 android:textColor="@android:color/white"
                 android:background="@drawable/button"
                 android:layout_gravity="right"
-                android:onClick="submitRequest"/>
+                android:onClick="submitRequest"
+                android:id="@+id/btn_send"/>
             <com.wang.avi.AVLoadingIndicatorView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
