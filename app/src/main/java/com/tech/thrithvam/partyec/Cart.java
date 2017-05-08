@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import static android.view.View.GONE;
 
@@ -99,6 +100,9 @@ String customerID;
                     totalAmount+=Double.parseDouble(common.dataArrayList.get(i)[6].equals("null")?"0":common.dataArrayList.get(i)[6]);
                     totalShipping+=Double.parseDouble(common.dataArrayList.get(i)[7].equals("null")?"0":common.dataArrayList.get(i)[7]);
                 }
+                ((TextView)findViewById(R.id.total_amount)).setText(getString(R.string.total_amount,String.format(Locale.US, "%.2f",totalAmount)));
+                ((TextView)findViewById(R.id.total_shipping)).setText(getString(R.string.total_shipping,String.format(Locale.US, "%.2f",totalShipping)));
+                (findViewById(R.id.total_amount_card_view)).setVisibility(View.VISIBLE);
               //Load customer address-----------------------------------
                 getCustomerAddress();
             }
