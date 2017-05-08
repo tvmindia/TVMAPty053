@@ -87,6 +87,8 @@ class CustomAdapter extends BaseAdapter{
         TextView quotationNo,quotationDate;
         //Cart---------------------------------
         TextView shipping,quantity;
+        //Order----------------------------------
+        TextView orderNo,orderDate,orderStatus,totalAmount;
 
     }
 
@@ -346,6 +348,26 @@ class CustomAdapter extends BaseAdapter{
                 holder.quantity.setText(adapterContext.getResources().getString(R.string.quantity,filteredObjects.get(position)[5].equals("null")?"-":filteredObjects.get(position)[5]));
                 holder.price.setText(adapterContext.getResources().getString(R.string.price_display_2,filteredObjects.get(position)[6].equals("null")?"-":filteredObjects.get(position)[6]));
                 holder.shipping.setText(adapterContext.getResources().getString(R.string.shipping_charge,filteredObjects.get(position)[7].equals("null")?"-":filteredObjects.get(position)[7]));
+                break;
+            //---------------------------------------- Orders --------------------------------------
+            case "Orders":
+                if (convertView == null) {
+                    holder = new Holder();
+                    convertView = inflater.inflate(R.layout.item_orders, null);
+                    holder.orderNo = (TextView) convertView.findViewById(R.id.order_no);
+                    holder.orderDate=(TextView) convertView.findViewById(R.id.order_date);
+                    holder.orderStatus=(TextView) convertView.findViewById(R.id.order_status);
+                    holder.totalAmount=(TextView) convertView.findViewById(R.id.order_amount);
+
+                    convertView.setTag(holder);
+                } else {
+                    holder = (Holder) convertView.getTag();
+                }
+                //Label loading--------------------
+                holder.orderNo.setText(filteredObjects.get(position)[0].equals("null")?"":adapterContext.getResources().getString(R.string.order_no,filteredObjects.get(position)[0]));
+                holder.orderDate.setText(filteredObjects.get(position)[1].equals("null")?"":adapterContext.getResources().getString(R.string.order_dates,filteredObjects.get(position)[1]));
+                holder.orderStatus.setText(filteredObjects.get(position)[2].equals("null")?"":adapterContext.getResources().getString(R.string.order_status,filteredObjects.get(position)[2]));
+                holder.totalAmount.setText(filteredObjects.get(position)[3].equals("null")?"":adapterContext.getResources().getString(R.string.order_total,filteredObjects.get(position)[3]));
                 break;
             default:
                 break;
