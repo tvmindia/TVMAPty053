@@ -345,9 +345,9 @@ class CustomAdapter extends BaseAdapter{
                         holder.productImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[3],
                         R.drawable.dim_icon);
-                holder.quantity.setText(filteredObjects.get(position)[5].equals("null")?"":filteredObjects.get(position)[5]);
-                holder.price.setText(filteredObjects.get(position)[6].equals("null")?"":filteredObjects.get(position)[6]);
-                holder.shipping.setText(filteredObjects.get(position)[7].equals("null")?"":filteredObjects.get(position)[7]);
+                holder.quantity.setText(adapterContext.getResources().getString(R.string.quantity,filteredObjects.get(position)[5].equals("null")?"-":filteredObjects.get(position)[5]));
+                holder.price.setText(adapterContext.getResources().getString(R.string.price_display_2,filteredObjects.get(position)[6].equals("null")?"-":filteredObjects.get(position)[6]));
+                holder.shipping.setText(adapterContext.getResources().getString(R.string.shipping_charge,filteredObjects.get(position)[7].equals("null")?"-":filteredObjects.get(position)[7]));
                 break;
             //---------------------------------------- Orders --------------------------------------
             case "Orders":

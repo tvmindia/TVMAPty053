@@ -64,7 +64,7 @@ public class SplashScreen extends AppCompatActivity {
             editor.apply();
         }
         else {
-            startActivity(new Intent(SplashScreen.this, Home.class));
+            startActivity(new Intent(SplashScreen.this, Cart.class));
             finish();
         }
     }
