@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:layout_margin="5dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/order_no"
+            android:textColor="@color/primary_text"
+            android:textSize="18sp"
+            android:id="@+id/order_no"
+            android:maxLines="1"
+            android:ellipsize="end"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/order_status"
+            android:textColor="@color/primary_text"
+            android:textSize="14sp"
+            android:id="@+id/order_status"
+            android:layout_below="@id/order_no"
+            />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/order_dates"
+            android:textColor="@color/primary_text"
+            android:textSize="14sp"
+            android:id="@+id/order_date"
+            android:paddingTop="5dp"
+            android:layout_below="@id/order_status"
+            android:layout_marginBottom="2dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/order_total"
+            android:textColor="@color/primary_text"
+            android:textSize="14sp"
+            android:id="@+id/order_amount"
+            android:paddingTop="5dp"
+            android:layout_below="@id/order_date"
+            android:layout_marginBottom="2dp"/>
+
+
+
+    </RelativeLayout>
+</LinearLayout>

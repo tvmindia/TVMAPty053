@@ -56,6 +56,10 @@ class Common {
             Intent intent=new Intent (context,ListViewsActivity.class);
             intent.putExtra("list","quotations");
             context.startActivity(intent);
+        }else if (id==R.id.nav_view_orders){
+            Intent intent=new Intent (context,ListViewsActivity.class);
+            intent.putExtra("list","orders");
+            context.startActivity(intent);
         }/* else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
