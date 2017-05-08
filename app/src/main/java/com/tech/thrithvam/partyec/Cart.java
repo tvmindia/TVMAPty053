@@ -431,6 +431,7 @@ String customerID;
 
         //Refresh Cart----------------------
         this.locationID=customerAddress.LocationID;
+        totalShipping=0.0;totalPrice=0.0;
         loadCart();
     }
     private class CustomerAddress{
