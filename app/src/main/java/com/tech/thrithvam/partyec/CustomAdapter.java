@@ -88,7 +88,7 @@ class CustomAdapter extends BaseAdapter{
         //Cart---------------------------------
         TextView shipping,quantity,attributes;
         //Order----------------------------------
-        TextView orderNo,orderDate,orderStatus,totalAmount;
+        TextView orderNo,orderDate,orderStatus,totalAmount,taxAmount;
 
     }
 
@@ -370,6 +370,39 @@ class CustomAdapter extends BaseAdapter{
                 holder.orderDate.setText(filteredObjects.get(position)[1].equals("null")?"":adapterContext.getResources().getString(R.string.order_dates,filteredObjects.get(position)[1]));
                 holder.orderStatus.setText(filteredObjects.get(position)[2].equals("null")?"":adapterContext.getResources().getString(R.string.order_status,filteredObjects.get(position)[2]));
                 holder.totalAmount.setText(filteredObjects.get(position)[3].equals("null")?"":adapterContext.getResources().getString(R.string.order_total,filteredObjects.get(position)[3]));
+                break;
+            case "OrderDetails":
+
+                if (convertView == null) {
+                    holder = new Holder();
+                    convertView = inflater.inflate(R.layout.item_order_details, null);
+                    holder.productName = (TextView) convertView.findViewById(R.id.product_name);
+                    holder.quantity=(TextView) convertView.findViewById(R.id.quantity);
+                    holder.price=(TextView) convertView.findViewById(R.id.price);
+                    holder.shipping=(TextView) convertView.findViewById(R.id.shipping);
+                    holder.taxAmount=(TextView) convertView.findViewById(R.id.tax_amount);
+                    holder.totalAmount=(TextView) convertView.findViewById(R.id.total_amount);
+                    holder.attributes=(TextView) convertView.findViewById(R.id.attributes);
+                    holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (Holder) convertView.getTag();
+                }
+                //Label loading--------------------
+                holder.productName.setText(filteredObjects.get(position)[1].equals("null")?"":filteredObjects.get(position)[1]);
+                holder.attributes.setText(filteredObjects.get(position)[2]);
+                holder.quantity.setText(adapterContext.getResources().getString(R.string.quantity,filteredObjects.get(position)[3].equals("null")?"-":filteredObjects.get(position)[3]));
+                holder.price.setText(adapterContext.getResources().getString(R.string.price_display_2,filteredObjects.get(position)[4].equals("null")?"-":filteredObjects.get(position)[4]));
+                holder.shipping.setText(adapterContext.getResources().getString(R.string.shipping_charge,filteredObjects.get(position)[5].equals("null")?"-":filteredObjects.get(position)[5]));
+                holder.taxAmount.setText(adapterContext.getResources().getString(R.string.tax_amount,filteredObjects.get(position)[6].equals("null")?"-":filteredObjects.get(position)[6]));
+                holder.totalAmount.setText(filteredObjects.get(position)[7].equals("null")?"":adapterContext.getResources().getString(R.string.order_total,filteredObjects.get(position)[7]));
+                common.LoadImage(adapterContext,
+                        holder.productImage,
+                        adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[8],
+                        R.drawable.dim_icon);
+
+
+
                 break;
             default:
                 break;

@@ -72,7 +72,7 @@
     <string name="order_total">Grand Total: %1$s</string>
     <string name="order_status">Order Status: %1$s</string>
     <string name="order_no">Order No: %1$s</string>
-    <string name="order_dates">Order Date Date: %1$s</string>
+    <string name="order_dates">Order Date: %1$s</string>
     <string name="required_dates">Required Date: %1$s</string>
     <string name="booking_dates">Booking Date: %1$s</string>
     <string name="booking_status">Booking Status: %1$s</string>
@@ -116,6 +116,7 @@
     <string name="quantity">Quantity : %1$s</string>
     <string name="price_display_2">Price : %1$s QR</string>
     <string name="shipping_charge">Shipping charge : %1$s QR</string>
+    <string name="tax_amount">Tax Amount : %1$s QR</string>
     <string name="total_price">Total price : %1$s QR</string>
     <string name="total_amount">Total Amount : %1$s QR</string>
     <string name="total_shipping">Total delivery charges : %1$s QR</string>

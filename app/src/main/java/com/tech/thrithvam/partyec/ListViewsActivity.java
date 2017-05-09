@@ -15,8 +15,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.wang.avi.AVLoadingIndicatorView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ListViewsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -54,6 +59,9 @@ public class ListViewsActivity extends AppCompatActivity
                 break;
             case "orders":
                 loadOrder();
+                break;
+            case "ordersDetails":
+                loadorderDetails(getIntent().getExtras().getString("ID"));
                 break;
             default:
                 finish();
@@ -218,20 +226,21 @@ public class ListViewsActivity extends AppCompatActivity
         String webService="api/Customer/GetCustomerOrders";
         String postData =  "{\"CustomerID\":\""+1007+"\"}";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
-        String[] dataColumns={"OrderNo","OrderDate","OrderStatus","TotalOrderAmt"};
+        String[] dataColumns={"OrderNo","OrderDate","OrderStatus","TotalOrderAmt","ID"};
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
                 CustomAdapter adapter=new CustomAdapter(ListViewsActivity.this, common.dataArrayList,"Orders");
                 listView.setAdapter(adapter);
-               /* listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent intent=new Intent(ListViewsActivity.this,ProductDetails.class);
-                        intent.putExtra("productID",common.dataArrayList.get(position)[1]);
+                   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent=new Intent (ListViewsActivity.this,ListViewsActivity.class);
+                        intent.putExtra("list","ordersDetails");
+                        intent.putExtra("ID",common.dataArrayList.get(position)[4]);
                         startActivity(intent);
                     }
-                });*/
+                });
             }
         };
         common.AsynchronousThread(ListViewsActivity.this,
@@ -242,7 +251,54 @@ public class ListViewsActivity extends AppCompatActivity
                 postThread,
                 null);
     }
+    void loadorderDetails(String ID ){
+        getSupportActionBar().setTitle("Order Details");
+        listView.setSelector(android.R.color.transparent);
+        //Threading-------------------------------------------------------------------------
+        String webService="api/Customer/GetCustomerOrderDetails";
+        String postData =  "{\"OrderID\":\""+ID+"\"}";
+        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
+        String[] dataColumns={"OrderDetailID","ProductName","AttributeValues","Qty","Price","ShippingAmt","TaxAmt","SubTotal","ImageUrl"};
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
 
+                //Attributes parsing
+                for (int i=0;i<common.dataArrayList.size();i++){
+                    String attributesString="";
+                    try {
+                        JSONArray jsonArray=new JSONArray(common.dataArrayList.get(i)[2]);
+                        if(jsonArray.length()!=0){
+                            for (int j=0;j<jsonArray.length();j++){
+                                JSONObject attribute=jsonArray.getJSONObject(j);
+                                attributesString+=attribute.optString("Caption")+" : "+attribute.optString("Value")+"\n";
+                            }
+                            if (attributesString.lastIndexOf("\n") > 0) {
+                                attributesString = attributesString.substring(0, attributesString.lastIndexOf("\n"));
+                                common.dataArrayList.get(i)[2]=attributesString;
+                            }
+                        }
+                        else {
+                            common.dataArrayList.get(i)[2]="";
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                CustomAdapter adapter=new CustomAdapter(ListViewsActivity.this, common.dataArrayList,"OrderDetails");
+                listView.setAdapter(adapter);
+            }
+        };
+        common.AsynchronousThread(ListViewsActivity.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                null);
+    }
 
 
     @Override
