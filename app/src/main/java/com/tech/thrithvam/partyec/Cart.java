@@ -3,6 +3,7 @@ package com.tech.thrithvam.partyec;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import static android.view.View.GONE;
 public class Cart extends AppCompatActivity {
 String customerID;
     CustomerAddress customerAddress;
+    CustomerAddress billingAddress;
     LayoutInflater inflater;
     Double totalPrice =0.0,totalShipping=0.0;
     String locationID="";
@@ -192,11 +194,13 @@ String customerID;
                 }).setNegativeButton(R.string.no, null).show();
     }
     //Address--------------------------------------------------------------------------------------------------------------------
-    View addressView;
+    View addressView,billingAddressView;
     void getCustomerAddress(){
         final Common common=new Common();
         customerAddress=new CustomerAddress();
+        billingAddress=new CustomerAddress();
         addressView=inflater.inflate(R.layout.item_address, null);
+        billingAddressView=inflater.inflate(R.layout.item_address, null);
         ((LinearLayout)findViewById(R.id.customer_address_linear)).addView(addressView);
         //Threading--------------------------------------------------
         String webService="api/customer/GetCustomerAddress";
@@ -223,6 +227,7 @@ String customerID;
                 for (int i=0;i<common.dataArrayList.size();i++){
                     if(common.dataArrayList.get(i)[11].equals("true")){
                         setAddressDisplayAndObject(addressView,
+                                customerAddress,
                                 common.dataArrayList.get(i)[0],
                                 common.dataArrayList.get(i)[1],
                                 common.dataArrayList.get(i)[2],
@@ -254,6 +259,7 @@ String customerID;
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         setAddressDisplayAndObject(addressView,
+                                                customerAddress,
                                                 common.dataArrayList.get(which)[0],
                                                 common.dataArrayList.get(which)[1],
                                                 common.dataArrayList.get(which)[2],
@@ -267,12 +273,16 @@ String customerID;
                                                 common.dataArrayList.get(which)[10],
                                                 common.dataArrayList.get(which)[13]
                                         );
+                                        //Refresh Cart----------------------
+                                        locationID=customerAddress.LocationID;
+                                        totalShipping=0.0;totalPrice=0.0;
+                                        loadCart();
                                     }
                                 });
                                 selectAddressAlert.setPositiveButton(R.string.new_address,  new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        inputNewAddress();
+                                        inputNewAddress(addressView,customerAddress);
                                     }
                                 });
                                 selectAddressAlert.show();
@@ -282,6 +292,60 @@ String customerID;
                     }
                 }
                 findViewById(R.id.customer_address).setVisibility(View.VISIBLE);
+                //Billing address---------------
+                findViewById(R.id.billing_address).setVisibility(View.VISIBLE);
+                (findViewById(R.id.change_billing_address)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        AlertDialog.Builder selectAddressAlert = new AlertDialog.Builder(Cart.this);
+                        selectAddressAlert.setIcon(R.drawable.user);
+                        selectAddressAlert.setTitle(R.string.select_address);
+                        CustomAdapter customAdapter=new CustomAdapter(Cart.this,common.dataArrayList,"Address");
+                        selectAddressAlert.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        selectAddressAlert.setAdapter(customAdapter, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                setAddressDisplayAndObject(billingAddressView,
+                                        billingAddress,
+                                        common.dataArrayList.get(which)[0],
+                                        common.dataArrayList.get(which)[1],
+                                        common.dataArrayList.get(which)[2],
+                                        common.dataArrayList.get(which)[3],
+                                        common.dataArrayList.get(which)[4],
+                                        common.dataArrayList.get(which)[5],
+                                        common.dataArrayList.get(which)[6],
+                                        common.dataArrayList.get(which)[7],
+                                        common.dataArrayList.get(which)[8],
+                                        common.dataArrayList.get(which)[9],
+                                        common.dataArrayList.get(which)[10],
+                                        common.dataArrayList.get(which)[13]
+                                );
+                                //selecting an address
+                                (findViewById(R.id.same_address_label)).setVisibility(GONE);
+                                ((LinearLayout)findViewById(R.id.billing_address_linear)).removeView(billingAddressView);
+                                ((LinearLayout)findViewById(R.id.billing_address_linear)).addView(billingAddressView);
+                            }
+                        });
+                        selectAddressAlert.setPositiveButton(R.string.new_address,  new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                inputNewAddress(billingAddressView,billingAddress);
+                                //selecting an address
+                                (findViewById(R.id.same_address_label)).setVisibility(GONE);
+                                ((LinearLayout)findViewById(R.id.billing_address_linear)).removeView(billingAddressView);
+                                ((LinearLayout)findViewById(R.id.billing_address_linear)).addView(billingAddressView);
+                            }
+                        });
+                        selectAddressAlert.show();
+                    }
+                });
+
             }
         };
         Runnable postFailThread=new Runnable() {
@@ -298,7 +362,7 @@ String customerID;
                 postThread,
                 postFailThread);
     }
-    void inputNewAddress(){
+    void inputNewAddress(final View targetView, final CustomerAddress targetAddress){
         final Common common1=new Common();
         final Common common2=new Common();
         final ArrayList<String> locations=new ArrayList<>();
@@ -377,7 +441,8 @@ String customerID;
                                             ((EditText)newAddressView.findViewById(R.id.contact_no)).setError(getResources().getString(R.string.give_valid));
                                         }
                                         else {
-                                            setAddressDisplayAndObject(addressView,
+                                            setAddressDisplayAndObject(targetView,
+                                                    targetAddress,
                                                     "null",
                                                     ((EditText)newAddressView.findViewById(R.id.prefix)).getText().toString(),
                                                     ((EditText)newAddressView.findViewById(R.id.first_name)).getText().toString(),
@@ -436,7 +501,7 @@ String customerID;
                 postThread,
                 postFailThread);
     }
-    void setAddressDisplayAndObject(View addressView,String ID,String Prefix,String FirstName,String MidName,String LastName,String Address,String Location,String City,String StateProvince,String countryJson,String ContactNo,String LocationID){
+    void setAddressDisplayAndObject(View addressView, CustomerAddress addressObject, String ID, String Prefix, String FirstName, String MidName, String LastName, String Address, String Location, String City, String StateProvince, String countryJson, String ContactNo, String LocationID){
         String name=(Prefix.equals("null")?"":Prefix)           +   " "
                 +   (FirstName.equals("null")?"":FirstName)     +   " "
                 +   (MidName.equals("null")?"":MidName)         +   " "
@@ -459,23 +524,18 @@ String customerID;
         ((TextView)addressView.findViewById(R.id.contact_no)).setText(ContactNo.equals("null")?"-":ContactNo);
 
 
-        customerAddress.ID=(ID.equals("null")?"":ID);
-        customerAddress.CustomerID=customerID;
-        customerAddress.Prefix=(Prefix.equals("null")?"":Prefix);
-        customerAddress.FirstName=(FirstName.equals("null")?"":FirstName);
-        customerAddress.MidName=(MidName.equals("null")?"":MidName);
-        customerAddress.LastName=(LastName.equals("null")?"":LastName);
-        customerAddress.Address=(Address.equals("null")?"":Address);
-        customerAddress.LocationID=(LocationID.equals("null")?"":LocationID);
-        customerAddress.City=(City.equals("null")?"":City);
-        customerAddress.CountryCode=countryCode;
-        customerAddress.StateProvince=(StateProvince.equals("null")?"":StateProvince);
-        customerAddress.ContactNo=(ContactNo.equals("null")?"":ContactNo);
-
-        //Refresh Cart----------------------
-        this.locationID=customerAddress.LocationID;
-        totalShipping=0.0;totalPrice=0.0;
-        loadCart();
+        addressObject.ID=(ID.equals("null")?"":ID);
+        addressObject.CustomerID=customerID;
+        addressObject.Prefix=(Prefix.equals("null")?"":Prefix);
+        addressObject.FirstName=(FirstName.equals("null")?"":FirstName);
+        addressObject.MidName=(MidName.equals("null")?"":MidName);
+        addressObject.LastName=(LastName.equals("null")?"":LastName);
+        addressObject.Address=(Address.equals("null")?"":Address);
+        addressObject.LocationID=(LocationID.equals("null")?"":LocationID);
+        addressObject.City=(City.equals("null")?"":City);
+        addressObject.CountryCode=countryCode;
+        addressObject.StateProvince=(StateProvince.equals("null")?"":StateProvince);
+        addressObject.ContactNo=(ContactNo.equals("null")?"":ContactNo);
     }
     private class CustomerAddress{
         String ID="";
