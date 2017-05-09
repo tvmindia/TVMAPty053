@@ -148,6 +148,49 @@ String customerID;
                 postThread,
                 null);
     }
+    public void removeFromCart(final View view){
+        new AlertDialog.Builder(Cart.this).setIcon(android.R.drawable.ic_dialog_alert)//.setTitle(R.string.exit)
+                .setMessage(R.string.remove_item_q)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Common common=new Common();
+                        final ProgressDialog progressDialog=new ProgressDialog(Cart.this);
+                        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+                        progressDialog.setCancelable(false);progressDialog.show();
+                        //Threading--------------------------------------------------
+                        String webService="api/order/RemoveProductFromCart";
+                        String postData =  "{\"ID\":\""+(String) view.getTag()+"\"}";
+                        String[] dataColumns={};
+                        Toast.makeText(Cart.this, postData, Toast.LENGTH_SHORT).show();
+                        Runnable postThread=new Runnable() {
+                            @Override
+                            public void run() {
+                                if (progressDialog.isShowing())
+                                    progressDialog.dismiss();
+                                //Refresh Cart----------------------
+                                totalShipping=0.0;totalPrice=0.0;
+                                loadCart();
+                            }
+                        };
+                        Runnable postFailThread=new Runnable() {
+                            @Override
+                            public void run() {
+                                if (progressDialog.isShowing())
+                                    progressDialog.dismiss();
+                                Toast.makeText(Cart.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                            }
+                        };
+                        common.AsynchronousThread(Cart.this,
+                                webService,
+                                postData,
+                                null,
+                                dataColumns,
+                                postThread,
+                                postFailThread);
+                    }
+                }).setNegativeButton(R.string.no, null).show();
+    }
     //Address--------------------------------------------------------------------------------------------------------------------
     View addressView;
     void getCustomerAddress(){

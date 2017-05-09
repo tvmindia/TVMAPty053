@@ -119,4 +119,7 @@
     <string name="total_price">Total price : %1$s QR</string>
     <string name="total_amount">Total Amount : %1$s QR</string>
     <string name="total_shipping">Total delivery charges : %1$s QR</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="remove_item_q">Remove this item from cart?</string>
 </resources>

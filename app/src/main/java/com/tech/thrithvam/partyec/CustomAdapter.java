@@ -87,6 +87,7 @@ class CustomAdapter extends BaseAdapter{
         TextView quotationNo,quotationDate;
         //Cart---------------------------------
         TextView shipping,quantity,attributes;
+        ImageView closeIcon;
         //Order----------------------------------
         TextView orderNo,orderDate,orderStatus,totalAmount;
 
@@ -336,11 +337,13 @@ class CustomAdapter extends BaseAdapter{
                     holder.shipping=(TextView) convertView.findViewById(R.id.shipping);
                     holder.attributes=(TextView) convertView.findViewById(R.id.attributes);
                     holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
+                    holder.closeIcon=(ImageView) convertView.findViewById(R.id.close_icon);
                     convertView.setTag(holder);
                 } else {
                     holder = (Holder) convertView.getTag();
                 }
                 //Label loading--------------------
+                holder.closeIcon.setTag(filteredObjects.get(position)[0]);
                 holder.productName.setText(filteredObjects.get(position)[2]);
                 common.LoadImage(adapterContext,
                         holder.productImage,
