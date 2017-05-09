@@ -55,7 +55,7 @@ String customerID;
         final ListView cartListView=(ListView) findViewById(R.id.listview);
         (findViewById(R.id.cart_scrollview)).setVisibility(View.GONE);
         //Threading-------------------------------------------------------------------------
-        String webService="api/Customer/GetCustomerShoppingCart";
+        String webService="api/Order/GetCustomerCart";
         String postData;
         if(locationID.equals("")){
             postData =  "{\"CustomerID\":\""+customerID+"\"}";
@@ -78,8 +78,8 @@ String customerID;
             @Override
             public void run() {
                 //Attributes parsing
-                String attributesString="";
                 for (int i=0;i<common.dataArrayList.size();i++){
+                    String attributesString="";
                     try {
                         JSONArray jsonArray=new JSONArray(common.dataArrayList.get(i)[4]);
                         if(jsonArray.length()!=0){
