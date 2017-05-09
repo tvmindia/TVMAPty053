@@ -7,7 +7,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
+<ImageView
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:paddingLeft="10dp"
+    android:paddingStart="10dp"
+    android:paddingBottom="10dp"
+    android:src="@drawable/close"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true"
+    android:onClick="removeFromCart"
+    android:id="@+id/close_icon"/>
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
