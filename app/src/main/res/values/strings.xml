@@ -1,10 +1,9 @@
 <resources>
     <string name="app_name">PartyEC</string>
     <string name="url" translatable="false">http://192.168.1.109:456/</string>
-
+    <!--<string name="url" translatable="false">http://192.168.1.110:97/</string>-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="home">Home</string>
     <string name="shop_by_category">Shop by Category</string>
     <string name="shop_by_occasion">Shop by Occasion</string>

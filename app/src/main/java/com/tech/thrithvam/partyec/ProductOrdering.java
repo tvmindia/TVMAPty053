@@ -456,42 +456,87 @@ public class ProductOrdering extends AppCompatActivity {
                         (findViewById(R.id.change_address)).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                AlertDialog.Builder selectAddressAlert = new AlertDialog.Builder(ProductOrdering.this);
-                                selectAddressAlert.setIcon(R.drawable.user);
-                                selectAddressAlert.setTitle(R.string.select_address);
-                                CustomAdapter customAdapter=new CustomAdapter(ProductOrdering.this,common.dataArrayList,"Address");
-                                selectAddressAlert.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                final Common common1=new Common();
+                                //Threading--------------------------------------------------
+                                String webService="api/customer/GetCustomerAddress";
+                                String postData =  "{\"CustomerID\":\""+customerID+"\"}";
+                                final ProgressDialog progressDialog=new ProgressDialog(ProductOrdering.this);
+                                progressDialog.setMessage(getResources().getString(R.string.please_wait));
+                                progressDialog.setCancelable(false);progressDialog.show();
+                                String[] dataColumns={"ID",//0
+                                        "Prefix",//1
+                                        "FirstName",//2
+                                        "MidName",//3
+                                        "LastName",//4
+                                        "Address",//5
+                                        "Location",//6
+                                        "City",//7
+                                        "StateProvince",//8
+                                        "country",//9
+                                        "ContactNo",//10
+                                        "BillDefaultYN",//11
+                                        "ShipDefaultYN",//12
+                                        "LocationID"//13
+                                };
+                                Runnable postThread=new Runnable() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
+                                    public void run() {
+                                        AlertDialog.Builder selectAddressAlert = new AlertDialog.Builder(ProductOrdering.this);
+                                        selectAddressAlert.setIcon(R.drawable.user);
+                                        selectAddressAlert.setTitle(R.string.select_address);
+                                        CustomAdapter customAdapter=new CustomAdapter(ProductOrdering.this,common1.dataArrayList,"Address");
+                                        selectAddressAlert.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                        selectAddressAlert.setAdapter(customAdapter, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                setAddressDisplayAndObject(addressView,
+                                                        common1.dataArrayList.get(which)[0],
+                                                        common1.dataArrayList.get(which)[1],
+                                                        common1.dataArrayList.get(which)[2],
+                                                        common1.dataArrayList.get(which)[3],
+                                                        common1.dataArrayList.get(which)[4],
+                                                        common1.dataArrayList.get(which)[5],
+                                                        common1.dataArrayList.get(which)[6],
+                                                        common1.dataArrayList.get(which)[7],
+                                                        common1.dataArrayList.get(which)[8],
+                                                        common1.dataArrayList.get(which)[9],
+                                                        common1.dataArrayList.get(which)[10],
+                                                        common1.dataArrayList.get(which)[13]
+                                                );
+                                            }
+                                        });
+                                        selectAddressAlert.setPositiveButton(R.string.new_address,  new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                inputNewAddress();
+                                            }
+                                        });
+                                        selectAddressAlert.show();
+                                        if (progressDialog.isShowing())
+                                            progressDialog.dismiss();
                                     }
-                                });
-                                selectAddressAlert.setAdapter(customAdapter, new DialogInterface.OnClickListener() {
+                                };
+                                Runnable postFailThread=new Runnable() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        setAddressDisplayAndObject(addressView,
-                                                common.dataArrayList.get(which)[0],
-                                                common.dataArrayList.get(which)[1],
-                                                common.dataArrayList.get(which)[2],
-                                                common.dataArrayList.get(which)[3],
-                                                common.dataArrayList.get(which)[4],
-                                                common.dataArrayList.get(which)[5],
-                                                common.dataArrayList.get(which)[6],
-                                                common.dataArrayList.get(which)[7],
-                                                common.dataArrayList.get(which)[8],
-                                                common.dataArrayList.get(which)[9],
-                                                common.dataArrayList.get(which)[10],
-                                                common.dataArrayList.get(which)[13]
-                                        );
+                                    public void run() {
+                                        Toast.makeText(ProductOrdering.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                                        if (progressDialog.isShowing())
+                                            progressDialog.dismiss();
                                     }
-                                });
-                                selectAddressAlert.setPositiveButton(R.string.new_address,  new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        inputNewAddress();
-                                    }
-                                });
-                                selectAddressAlert.show();
+                                };
+                                common1.AsynchronousThread(ProductOrdering.this,
+                                        webService,
+                                        postData,
+                                        null,
+                                        dataColumns,
+                                        postThread,
+                                        postFailThread);
+
                             }
                         });
                         break;
