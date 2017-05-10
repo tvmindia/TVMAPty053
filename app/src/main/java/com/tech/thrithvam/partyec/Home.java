@@ -1,6 +1,8 @@
 package com.tech.thrithvam.partyec;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -8,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -47,6 +50,26 @@ Common common=new Common();
         } else {
             super.onBackPressed();
         }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home_menu, menu);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            menu.getItem(0).getIcon().setColorFilter(getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+        }else {
+            menu.getItem(0).getIcon().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+        }
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        //Filter menu------------------------
+        if (id == R.id.menu_cart) {
+            Intent intent=new Intent(this,Cart.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
