@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,7 +15,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wang.avi.AVLoadingIndicatorView;
@@ -61,7 +64,13 @@ public class ListViewsActivity extends AppCompatActivity
                 loadOrder();
                 break;
             case "ordersDetails":
+
+
                 loadorderDetails(getIntent().getExtras().getString("ID"));
+
+
+
+
                 break;
             default:
                 finish();
@@ -238,6 +247,10 @@ public class ListViewsActivity extends AppCompatActivity
                         Intent intent=new Intent (ListViewsActivity.this,ListViewsActivity.class);
                         intent.putExtra("list","ordersDetails");
                         intent.putExtra("ID",common.dataArrayList.get(position)[4]);
+                        intent.putExtra("OrderNo",common.dataArrayList.get(position)[0]);
+                        intent.putExtra("OrderDate",common.dataArrayList.get(position)[1]);
+                        intent.putExtra("OrderStatus",common.dataArrayList.get(position)[2]);
+                        intent.putExtra("TotalOrderAmt",common.dataArrayList.get(position)[3]);
                         startActivity(intent);
                     }
                 });
@@ -258,10 +271,21 @@ public class ListViewsActivity extends AppCompatActivity
         String webService="api/Customer/GetCustomerOrderDetails";
         String postData =  "{\"OrderID\":\""+ID+"\"}";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
-        String[] dataColumns={"OrderDetailID","ProductName","AttributeValues","Qty","Price","ShippingAmt","TaxAmt","SubTotal","ImageUrl"};
+        final String[] dataColumns={"OrderDetailID","ProductName","AttributeValues","Qty","Price","ShippingAmt","TaxAmt","SubTotal","ImageUrl"};
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
+                CardView OrderDetail=(CardView) findViewById(R.id.order_Detail_CardView);
+                TextView orderNo=(TextView)  findViewById(R.id.order_No);
+                TextView orderDate=(TextView)  findViewById(R.id.order_Date);
+                TextView orderStatus=(TextView) findViewById(R.id.order_Status);
+                TextView totalAmount=(TextView) findViewById(R.id.order_Amount);
+                OrderDetail.setVisibility(View.VISIBLE);
+                orderNo.setText(getResources().getString(R.string.order_no,getIntent().getExtras().getString("OrderNo")));
+                orderDate.setText(getResources().getString(R.string.order_dates,getIntent().getExtras().getString("OrderDate")));
+                orderStatus.setText(getResources().getString(R.string.order_status,getIntent().getExtras().getString("OrderStatus")));
+                //orderStatus.setText(getIntent().getExtras().getString("OrderStatus"));
+                totalAmount.setText(getResources().getString(R.string.order_total,getIntent().getExtras().getString("TotalOrderAmt")));
 
                 //Attributes parsing
                 for (int i=0;i<common.dataArrayList.size();i++){

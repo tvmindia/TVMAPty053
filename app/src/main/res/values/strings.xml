@@ -68,7 +68,8 @@
     <string name="price_display">%1$s QR</string>
     <string name="wishlist_days">%1$s days in Wishlist</string>
     <string name="price">Price:</string>
-    <string name="order_total">Grand Total: %1$s</string>
+    <string name="order_total">Order Total: %1$s</string>
+    <string name="item_total">Item Total: %1$s</string>
     <string name="order_status">Order Status: %1$s</string>
     <string name="order_no">Order No: %1$s</string>
     <string name="order_dates">Order Date: %1$s</string>

@@ -398,7 +398,7 @@ class CustomAdapter extends BaseAdapter{
                 holder.price.setText(adapterContext.getResources().getString(R.string.price_display_2,filteredObjects.get(position)[4].equals("null")?"-":filteredObjects.get(position)[4]));
                 holder.shipping.setText(adapterContext.getResources().getString(R.string.shipping_charge,filteredObjects.get(position)[5].equals("null")?"-":filteredObjects.get(position)[5]));
                 holder.taxAmount.setText(adapterContext.getResources().getString(R.string.tax_amount,filteredObjects.get(position)[6].equals("null")?"-":filteredObjects.get(position)[6]));
-                holder.totalAmount.setText(filteredObjects.get(position)[7].equals("null")?"":adapterContext.getResources().getString(R.string.order_total,filteredObjects.get(position)[7]));
+                holder.totalAmount.setText(filteredObjects.get(position)[7].equals("null")?"":adapterContext.getResources().getString(R.string.item_total,filteredObjects.get(position)[7]));
                 common.LoadImage(adapterContext,
                         holder.productImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[8],
