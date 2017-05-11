@@ -43,7 +43,12 @@ class Common {
         } else if (id == R.id.nav_contact_us) {
             Intent intent=new Intent(context,ContactUs.class);
             context.startActivity(intent);
-        }else if (id==R.id.nav_wishlist){
+        }
+        else if (id == R.id.nav_cart) {
+            Intent intent=new Intent(context,Cart.class);
+            context.startActivity(intent);
+        }
+        else if (id==R.id.nav_wishlist){
             Intent intent=new Intent (context,ListViewsActivity.class);
             intent.putExtra("list","wishlist");
             context.startActivity(intent);

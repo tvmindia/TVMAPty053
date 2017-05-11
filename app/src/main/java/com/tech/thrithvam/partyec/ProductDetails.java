@@ -511,7 +511,7 @@ public class ProductDetails extends AppCompatActivity
         final Common common=new Common();
         //Threading--------------------------------------------------
         String webService="api/product/UpdateWishlist";
-        String postData =  "{\"CustomerID\":\""+1010+"\",\"ProductID\":\""+productID+"\"}";//Replace with customerID TODO
+        String postData =  "{\"CustomerID\":\""+1009+"\",\"ProductID\":\""+productID+"\"}";//Replace with customerID TODO
         String[] dataColumns={};
         Runnable postThread=new Runnable() {
             @Override

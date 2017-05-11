@@ -27,6 +27,10 @@
     <item android:title="@string/your_partyec">
         <menu>
             <item
+                android:id="@+id/nav_cart"
+                android:icon="@drawable/cart"
+                android:title="@string/cart" />
+            <item
                 android:id="@+id/nav_wishlist"
                 android:icon="@drawable/wishlist"
                 android:title="@string/wishlist" />
