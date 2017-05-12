@@ -691,4 +691,83 @@ String customerID;
         String StateProvince="";
         String ContactNo="";
     }
+    /*public void proceedClick(final View view) {
+        view.setVisibility(GONE);
+
+        //----------------------JSON Making---------------------------
+        String attributeValuesJSON = "\"AttributeValues\":[";
+
+        //Product detail attributes------------
+        String productDetailAttributeJson = getProductDetailAttributeValuesFromSpinners();
+        attributeValuesJSON += productDetailAttributeJson;
+        //OrderAttributes
+        for (int i = 0; i < orderAttributesArrayList.size(); i++) {
+            String attributeJsonObject = "{" +
+                    "\"Name\":\"" + orderAttributesArrayList.get(i).Name + "\"," +
+                    "\"Caption\":\"" + orderAttributesArrayList.get(i).Caption + "\"," +
+                    "\"Value\":\"" + ((orderAttributesArrayList.get(i).DataType.equals("C")) ? (((Spinner) orderAttributesUserInputs.get(i)).getSelectedItem().toString()) : (((EditText) orderAttributesUserInputs.get(i)).getText().toString())) + "\"," +
+                    "\"DataType\":\"" + orderAttributesArrayList.get(i).DataType + "\"," +
+                    "\"Isconfigurable\":\"false\"" +
+                    "}";
+            attributeValuesJSON += attributeJsonObject + ",";
+        }
+        if (attributeValuesJSON.lastIndexOf(",") > 0) {
+            attributeValuesJSON = attributeValuesJSON.substring(0, attributeValuesJSON.lastIndexOf(","));
+        }
+        attributeValuesJSON += "]";
+
+        //Customer Address-----------------
+        String customerAddressJSON = "\"CustomerAddress\":{";
+        customerAddressJSON += "\"ID\":\"" + customerAddress.ID + "\"," +
+                "\"CustomerID\":\"" + customerAddress.CustomerID + "\"," +
+                "\"Prefix\":\"" + customerAddress.Prefix + "\"," +
+                "\"FirstName\":\"" + customerAddress.FirstName + "\"," +
+                "\"MidName\":\"" + customerAddress.MidName + "\"," +
+                "\"LastName\":\"" + customerAddress.LastName + "\"," +
+                "\"Address\":\"" + customerAddress.Address + "\"," +
+                "\"LocationID\":\"" + customerAddress.LocationID + "\"," +
+                "\"City\":\"" + customerAddress.City + "\"," +
+                "\"CountryCode\":\"" + customerAddress.CountryCode + "\"," +
+                "\"StateProvince\":\"" + customerAddress.StateProvince + "\"," +
+                "\"ContactNo\":\"" + customerAddress.ContactNo + "\"}";
+
+        //Threading--------------------------------------------------
+        String webService = "api/Order/InsertBookings";
+        String postData = "{\"ProductID\":\"" + productID
+                + "\",\"CustomerID\":\"" + customerID
+                + "\",\"RequiredDate\":\"" + requiredDate.getText().toString()
+                + "\",\"SourceIP\":\"" + getLocalIpAddress()
+                + "\",\"Message\":\"" + ((EditText) findViewById(R.id.quote_message)).getText().toString()
+                + "\",\"Price\":\"" + price
+                + "\",\"Qty\":\"" + 1
+                + "\"," + attributeValuesJSON
+                + "," + customerAddressJSON
+                + "}";//Replace with customer id TODO
+        AVLoadingIndicatorView loadingIndicator = (AVLoadingIndicatorView) findViewById(R.id.loading_indicator_proceed);
+        String[] dataColumns = {};
+        Runnable postThread = new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(ProductOrdering.this, R.string.success, Toast.LENGTH_SHORT).show();//TODO navigate to bookings
+                Intent clearIntent = new Intent(ProductOrdering.this, Home.class);
+                clearIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(clearIntent);
+                finish();
+            }
+        };
+        Runnable postFailThread = new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(ProductOrdering.this, R.string.failed, Toast.LENGTH_SHORT).show();
+                view.setVisibility(View.VISIBLE);
+            }
+        };
+        common.AsynchronousThread(ProductOrdering.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                postFailThread);
+    }*/
 }

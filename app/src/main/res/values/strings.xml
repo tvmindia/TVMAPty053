@@ -125,4 +125,13 @@
     <string name="remove_item_q">Remove this item from cart?</string>
     <string name="shipping_address">Shipping Address</string>
     <string name="same_as_shipping_address">Same as shipping address</string>
+    <string name="proceed">Proceed</string>
+    <string name="make_payment">Make Payment</string>
+    <string name="failed_try_again">Failed attempt. Please try again</string>
+    <string name="enter_your_email">Enter your e-mail</string>
+    <string name="login_signup">Login / SignUp</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="otp_incorrect">OTP is incorrect</string>
 </resources>

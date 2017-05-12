@@ -144,7 +144,9 @@ public class RegisterEvent extends AppCompatActivity
             if(!message.getText().toString().trim().equals(""))
                 postData+="\"Message\":\""+message.getText().toString().trim()+"\",";
 
-            String contactType=((RadioButton)findViewById(((RadioGroup)findViewById(R.id.contact_method)).getCheckedRadioButtonId())).getText().toString();
+            String contactType=(((RadioGroup)findViewById(R.id.contact_method)).getCheckedRadioButtonId()==R.id.radio_email?"Email":
+                                ((RadioGroup)findViewById(R.id.contact_method)).getCheckedRadioButtonId()==R.id.radio_phone?"Phone"
+                                                                                                                            :"");
             postData+="\"ContactType\":\""+contactType+"\"";
 
             postData+="}";
