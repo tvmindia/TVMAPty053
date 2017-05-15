@@ -135,4 +135,6 @@
     <string name="female">Female</string>
     <string name="otp_incorrect">OTP is incorrect</string>
     <string name="please_login">Please Login</string>
+    <string name="update">Update</string>
+    <string name="login">Login</string>
 </resources>

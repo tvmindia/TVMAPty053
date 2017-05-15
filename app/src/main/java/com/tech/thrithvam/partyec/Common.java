@@ -9,6 +9,7 @@ import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -26,6 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 class Common {
+    DatabaseHandler db;
     //Constants-----------------------
     String MobileNumberRegularExpression = "^[0-9]*$";
     String UserNameRegularExpression="^[a-zA-Z\\. ]+$";                 //^[a-z0-9_-]{3,15}$
@@ -75,6 +77,14 @@ class Common {
 
     }
     void NavigationBarHeaderClick(final Context context, NavigationView navigationView){
+        db=DatabaseHandler.getInstance(context);
+        if(db.GetCustomerDetails("CustomerID")!=null){
+            ((TextView)navigationView.getHeaderView(0).findViewById(R.id.user_name)).setText(db.GetCustomerDetails("Name"));
+            ((TextView)navigationView.getHeaderView(0).findViewById(R.id.user_email)).setText(db.GetCustomerDetails("Email"));
+        }
+        else {
+            (navigationView.getHeaderView(0).findViewById(R.id.user_email)).setVisibility(View.GONE);
+        }
         navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

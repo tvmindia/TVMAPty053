@@ -45,7 +45,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     //--------------------------Customer-----------------------------
 //    DatabaseUtils.sqlEscapeString(Denomination)
-    void InsertCustomerID(String CustomerID,String Name,String Email,String Mobile,String Gender)
+    void InsertCustomer(String CustomerID, String Name, String Email, String Mobile, String Gender)
     {
         db=this.getWritableDatabase();
         ClearCustomer();
@@ -55,6 +55,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     {
         db=this.getWritableDatabase();
         db.execSQL("DELETE FROM Customer;");
+    }
+    void UpdateCustomer(String Name,String Mobile)
+    {
+        db=this.getWritableDatabase();
+        db.execSQL("UPDATE Customer SET Name="+DatabaseUtils.sqlEscapeString(Name)+",Mobile='"+Mobile+"';");
     }
     String GetCustomerDetails(String detail)
     {db=this.getReadableDatabase();

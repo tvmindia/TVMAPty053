@@ -142,11 +142,20 @@ public class Login extends AppCompatActivity
                 }
                 else if(otpInput.getText().toString().equals(otp)){
                     if(isUser){
-                        /*  new UserActivation().execute();
-                        db.UserLogin(userID,address);*/
+                        try {
+                            JSONObject jsonObject = new JSONObject(common.json);
+                            JSONObject customer=jsonObject.optJSONObject("Customer");
+                            db.InsertCustomer(customer.optString("ID"),
+                                                customer.optString("Name"),
+                                                customer.optString("Email"),
+                                                customer.optString("Mobile"),
+                                                customer.optString("Gender"));
                         Intent intentUser = new Intent(Login.this, MyProfile.class);
                         finish();
                         startActivity(intentUser);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                     else {
                         LinearLayout signUpForm = (LinearLayout) findViewById(R.id.signup_form);
@@ -270,7 +279,7 @@ public class Login extends AppCompatActivity
                                                     + "\"," + customerAddressJSON
                                                     + "}";//Replace with customer id TODO
                                             progressDialog.show();
-                                            String[] dataColumns = {"ReturnValues"};
+                                            String[] dataColumns = {};
                                             Runnable postThread = new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -278,7 +287,7 @@ public class Login extends AppCompatActivity
                                                     try {
                                                         JSONObject jsonObject=new JSONObject(common3.json);
                                                         String customerID=jsonObject.optString("ReturnValues");
-                                                        db.InsertCustomerID(customerID,
+                                                        db.InsertCustomer(customerID,
                                                                 name.getText().toString(),
                                                                 emailInput.getText().toString(),
                                                                 mob.getText().toString(),

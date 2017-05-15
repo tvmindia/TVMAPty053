@@ -2,6 +2,7 @@ package com.tech.thrithvam.partyec;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -9,8 +10,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.wang.avi.AVLoadingIndicatorView;
 
 public class MyProfile extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -46,6 +51,50 @@ public class MyProfile extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    public void editProfile(View view){
+        //Display changes-------
+        (findViewById(R.id.customer_details_linear)).setVisibility(View.GONE);
+        view.setVisibility(View.GONE);
+        (findViewById(R.id.customer_edit_linear)).setVisibility(View.VISIBLE);
+        ((EditText)findViewById(R.id.name_edit)).setText(((TextView)findViewById(R.id.name)).getText().toString());
+        ((EditText)findViewById(R.id.mob_no_edit)).setText(((TextView)findViewById(R.id.mob_no)).getText().toString());
+        ((EditText)findViewById(R.id.email_edit)).setText(((TextView)findViewById(R.id.email)).getText().toString());
+    }
+    public void proceedClickForUpdate(View view){
+        final EditText name=(EditText)findViewById(R.id.name_edit);
+        final EditText mob=(EditText)findViewById(R.id.mob_no_edit);
+        if(name.getText().length()==0||mob.getText().length()==0){
+            Toast.makeText(this, R.string.give_valid, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //Threading------------------------------------------------------------------------------------------------------
+        String webService="/api/Customer/UpdateUser";
+        String postData = "{\"ID\":\""+db.GetCustomerDetails("CustomerID")+"\",\"Name\":\"" + name.getText().toString() +"\",\"Mobile\":\""+mob.getText().toString()+ "\"}";
+        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator_proceed);
+        String[] dataColumns={};
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                db.UpdateCustomer(name.getText().toString(),mob.getText().toString());
+                Intent profileIntent=new Intent(MyProfile.this,MyProfile.class);
+                startActivity(profileIntent);
+                finish();
+            }
+        };
+        Runnable postThreadFailed=new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MyProfile.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+            }
+        };
+        common.AsynchronousThread(MyProfile.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                postThreadFailed);
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
