@@ -83,7 +83,7 @@ class Common {
             ((TextView)navigationView.getHeaderView(0).findViewById(R.id.user_email)).setText(db.GetCustomerDetails("Email"));
         }
         else {
-            (navigationView.getHeaderView(0).findViewById(R.id.user_email)).setVisibility(View.GONE);
+            (navigationView.getHeaderView(0).findViewById(R.id.user_email)).setVisibility(View.INVISIBLE);
         }
         navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
             @Override
