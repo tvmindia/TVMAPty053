@@ -39,13 +39,19 @@ public class Login extends AppCompatActivity
     EditText emailInput;
     EditText name;
     EditText mob;
+    DatabaseHandler db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        db=DatabaseHandler.getInstance(this);
+        if(db.GetCustomerDetails("CustomerID")!=null){
+            Intent profileIntent=new Intent(this,MyProfile.class);
+            startActivity(profileIntent);
+            finish();
+        }
         emailInput =(EditText)findViewById(R.id.email);
         name=(EditText)findViewById(R.id.name);
         mob=(EditText)findViewById(R.id.mob_no);
@@ -272,7 +278,11 @@ public class Login extends AppCompatActivity
                                                     try {
                                                         JSONObject jsonObject=new JSONObject(common3.json);
                                                         String customerID=jsonObject.optString("ReturnValues");
-                                                        //customer id into database
+                                                        db.InsertCustomerID(customerID,
+                                                                name.getText().toString(),
+                                                                emailInput.getText().toString(),
+                                                                mob.getText().toString(),
+                                                                (((RadioGroup)findViewById(R.id.gender)).getCheckedRadioButtonId()==R.id.radio_male?"Male":"Female"));
                                                         Intent intentUser = new Intent(Login.this, MyProfile.class);
                                                         finish();
                                                         startActivity(intentUser);
