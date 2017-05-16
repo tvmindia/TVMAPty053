@@ -3,11 +3,16 @@ package com.tech.thrithvam.partyec;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,6 +32,7 @@ import java.util.ArrayList;
 public class ManageAddresses extends AppCompatActivity {
     DatabaseHandler db;
     String customerID;
+    LayoutInflater inflater;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +42,7 @@ public class ManageAddresses extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.manage_addresses);
         db=DatabaseHandler.getInstance(this);
         customerID=db.GetCustomerDetails("CustomerID");
+        inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         getCustomerAddresses();
     }
     ArrayList<CustomerAddress> addresses;
@@ -183,7 +190,6 @@ public class ManageAddresses extends AppCompatActivity {
         final Common common2=new Common();
         final ArrayList<String> locations=new ArrayList<>();
         final ArrayList<String> countries=new ArrayList<>();
-        final LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //Threading for locations--------------------------------------------------
         String webService="api/customer/GetShippingLocations";
         String postData =  "";
@@ -320,7 +326,6 @@ public class ManageAddresses extends AppCompatActivity {
                                                 @Override
                                                 public void run() {
                                                         getCustomerAddresses();
-                                                        //Adding to address arraylist;
                                                         dialog.dismiss();
                                                         if (progressDialog.isShowing())
                                                             progressDialog.dismiss();
@@ -399,5 +404,187 @@ public class ManageAddresses extends AppCompatActivity {
         String CountryCode="";
         String StateProvince="";
         String ContactNo="";
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.address_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        //Filter menu------------------------
+        if (id == R.id.menu_add_address) {
+            inputNewAddress();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    void inputNewAddress(){
+        final Common common1=new Common();
+        final Common common2=new Common();
+        final ArrayList<String> locations=new ArrayList<>();
+        final ArrayList<String> countries=new ArrayList<>();
+        //Threading for locations--------------------------------------------------
+        String webService="api/customer/GetShippingLocations";
+        String postData =  "";
+        final ProgressDialog progressDialog=new ProgressDialog(ManageAddresses.this);
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+        progressDialog.setCancelable(false);progressDialog.show();
+        String[] dataColumns={"ID","Name"};
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                String[] notSelect={"",getResources().getString(R.string.not_selecting)};
+                common1.dataArrayList.add(notSelect);
+                for(int i=0;i<common1.dataArrayList.size();i++){
+                    locations.add(common1.dataArrayList.get(i)[1]);
+                }
+                //Threading for countries--------------------------------------------------
+                String webService="api/customer/GetCountries";
+                String postData =  "";
+                String[] dataColumns={"Code","Name"};
+                Runnable postThread=new Runnable() {
+                    @Override
+                    public void run() {
+                        for(int i=0;i<common2.dataArrayList.size();i++){
+                            countries.add(common2.dataArrayList.get(i)[1]);
+                        }
+
+                        //New address alert dialogue box---------------------------------
+                        AlertDialog.Builder newAddressDialogue = new AlertDialog.Builder(ManageAddresses.this);
+                        newAddressDialogue.setIcon(R.drawable.user);
+                        newAddressDialogue.setTitle(R.string.new_address);
+                        final View newAddressView=inflater.inflate(R.layout.item_address_input, null);
+                        ArrayAdapter locationAdapter = new ArrayAdapter<String>(ManageAddresses.this, android.R.layout.simple_spinner_item, locations);
+                        ArrayAdapter countryAdapter = new ArrayAdapter<String>(ManageAddresses.this, android.R.layout.simple_spinner_item, countries);
+                        Spinner locationSpinner=(Spinner) newAddressView.findViewById(R.id.location);
+                        Spinner countrySpinner=(Spinner) newAddressView.findViewById(R.id.country);
+                        locationSpinner.setAdapter(locationAdapter);
+                        countrySpinner.setAdapter(countryAdapter);
+                        newAddressDialogue.setView(newAddressView);
+
+                        newAddressDialogue.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        newAddressDialogue.setPositiveButton(R.string.ok_button, null);
+                        AlertDialog getAddress=newAddressDialogue.create();
+                        getAddress.setOnShowListener(new DialogInterface.OnShowListener() {
+
+                            @Override
+                            public void onShow(final DialogInterface dialog) {
+                                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                                button.setOnClickListener(new View.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(View view) {
+                                        //New address--
+                                        if(((EditText)newAddressView.findViewById(R.id.first_name)).getText().toString().length()==0){
+                                            ((EditText)newAddressView.findViewById(R.id.first_name)).setError(getResources().getString(R.string.give_valid));
+                                        }
+                                        else if(((EditText)newAddressView.findViewById(R.id.address)).getText().toString().length()==0){
+                                            ((EditText)newAddressView.findViewById(R.id.address)).setError(getResources().getString(R.string.give_valid));
+                                        }
+                                        else if(((EditText)newAddressView.findViewById(R.id.city)).getText().toString().length()==0){
+                                            ((EditText)newAddressView.findViewById(R.id.city)).setError(getResources().getString(R.string.give_valid));
+                                        }
+                                        else if(((EditText)newAddressView.findViewById(R.id.stateprovince)).getText().toString().length()==0){
+                                            ((EditText)newAddressView.findViewById(R.id.stateprovince)).setError(getResources().getString(R.string.give_valid));
+                                        }
+                                        else if(((EditText)newAddressView.findViewById(R.id.contact_no)).getText().toString().length()==0){
+                                            ((EditText)newAddressView.findViewById(R.id.contact_no)).setError(getResources().getString(R.string.give_valid));
+                                        }
+                                        else {
+                                            final Common common3=new Common();
+                                            //Threading--------------------------------------------------
+                                            String webService = "api/Customer/InsertUpdateCustomerAddress";
+                                            String customerAddressJSON = "\"customerAddress\":{";
+                                            customerAddressJSON+="\"ID\":\"" + 0 + "\"," + //0 for new address insertion in repository function
+                                                    "\"CustomerID\":\"" + customerID + "\"," +
+                                                    "\"Prefix\":\"" + ((EditText)newAddressView.findViewById(R.id.prefix)).getText().toString() + "\"," +
+                                                    "\"FirstName\":\"" + ((EditText)newAddressView.findViewById(R.id.first_name)).getText().toString() + "\"," +
+                                                    "\"MidName\":\"" + ((EditText)newAddressView.findViewById(R.id.mid_name)).getText().toString() + "\"," +
+                                                    "\"LastName\":\"" + ((EditText)newAddressView.findViewById(R.id.last_name)).getText().toString() + "\"," +
+                                                    "\"Address\":\"" + ((EditText)newAddressView.findViewById(R.id.address)).getText().toString() + "\"," +
+                                                    "\"LocationID\":\"" + common1.dataArrayList.get(((Spinner)newAddressView.findViewById(R.id.location)).getSelectedItemPosition())[0] + "\"," +
+                                                    "\"City\":\"" + ((EditText)newAddressView.findViewById(R.id.city)).getText().toString() + "\"," +
+                                                    "\"CountryCode\":\"" + common2.dataArrayList.get(((Spinner)newAddressView.findViewById(R.id.country)).getSelectedItemPosition())[0] + "\"," +
+                                                    "\"StateProvince\":\"" + ((EditText)newAddressView.findViewById(R.id.stateprovince)).getText().toString() + "\"," +
+                                                    "\"ContactNo\":\"" + ((EditText)newAddressView.findViewById(R.id.contact_no)).getText().toString() + "\"}" ;
+                                            String postData = "{\"ID\":\"" + customerID
+                                                    + "\"," + customerAddressJSON
+                                                    + "}";//Replace with customer id TODO
+                                            progressDialog.show();
+                                            String[] dataColumns = {"ReturnValues"};
+                                            Runnable postThread = new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    getCustomerAddresses();
+                                                    dialog.dismiss();
+                                                    if (progressDialog.isShowing())
+                                                        progressDialog.dismiss();
+                                                }
+                                            };
+                                            Runnable postFailThread = new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(ManageAddresses.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                                                    if (progressDialog.isShowing())
+                                                        progressDialog.dismiss();
+                                                }
+                                            };
+                                            common3.AsynchronousThread(ManageAddresses.this,
+                                                    webService,
+                                                    postData,
+                                                    null,
+                                                    dataColumns,
+                                                    postThread,
+                                                    postFailThread);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                        getAddress.show();
+                        if (progressDialog.isShowing())
+                            progressDialog.dismiss();
+                    }
+                };
+                Runnable postFailThread=new Runnable() {
+                    @Override
+                    public void run() {
+                        if (progressDialog.isShowing())
+                            progressDialog.dismiss();
+                        Toast.makeText(ManageAddresses.this,R.string.some_error_at_server,Toast.LENGTH_SHORT).show();
+                    }
+                };
+                common2.AsynchronousThread(ManageAddresses.this,
+                        webService,
+                        postData,
+                        null,
+                        dataColumns,
+                        postThread,
+                        postFailThread);
+
+            }
+        };
+        Runnable postFailThread=new Runnable() {
+            @Override
+            public void run() {
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
+                Toast.makeText(ManageAddresses.this,R.string.some_error_at_server,Toast.LENGTH_SHORT).show();
+            }
+        };
+        common1.AsynchronousThread(ManageAddresses.this,
+                webService,
+                postData,
+                null,
+                dataColumns,
+                postThread,
+                postFailThread);
     }
 }
