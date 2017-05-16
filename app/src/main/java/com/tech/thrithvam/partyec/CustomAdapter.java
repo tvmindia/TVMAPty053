@@ -79,7 +79,7 @@ class CustomAdapter extends BaseAdapter{
         RatingBar ratingReview;
         ImageView customerImage;
         //Address-------------------------
-        TextView address,location,city,state,country,contactNo,setDefault,remove;
+        TextView address,location,city,state,country,contactNo,setDefault,remove,edit;
         //WishList-------------------------
         TextView daysCount,price;
         //Bookings----------------------------
@@ -264,6 +264,7 @@ class CustomAdapter extends BaseAdapter{
                     holder.contactNo=(TextView) convertView.findViewById(R.id.contact_no);
                     holder.setDefault=(TextView) convertView.findViewById(R.id.select_default);
                     holder.remove=(TextView)convertView.findViewById(R.id.remove);
+                    holder.edit=(TextView)convertView.findViewById(R.id.edit);
                     convertView.setTag(holder);
                 } else {
                     holder = (Holder) convertView.getTag();
@@ -289,6 +290,7 @@ class CustomAdapter extends BaseAdapter{
                 holder.contactNo.setText(filteredObjects.get(position)[10].equals("null")?"-":filteredObjects.get(position)[10]);
                 holder.setDefault.setTag(filteredObjects.get(position)[0]);
                 holder.remove.setTag(filteredObjects.get(position)[0]);
+                holder.edit.setTag(filteredObjects.get(position)[0]);
                 if(filteredObjects.get(position)[12].equals("true")){
                     holder.setDefault.setText(adapterContext.getResources().getString(R.string.default_address));
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

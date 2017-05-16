@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.tech.thrithvam.partyec.ManageAddresses">
+    tools:context="com.tech.thrithvam.partyec.ManageAddresses"
+    android:animateLayoutChanges="true">
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,5 +38,6 @@
         android:divider="@null"
         android:listSelector="@android:color/transparent"
         android:scrollbars="none"
-        android:clipToPadding="false"/>
+        android:clipToPadding="false"
+        android:animateLayoutChanges="true"/>
 </RelativeLayout>
