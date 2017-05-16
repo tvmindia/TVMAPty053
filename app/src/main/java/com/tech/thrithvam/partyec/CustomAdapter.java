@@ -78,7 +78,7 @@ class CustomAdapter extends BaseAdapter{
         RatingBar ratingReview;
         ImageView customerImage;
         //Address-------------------------
-        TextView address,location,city,state,country,contactNo;
+        TextView address,location,city,state,country,contactNo,setDefault;
         //WishList-------------------------
         TextView daysCount,price;
         //Bookings----------------------------
@@ -249,7 +249,50 @@ class CustomAdapter extends BaseAdapter{
                 }
                 holder.country.setText(country.equals("null")?"-":country);
                 holder.contactNo.setText(filteredObjects.get(position)[10].equals("null")?"-":filteredObjects.get(position)[10]);
-
+                break;
+            case "AddressManagement":
+                if (convertView == null) {
+                    holder = new Holder();
+                    convertView = inflater.inflate(R.layout.item_address_edit, null);
+                    holder.customerName=(TextView) convertView.findViewById(R.id.name);
+                    holder.address=(TextView) convertView.findViewById(R.id.address);
+                    holder.location=(TextView) convertView.findViewById(R.id.location);
+                    holder.city=(TextView) convertView.findViewById(R.id.city);
+                    holder.state=(TextView) convertView.findViewById(R.id.stateprovince);
+                    holder.country=(TextView) convertView.findViewById(R.id.country);
+                    holder.contactNo=(TextView) convertView.findViewById(R.id.contact_no);
+                    holder.setDefault=(TextView) convertView.findViewById(R.id.select_default);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (Holder) convertView.getTag();
+                }
+                //Label loading--------------------
+                String name1=(filteredObjects.get(position)[1].equals("null")?"":filteredObjects.get(position)[1])+   " "
+                        +   (filteredObjects.get(position)[2].equals("null")?"":filteredObjects.get(position)[2])+   " "
+                        +   (filteredObjects.get(position)[3].equals("null")?"":filteredObjects.get(position)[3])+   " "
+                        +   (filteredObjects.get(position)[4].equals("null")?"":filteredObjects.get(position)[4]);
+                holder.customerName.setText(name1);
+                holder.address.setText(filteredObjects.get(position)[5].equals("null")?"":filteredObjects.get(position)[5]);
+                holder.location.setText(filteredObjects.get(position)[6].equals("null")?"-":filteredObjects.get(position)[6]);
+                holder.city.setText(filteredObjects.get(position)[7].equals("null")?"-":filteredObjects.get(position)[7]);
+                holder.state.setText(filteredObjects.get(position)[8].equals("null")?"-":filteredObjects.get(position)[8]);
+                String country1="";
+                try {
+                    JSONObject jsonObjectCountry=new JSONObject(filteredObjects.get(position)[9]);
+                    country1=jsonObjectCountry.getString("Name");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                holder.country.setText(country1.equals("null")?"-":country1);
+                holder.contactNo.setText(filteredObjects.get(position)[10].equals("null")?"-":filteredObjects.get(position)[10]);
+                if(filteredObjects.get(position)[12].equals("true")){
+                    holder.setDefault.setText(adapterContext.getResources().getString(R.string.default_address));
+                    holder.setDefault.setTextColor(Color.LTGRAY);
+                }
+              /*  else {
+                    holder.setDefault.setText(adapterContext.getResources().getString(R.string.default_address));
+                    holder.setDefault.setTextColor(Color.LTGRAY);
+                }*/
                 break;
             //----------------------------------  WishList  ------------------------------
             case "WishList":
@@ -403,9 +446,6 @@ class CustomAdapter extends BaseAdapter{
                         holder.productImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[8],
                         R.drawable.dim_icon);
-
-
-
                 break;
             default:
                 break;

@@ -137,4 +137,11 @@
     <string name="please_login">Please Login</string>
     <string name="update">Update</string>
     <string name="login">Login</string>
+    <string name="manage_addresses">Manage Addresses</string>
+    <string name="orders">Orders</string>
+    <string name="history">History</string>
+    <string name="select_default">Select Default</string>
+    <string name="remove">Remove</string>
+    <string name="edit">Edit</string>
+    <string name="default_address">Default Address</string>
 </resources>

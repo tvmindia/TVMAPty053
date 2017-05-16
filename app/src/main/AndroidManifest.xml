@@ -75,11 +75,15 @@
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".Cart"
-            android:label="@string/cart"
+        <activity
+            android:name=".Cart"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"/>
+            android:label="@string/cart"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ManageAddresses"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/manage_addresses"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

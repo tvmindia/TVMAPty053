@@ -95,6 +95,10 @@ public class MyProfile extends AppCompatActivity
                 postThread,
                 postThreadFailed);
     }
+    public void manageAddresses(View view){
+        Intent addressIntent=new Intent(this,ManageAddresses.class);
+        startActivity(addressIntent);
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
