@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -285,14 +286,25 @@ class CustomAdapter extends BaseAdapter{
                 }
                 holder.country.setText(country1.equals("null")?"-":country1);
                 holder.contactNo.setText(filteredObjects.get(position)[10].equals("null")?"-":filteredObjects.get(position)[10]);
+                holder.setDefault.setTag(filteredObjects.get(position)[0]);
                 if(filteredObjects.get(position)[12].equals("true")){
                     holder.setDefault.setText(adapterContext.getResources().getString(R.string.default_address));
-                    holder.setDefault.setTextColor(Color.LTGRAY);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        holder.setDefault.setTextColor(adapterContext.getColor(R.color.secondary_text));
+                    }
+                    else {
+                        holder.setDefault.setTextColor(adapterContext.getResources().getColor(R.color.secondary_text));
+                    }
                 }
-              /*  else {
-                    holder.setDefault.setText(adapterContext.getResources().getString(R.string.default_address));
-                    holder.setDefault.setTextColor(Color.LTGRAY);
-                }*/
+                else {
+                    holder.setDefault.setText(adapterContext.getResources().getString(R.string.select_default));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        holder.setDefault.setTextColor(adapterContext.getColor(R.color.colorAccent));
+                    }
+                    else {
+                        holder.setDefault.setTextColor(adapterContext.getResources().getColor(R.color.colorAccent));
+                    }
+                }
                 break;
             //----------------------------------  WishList  ------------------------------
             case "WishList":
