@@ -122,7 +122,8 @@
     <string name="total_shipping">Total delivery charges : %1$s QR</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="remove_item_q">Remove this item from cart?</string>
+    <string name="remove_item_q">Do you want to remove this item from cart?</string>
+    <string name="remove_address_q">Do you want to remove this address?</string>
     <string name="shipping_address">Shipping Address</string>
     <string name="same_as_shipping_address">Same as shipping address</string>
     <string name="proceed">Proceed</string>

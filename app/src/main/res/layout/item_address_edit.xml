@@ -143,7 +143,8 @@
             android:paddingRight="5dp"
             android:textColor="@color/colorAccent"
             android:id="@+id/remove"
-            android:text="@string/remove"/>
+            android:text="@string/remove"
+            android:onClick="removeAddress"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

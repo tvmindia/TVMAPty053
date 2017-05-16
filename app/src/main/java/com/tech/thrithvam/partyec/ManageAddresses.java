@@ -72,7 +72,6 @@ public class ManageAddresses extends AppCompatActivity {
         //Threading--------------------------------------------------
         String webService="api/customer/SetDefaultAddress";
         String postData =  "{\"ID\":\""+view.getTag()+"\",\"CustomerID\":\""+db.GetCustomerDetails("CustomerID")+"\"}";
-        AVLoadingIndicatorView loadingIndicatorView=(AVLoadingIndicatorView)findViewById(R.id.loading_indicator);
         String[] dataColumns={};
         final ProgressDialog progressDialog=new ProgressDialog(ManageAddresses.this);
         progressDialog.setMessage(getResources().getString(R.string.please_wait));
@@ -96,9 +95,49 @@ public class ManageAddresses extends AppCompatActivity {
         common.AsynchronousThread(ManageAddresses.this,
                 webService,
                 postData,
-                loadingIndicatorView,
+                null,
                 dataColumns,
                 postThread,
                 postFailThread);
+    }
+    public void removeAddress(final View view){
+        new AlertDialog.Builder(ManageAddresses.this).setIcon(android.R.drawable.ic_dialog_alert)//.setTitle(R.string.exit)
+                .setMessage(R.string.remove_item_q)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                                Common common=new Common();
+                                //Threading--------------------------------------------------
+                                String webService="api/customer/DeleteCustomerAddress";
+                                String postData =  "{\"ID\":\""+view.getTag()+"\",\"CustomerID\":\""+db.GetCustomerDetails("CustomerID")+"\"}";
+                                String[] dataColumns={};
+                                final ProgressDialog progressDialog=new ProgressDialog(ManageAddresses.this);
+                                progressDialog.setMessage(getResources().getString(R.string.please_wait));
+                                progressDialog.setCancelable(false);progressDialog.show();
+                                Runnable postThread=new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getCustomerAddresses();
+                                        if (progressDialog.isShowing())
+                                            progressDialog.dismiss();
+                                    }
+                                };
+                                Runnable postFailThread=new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(ManageAddresses.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                                        if (progressDialog.isShowing())
+                                            progressDialog.dismiss();
+                                    }
+                                };
+                                common.AsynchronousThread(ManageAddresses.this,
+                                        webService,
+                                        postData,
+                                        null,
+                                        dataColumns,
+                                        postThread,
+                                        postFailThread);
+                    }
+                }).setNegativeButton(R.string.no, null).show();
     }
 }

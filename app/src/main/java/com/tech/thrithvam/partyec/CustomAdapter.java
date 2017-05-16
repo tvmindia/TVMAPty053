@@ -79,7 +79,7 @@ class CustomAdapter extends BaseAdapter{
         RatingBar ratingReview;
         ImageView customerImage;
         //Address-------------------------
-        TextView address,location,city,state,country,contactNo,setDefault;
+        TextView address,location,city,state,country,contactNo,setDefault,remove;
         //WishList-------------------------
         TextView daysCount,price;
         //Bookings----------------------------
@@ -263,6 +263,7 @@ class CustomAdapter extends BaseAdapter{
                     holder.country=(TextView) convertView.findViewById(R.id.country);
                     holder.contactNo=(TextView) convertView.findViewById(R.id.contact_no);
                     holder.setDefault=(TextView) convertView.findViewById(R.id.select_default);
+                    holder.remove=(TextView)convertView.findViewById(R.id.remove);
                     convertView.setTag(holder);
                 } else {
                     holder = (Holder) convertView.getTag();
@@ -287,6 +288,7 @@ class CustomAdapter extends BaseAdapter{
                 holder.country.setText(country1.equals("null")?"-":country1);
                 holder.contactNo.setText(filteredObjects.get(position)[10].equals("null")?"-":filteredObjects.get(position)[10]);
                 holder.setDefault.setTag(filteredObjects.get(position)[0]);
+                holder.remove.setTag(filteredObjects.get(position)[0]);
                 if(filteredObjects.get(position)[12].equals("true")){
                     holder.setDefault.setText(adapterContext.getResources().getString(R.string.default_address));
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -295,6 +297,7 @@ class CustomAdapter extends BaseAdapter{
                     else {
                         holder.setDefault.setTextColor(adapterContext.getResources().getColor(R.color.secondary_text));
                     }
+                    holder.remove.setVisibility(View.GONE);
                 }
                 else {
                     holder.setDefault.setText(adapterContext.getResources().getString(R.string.select_default));
@@ -304,6 +307,7 @@ class CustomAdapter extends BaseAdapter{
                     else {
                         holder.setDefault.setTextColor(adapterContext.getResources().getColor(R.color.colorAccent));
                     }
+                    holder.remove.setVisibility(View.VISIBLE);
                 }
                 break;
             //----------------------------------  WishList  ------------------------------
