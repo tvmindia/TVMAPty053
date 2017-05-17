@@ -43,7 +43,9 @@
             android:id="@+id/product_name"
             android:layout_toRightOf="@+id/product_image"
             android:layout_toEndOf="@+id/product_image"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:maxLines="2"
+            android:ellipsize="end"/>
 
 
     </RelativeLayout>

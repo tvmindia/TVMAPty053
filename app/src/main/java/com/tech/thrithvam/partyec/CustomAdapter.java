@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -89,6 +91,7 @@ class CustomAdapter extends BaseAdapter{
         //Cart---------------------------------
         TextView shipping,quantity,attributes;
         ImageView closeIcon;
+        TextView outOfStockCover;
         //Order----------------------------------
         TextView orderNo,orderDate,orderStatus,totalAmount,taxAmount;
 
@@ -399,6 +402,7 @@ class CustomAdapter extends BaseAdapter{
                     holder.attributes=(TextView) convertView.findViewById(R.id.attributes);
                     holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
                     holder.closeIcon=(ImageView) convertView.findViewById(R.id.close_icon);
+                    holder.outOfStockCover=(TextView)convertView.findViewById(R.id.out_of_stock_cover);
                     convertView.setTag(holder);
                 } else {
                     holder = (Holder) convertView.getTag();
@@ -414,6 +418,12 @@ class CustomAdapter extends BaseAdapter{
                 holder.price.setText(adapterContext.getResources().getString(R.string.price_display_2,filteredObjects.get(position)[6].equals("null")?"-":filteredObjects.get(position)[6]));
                 holder.shipping.setText(adapterContext.getResources().getString(R.string.shipping_charge,filteredObjects.get(position)[7].equals("null")?"-":filteredObjects.get(position)[7]));
                 holder.attributes.setText(filteredObjects.get(position)[4]);
+                if(filteredObjects.get(position)[8].equals("true")){
+                    holder.outOfStockCover.setVisibility(View.GONE);
+                }
+                else {
+                    holder.outOfStockCover.setVisibility(View.VISIBLE);
+                }
                 break;
             //---------------------------------------- Orders --------------------------------------
             case "Orders":

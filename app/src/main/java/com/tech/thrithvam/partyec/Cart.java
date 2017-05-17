@@ -80,8 +80,9 @@ public class Cart extends AppCompatActivity {
                 "ImageURL",//3
                 "AttributeValues",//4
                 "Qty",//5
-                "Price",//6
-                "ShippingCharge"//7
+                "CurrentPrice",//6
+                "ShippingCharge",//7
+                "StockAvailableYN"//8
                 };
         AVLoadingIndicatorView loadingIndicatorView=(AVLoadingIndicatorView)findViewById(R.id.loading_indicator);
         Runnable postThread=new Runnable() {
@@ -140,8 +141,10 @@ public class Cart extends AppCompatActivity {
               (findViewById(R.id.cart_scrollview)).setVisibility(View.VISIBLE);
               //Totaling-----------------------------------
                 for(int i=0;i<common.dataArrayList.size();i++){
-                    totalPrice +=Double.parseDouble(common.dataArrayList.get(i)[6].equals("null")?"0":common.dataArrayList.get(i)[6]);
-                    totalShipping+=Double.parseDouble(common.dataArrayList.get(i)[7].equals("null")?"0":common.dataArrayList.get(i)[7]);
+                    if(!common.dataArrayList.get(i)[8].equals("true")) {
+                        totalPrice += Double.parseDouble(common.dataArrayList.get(i)[6].equals("null") ? "0" : common.dataArrayList.get(i)[6]);
+                        totalShipping += Double.parseDouble(common.dataArrayList.get(i)[7].equals("null") ? "0" : common.dataArrayList.get(i)[7]);
+                    }
                 }
                 Double totalAmount=totalPrice+totalShipping;
                 ((TextView)findViewById(R.id.total_price)).setText(getString(R.string.total_price,String.format(Locale.US, "%.2f", totalPrice)));
