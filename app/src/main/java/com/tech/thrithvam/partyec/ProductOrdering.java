@@ -863,6 +863,7 @@ public class ProductOrdering extends AppCompatActivity {
             String postData = "{\"ProductID\":\"" + productID
                     + "\",\"CustomerID\":\"" + customerID
                     + "\",\"Price\":\"" + price
+                    + "\",\"ItemID\":\"" + selectedProductDetailID
                     + "\",\"Qty\":\"" + 1
                     + "\"," + attributeValuesJSON
                     + "}";//Replace with customer id TODO

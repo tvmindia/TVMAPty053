@@ -8,6 +8,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.format.Formatter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,13 +28,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Locale;
 
 import static android.view.View.GONE;
 
 public class Cart extends AppCompatActivity {
-String customerID;
+    DatabaseHandler db;
+    String customerID;
     CustomerAddress customerAddress;
     CustomerAddress billingAddress;
     LayoutInflater inflater;
@@ -46,7 +53,8 @@ String customerID;
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.cart);
         inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        customerID="1009";//TODO replace with customer ID
+        db=DatabaseHandler.getInstance(Cart.this);
+        customerID=db.GetCustomerDetails("CustomerID");
         //Load customer's shopping cart-------------------------
         loadCart();
         //Load customer address-----------------------------------
@@ -241,7 +249,21 @@ String customerID;
                                 common.dataArrayList.get(i)[10],
                                 common.dataArrayList.get(i)[13]
                         );
-                        billingAddress=customerAddress;//By default
+                        //By default
+                        billingAddress.ID=customerAddress.ID;
+                        billingAddress.CustomerID=customerAddress.CustomerID;
+                        billingAddress.Prefix=customerAddress.Prefix;
+                        billingAddress.FirstName=customerAddress.FirstName;
+                        billingAddress.MidName=customerAddress.MidName;
+                        billingAddress.LastName=customerAddress.LastName;
+                        billingAddress.Address=customerAddress.Address;
+                        billingAddress.LocationID=customerAddress.LocationID;
+                        billingAddress.City=customerAddress.City;
+                        billingAddress.CountryCode=customerAddress.CountryCode;
+                        billingAddress.StateProvince=customerAddress.StateProvince;
+                        billingAddress.ContactNo=customerAddress.ContactNo;
+
+                        locationID=customerAddress.LocationID;
 
                         (findViewById(R.id.change_address)).setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -691,34 +713,18 @@ String customerID;
         String StateProvince="";
         String ContactNo="";
     }
-    /*public void proceedClick(final View view) {
+    public void proceedClick(final View view) {
+        if(locationID.equals("")){
+            Toast.makeText(this, "Please select shipping address having location", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Common common=new Common();
         view.setVisibility(GONE);
 
-        //----------------------JSON Making---------------------------
-        String attributeValuesJSON = "\"AttributeValues\":[";
-
-        //Product detail attributes------------
-        String productDetailAttributeJson = getProductDetailAttributeValuesFromSpinners();
-        attributeValuesJSON += productDetailAttributeJson;
-        //OrderAttributes
-        for (int i = 0; i < orderAttributesArrayList.size(); i++) {
-            String attributeJsonObject = "{" +
-                    "\"Name\":\"" + orderAttributesArrayList.get(i).Name + "\"," +
-                    "\"Caption\":\"" + orderAttributesArrayList.get(i).Caption + "\"," +
-                    "\"Value\":\"" + ((orderAttributesArrayList.get(i).DataType.equals("C")) ? (((Spinner) orderAttributesUserInputs.get(i)).getSelectedItem().toString()) : (((EditText) orderAttributesUserInputs.get(i)).getText().toString())) + "\"," +
-                    "\"DataType\":\"" + orderAttributesArrayList.get(i).DataType + "\"," +
-                    "\"Isconfigurable\":\"false\"" +
-                    "}";
-            attributeValuesJSON += attributeJsonObject + ",";
-        }
-        if (attributeValuesJSON.lastIndexOf(",") > 0) {
-            attributeValuesJSON = attributeValuesJSON.substring(0, attributeValuesJSON.lastIndexOf(","));
-        }
-        attributeValuesJSON += "]";
-
         //Customer Address-----------------
-        String customerAddressJSON = "\"CustomerAddress\":{";
-        customerAddressJSON += "\"ID\":\"" + customerAddress.ID + "\"," +
+        String customerShippingAddressJSON = "\"CustomerShippingAddress\":{";
+        customerShippingAddressJSON += "\"ID\":\"" + customerAddress.ID + "\"," +
                 "\"CustomerID\":\"" + customerAddress.CustomerID + "\"," +
                 "\"Prefix\":\"" + customerAddress.Prefix + "\"," +
                 "\"FirstName\":\"" + customerAddress.FirstName + "\"," +
@@ -731,43 +737,79 @@ String customerID;
                 "\"StateProvince\":\"" + customerAddress.StateProvince + "\"," +
                 "\"ContactNo\":\"" + customerAddress.ContactNo + "\"}";
 
+        String customerBillingAddressJSON = "\"CustomerBillAddress\":{";
+        customerBillingAddressJSON += "\"ID\":\"" + billingAddress.ID + "\"," +
+                "\"CustomerID\":\"" + billingAddress.CustomerID + "\"," +
+                "\"Prefix\":\"" + billingAddress.Prefix + "\"," +
+                "\"FirstName\":\"" + billingAddress.FirstName + "\"," +
+                "\"MidName\":\"" + billingAddress.MidName + "\"," +
+                "\"LastName\":\"" + billingAddress.LastName + "\"," +
+                "\"Address\":\"" + billingAddress.Address + "\"," +
+                "\"LocationID\":\"" + billingAddress.LocationID + "\"," +
+                "\"City\":\"" + billingAddress.City + "\"," +
+                "\"CountryCode\":\"" + billingAddress.CountryCode + "\"," +
+                "\"StateProvince\":\"" + billingAddress.StateProvince + "\"," +
+                "\"ContactNo\":\"" + billingAddress.ContactNo + "\"}";
+
         //Threading--------------------------------------------------
-        String webService = "api/Order/InsertBookings";
-        String postData = "{\"ProductID\":\"" + productID
-                + "\",\"CustomerID\":\"" + customerID
-                + "\",\"RequiredDate\":\"" + requiredDate.getText().toString()
+        String webService = "api/Order/InsertOrder";
+        String postData = "{\"CustomerID\":\"" + customerID
+                + "\",\"shippingLocationID\":\"" + locationID
+                + "\",\"PaymentType\":\"" + "COD"
+                + "\",\"PaymentStatus\":\"" + "0"
                 + "\",\"SourceIP\":\"" + getLocalIpAddress()
-                + "\",\"Message\":\"" + ((EditText) findViewById(R.id.quote_message)).getText().toString()
-                + "\",\"Price\":\"" + price
-                + "\",\"Qty\":\"" + 1
-                + "\"," + attributeValuesJSON
-                + "," + customerAddressJSON
-                + "}";//Replace with customer id TODO
-        AVLoadingIndicatorView loadingIndicator = (AVLoadingIndicatorView) findViewById(R.id.loading_indicator_proceed);
+                + "\"," + customerShippingAddressJSON
+                + "," + customerBillingAddressJSON
+                + "}";
+        final ProgressDialog progressDialog=new ProgressDialog(Cart.this);
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+        progressDialog.setCancelable(false);progressDialog.show();
         String[] dataColumns = {};
         Runnable postThread = new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(ProductOrdering.this, R.string.success, Toast.LENGTH_SHORT).show();//TODO navigate to bookings
-                Intent clearIntent = new Intent(ProductOrdering.this, Home.class);
+                Toast.makeText(Cart.this, R.string.success, Toast.LENGTH_SHORT).show();
+               /* Intent clearIntent = new Intent(ProductOrdering.this, Home.class);
                 clearIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(clearIntent);
-                finish();
+                finish();*/
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
             }
         };
         Runnable postFailThread = new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(ProductOrdering.this, R.string.failed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(Cart.this, R.string.failed, Toast.LENGTH_SHORT).show();
                 view.setVisibility(View.VISIBLE);
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
             }
         };
-        common.AsynchronousThread(ProductOrdering.this,
+        common.AsynchronousThread(Cart.this,
                 webService,
                 postData,
-                loadingIndicator,
+                null,
                 dataColumns,
                 postThread,
                 postFailThread);
-    }*/
+    }
+    public String getLocalIpAddress() {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                        String ip = Formatter.formatIpAddress(inetAddress.hashCode());
+                        return ip;
+                    }
+                }
+            }
+
+        } catch (SocketException ex) {
+            Log.e("", ex.toString());
+        }
+        return null;
+    }
 }
