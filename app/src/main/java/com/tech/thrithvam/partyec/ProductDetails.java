@@ -109,13 +109,23 @@ public class ProductDetails extends AppCompatActivity
                     }
 
                     if(actionType.equals("A")) {// product that can buy
+                        Button proceed=(Button)findViewById(R.id.action_button);
                         if (!jsonRootObject.optString("StockAvailable").equals("null")) {
                             if (jsonRootObject.optBoolean("StockAvailable")) {
                                 ((TextView) findViewById(R.id.stock_availability)).setText(R.string.in_stock);
                                 ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+                                proceed.setEnabled(true);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    proceed.setBackgroundColor(getColor(R.color.colorPrimary));
+                                }
+                                else {
+                                    proceed.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                }
                             } else {
                                 ((TextView) findViewById(R.id.stock_availability)).setText(R.string.out_of_stock);
                                 ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_red_light));
+                                proceed.setEnabled(false);
+                                proceed.setBackgroundColor(Color.GRAY);
                             }
                         }
 
