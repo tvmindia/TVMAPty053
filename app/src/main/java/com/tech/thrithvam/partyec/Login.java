@@ -151,6 +151,7 @@ public class Login extends AppCompatActivity
                                                 customer.optString("Mobile"),
                                                 customer.optString("Gender"));
                         Intent intentUser = new Intent(Login.this, MyProfile.class);
+                        intentUser.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         finish();
                         startActivity(intentUser);
                         } catch (JSONException e) {
@@ -293,6 +294,7 @@ public class Login extends AppCompatActivity
                                                                 mob.getText().toString(),
                                                                 (((RadioGroup)findViewById(R.id.gender)).getCheckedRadioButtonId()==R.id.radio_male?"Male":"Female"));
                                                         Intent intentUser = new Intent(Login.this, MyProfile.class);
+                                                        intentUser.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                         finish();
                                                         startActivity(intentUser);
                                                         dialog.dismiss();
