@@ -2,8 +2,6 @@ package com.tech.thrithvam.partyec;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -12,10 +10,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,7 +65,7 @@ public class ListViewsActivity extends AppCompatActivity
             case "ordersDetails":
 
 
-                loadorderDetails(getIntent().getExtras().getString("ID"));
+                loadOrderDetails(getIntent().getExtras().getString("ID"));
 
 
 
@@ -139,6 +135,13 @@ public class ListViewsActivity extends AppCompatActivity
                 null);
     }
     void loadWishlistProducts(){
+        if(customerID==null) {
+            Intent loginIntent=new Intent(this,Login.class);
+            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            startActivity(loginIntent);
+            finish();
+            return;
+        }
         getSupportActionBar().setTitle("WishList Items ");
         listView.setSelector(android.R.color.transparent);
         //Threading-------------------------------------------------------------------------
@@ -170,6 +173,13 @@ public class ListViewsActivity extends AppCompatActivity
                 null);
     }
     void loadBookings(){
+        if(customerID==null) {
+            Intent loginIntent=new Intent(this,Login.class);
+            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            startActivity(loginIntent);
+            finish();
+            return;
+        }
         getSupportActionBar().setTitle("Bookings ");
         listView.setSelector(android.R.color.transparent);
         //Threading-------------------------------------------------------------------------
@@ -201,6 +211,13 @@ public class ListViewsActivity extends AppCompatActivity
                 null);
     }
     void loadQuotations(){
+        if(customerID==null) {
+            Intent loginIntent=new Intent(this,Login.class);
+            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            startActivity(loginIntent);
+            finish();
+            return;
+        }
         getSupportActionBar().setTitle("Quotations");
         listView.setSelector(android.R.color.transparent);
         //Threading-------------------------------------------------------------------------
@@ -232,6 +249,13 @@ public class ListViewsActivity extends AppCompatActivity
                 null);
     }
     void loadOrder(){
+        if(customerID==null) {
+            Intent loginIntent=new Intent(this,Login.class);
+            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            startActivity(loginIntent);
+            finish();
+            return;
+        }
         getSupportActionBar().setTitle("Orders");
         listView.setSelector(android.R.color.transparent);
         //Threading-------------------------------------------------------------------------
@@ -267,7 +291,7 @@ public class ListViewsActivity extends AppCompatActivity
                 postThread,
                 null);
     }
-    void loadorderDetails(String ID ){
+    void loadOrderDetails(String ID ){
         getSupportActionBar().setTitle("Order Details");
         listView.setSelector(android.R.color.transparent);
         //Threading-------------------------------------------------------------------------

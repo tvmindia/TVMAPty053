@@ -41,6 +41,13 @@ public class ManageAddresses extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.manage_addresses);
         db=DatabaseHandler.getInstance(this);
+        if(db.GetCustomerDetails("CustomerID")==null) {
+            Intent loginIntent=new Intent(this,Login.class);
+            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            startActivity(loginIntent);
+            finish();
+            return;
+        }
         customerID=db.GetCustomerDetails("CustomerID");
         inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         getCustomerAddresses();

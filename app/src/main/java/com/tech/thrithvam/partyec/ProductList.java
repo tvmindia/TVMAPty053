@@ -256,6 +256,7 @@ public class ProductList extends AppCompatActivity
     }
 
     ArrayList<CheckBox> filterCheckBoxes=new ArrayList<>();
+    Boolean menuEmpty=false;
     void setFilterMenu(){
         LinearLayout filterMenuLinear=(LinearLayout)findViewById(R.id.filter_menu_linear);
         JSONObject jsonRootObject;
@@ -336,6 +337,9 @@ public class ProductList extends AppCompatActivity
                 }
             });
             filterMenuLinear.addView(textView);
+        }
+        if(navigationCategories.size()==0 && filterCategories.size()==0){
+            menuEmpty=true;
         }
     }
     boolean[] appliedFiltersBoolean;
@@ -419,20 +423,24 @@ public class ProductList extends AppCompatActivity
         int id = item.getItemId();
         //Filter menu------------------------
         if (id == R.id.filter) {
-            if(filterMenu.getVisibility()==View.VISIBLE){
-                item.getIcon().clearColorFilter();
-                filterMenu.setVisibility(GONE);
-                if(appliedFiltersBoolean!=null) {
-                    for (int i = 0; i < appliedFiltersBoolean.length; i++) {
-                        if (appliedFiltersBoolean[i]) {
-                            filterCheckBoxes.get(i).setChecked(true);
+            if(!menuEmpty) {
+                if (filterMenu.getVisibility() == View.VISIBLE) {
+                    item.getIcon().clearColorFilter();
+                    filterMenu.setVisibility(GONE);
+                    if (appliedFiltersBoolean != null) {
+                        for (int i = 0; i < appliedFiltersBoolean.length; i++) {
+                            if (appliedFiltersBoolean[i]) {
+                                filterCheckBoxes.get(i).setChecked(true);
+                            }
                         }
                     }
+                } else {
+                    item.getIcon().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
+                    filterMenu.setVisibility(View.VISIBLE);
                 }
             }
             else {
-                item.getIcon().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
-                filterMenu.setVisibility(View.VISIBLE);
+                Toast.makeText(ProductList.this, R.string.no_filters_available, Toast.LENGTH_SHORT).show();
             }
             return true;
         }

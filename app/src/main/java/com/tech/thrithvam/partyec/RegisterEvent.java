@@ -38,6 +38,7 @@ import java.util.Locale;
 public class RegisterEvent extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Common common=new Common();
+    DatabaseHandler db;
     EditText eventName,dateTime,noOfPersons,budget,lookingFor,requirements,name,email, phone,message;
     Spinner eventTypeSpinner;
     String eventTypeIDGlobal,dateTimeGlobal;
@@ -61,10 +62,14 @@ public class RegisterEvent extends AppCompatActivity
         email=(EditText)findViewById(R.id.user_email);
         phone=(EditText)findViewById(R.id.user_phone);
         message=(EditText)findViewById(R.id.message);
-
+        db=DatabaseHandler.getInstance(RegisterEvent.this);
+        if(db.GetCustomerDetails("CustomerID")!=null) {
+            name.setText(db.GetCustomerDetails("Name"));
+            email.setText(db.GetCustomerDetails("Email"));
+            phone.setText(db.GetCustomerDetails("Mobile"));
+        }
         //---------------------Get Event type items------------------------------
         setEventTypeSpinner();
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

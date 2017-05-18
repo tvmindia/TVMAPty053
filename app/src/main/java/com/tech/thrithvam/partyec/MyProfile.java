@@ -40,6 +40,7 @@ public class MyProfile extends AppCompatActivity
             Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
             startActivity(loginIntent);
             finish();
+            return;
         }
         else {
             ((TextView)findViewById(R.id.name)).setText(db.GetCustomerDetails("Name"));

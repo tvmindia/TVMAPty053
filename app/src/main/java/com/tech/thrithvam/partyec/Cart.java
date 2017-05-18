@@ -3,6 +3,7 @@ package com.tech.thrithvam.partyec;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -54,6 +55,13 @@ public class Cart extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.cart);
         inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         db=DatabaseHandler.getInstance(Cart.this);
+        if(db.GetCustomerDetails("CustomerID")==null) {
+            Intent loginIntent=new Intent(this,Login.class);
+            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            startActivity(loginIntent);
+            finish();
+            return;
+        }
         customerID=db.GetCustomerDetails("CustomerID");
         //Load customer's shopping cart-------------------------
         loadCart();

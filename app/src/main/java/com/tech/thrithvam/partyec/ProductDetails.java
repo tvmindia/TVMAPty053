@@ -497,55 +497,70 @@ public class ProductDetails extends AppCompatActivity
         }
         else {
             Intent loginIntent=new Intent(this,Login.class);
+            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
             startActivity(loginIntent);
             finish();
         }
     }
     public void addToCart(View view){
-        Intent intent=new Intent(ProductDetails.this, ProductOrdering.class);
-        intent.putExtra("productID",productID);
-        intent.putExtra("productName",productName);
-        intent.putExtra("cartORbuy","cart");
-        startActivity(intent);
-    }
-    public void toggleWishlist(View view){
-        if(isFav){
-            isFav=false;
-            ((ImageView)view).setImageResource(R.drawable.wishlist);
+        if(db.GetCustomerDetails("CustomerID")!=null) {
+            Intent intent = new Intent(ProductDetails.this, ProductOrdering.class);
+            intent.putExtra("productID", productID);
+            intent.putExtra("productName", productName);
+            intent.putExtra("cartORbuy", "cart");
+            startActivity(intent);
         }
         else {
-            isFav=true;
-            ((ImageView)view).setImageResource(R.drawable.wishlist_filled);
+            Intent loginIntent = new Intent(this, Login.class);
+            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            startActivity(loginIntent);
+            finish();
         }
-        final Common common=new Common();
-        //Threading--------------------------------------------------
-        String webService="api/product/UpdateWishlist";
-        String postData =  "{\"CustomerID\":\""+customerID+"\",\"ProductID\":\""+productID+"\"}";
-        String[] dataColumns={};
-        Runnable postThread=new Runnable() {
-            @Override
-            public void run() {
-                if(isFav){
-                    Toast.makeText(ProductDetails.this, R.string.added_to_wishlist, Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(ProductDetails.this, R.string.removed_from_wishlist, Toast.LENGTH_SHORT).show();
-                }
+    }
+    public void toggleWishlist(View view){
+        if(db.GetCustomerDetails("CustomerID")!=null) {
+            if (isFav) {
+                isFav = false;
+                ((ImageView) view).setImageResource(R.drawable.wishlist);
+            } else {
+                isFav = true;
+                ((ImageView) view).setImageResource(R.drawable.wishlist_filled);
             }
-        };
-        Runnable postFailThread=new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(ProductDetails.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
-            }
-        };
-        common.AsynchronousThread(ProductDetails.this,
-                webService,
-                postData,
-                null,
-                dataColumns,
-                postThread,
-                postFailThread);
+            final Common common = new Common();
+            //Threading--------------------------------------------------
+            String webService = "api/product/UpdateWishlist";
+            String postData = "{\"CustomerID\":\"" + customerID + "\",\"ProductID\":\"" + productID + "\"}";
+            String[] dataColumns = {};
+            Runnable postThread = new Runnable() {
+                @Override
+                public void run() {
+                    if (isFav) {
+                        Toast.makeText(ProductDetails.this, R.string.added_to_wishlist, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ProductDetails.this, R.string.removed_from_wishlist, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            };
+            Runnable postFailThread = new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(ProductDetails.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                }
+            };
+            common.AsynchronousThread(ProductDetails.this,
+                    webService,
+                    postData,
+                    null,
+                    dataColumns,
+                    postThread,
+                    postFailThread);
+        }
+        else {
+            Intent loginIntent = new Intent(this, Login.class);
+            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            startActivity(loginIntent);
+            finish();
+        }
     }
     @Override
     public void onBackPressed() {

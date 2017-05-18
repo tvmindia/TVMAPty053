@@ -76,6 +76,13 @@ public class ProductOrdering extends AppCompatActivity {
         getSupportActionBar().setTitle("Order: "+getIntent().getExtras().getString("productName",""));
         productID=getIntent().getExtras().getString("productID");
         db=DatabaseHandler.getInstance(ProductOrdering.this);
+        if(db.GetCustomerDetails("CustomerID")==null) {
+            Intent loginIntent=new Intent(this,Login.class);
+            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            startActivity(loginIntent);
+            finish();
+            return;
+        }
         customerID=db.GetCustomerDetails("CustomerID");
         inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         (findViewById(R.id.price_n_stock)).setVisibility(View.GONE);
@@ -391,6 +398,7 @@ public class ProductOrdering extends AppCompatActivity {
                         baseSellingPrice
                         + priceDifference);
                 ((TextView) findViewById(R.id.actual_price)).setText(getString(R.string.price_display, actualPriceString));
+                (findViewById(R.id.actual_price)).setVisibility(View.VISIBLE);
             }
             else {
                 (findViewById(R.id.actual_price)).setVisibility(GONE);
