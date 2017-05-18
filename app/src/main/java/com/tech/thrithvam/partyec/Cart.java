@@ -141,7 +141,7 @@ public class Cart extends AppCompatActivity {
               (findViewById(R.id.cart_scrollview)).setVisibility(View.VISIBLE);
               //Totaling-----------------------------------
                 for(int i=0;i<common.dataArrayList.size();i++){
-                    if(!common.dataArrayList.get(i)[8].equals("true")) {
+                    if(common.dataArrayList.get(i)[8].equals("true")) {
                         totalPrice += Double.parseDouble(common.dataArrayList.get(i)[6].equals("null") ? "0" : common.dataArrayList.get(i)[6]);
                         totalShipping += Double.parseDouble(common.dataArrayList.get(i)[7].equals("null") ? "0" : common.dataArrayList.get(i)[7]);
                     }
