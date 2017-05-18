@@ -730,7 +730,7 @@ public class Cart extends AppCompatActivity {
         }
         if(totalAmount==0){
             Toast.makeText(this, R.string.no_items_available, Toast.LENGTH_SHORT).show();
-          //  return;
+            return;
         }
         final Common common=new Common();
         view.setVisibility(GONE);

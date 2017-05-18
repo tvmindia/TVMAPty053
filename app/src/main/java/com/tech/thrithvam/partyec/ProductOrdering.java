@@ -5,7 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -408,13 +410,23 @@ public class ProductOrdering extends AppCompatActivity {
             (findViewById(R.id.price)).setVisibility(GONE);
             (findViewById(R.id.actual_price)).setVisibility(GONE);
         }
+        Button proceed=(Button)findViewById(R.id.proceed_button);
         if (inStock) {
             ((TextView) findViewById(R.id.stock_availability)).setText(R.string.in_stock);
             ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+            proceed.setEnabled(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                proceed.setBackgroundColor(getColor(R.color.colorPrimary));
+            }
+            else {
+                proceed.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            }
         }
         else {
             ((TextView) findViewById(R.id.stock_availability)).setText(R.string.out_of_stock);
             ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_red_light));
+            proceed.setEnabled(false);
+            proceed.setBackgroundColor(Color.GRAY);
         }
     }
     //Address--------------------------------------------------------------------------------------------------------------------
