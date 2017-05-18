@@ -61,7 +61,8 @@ public class MyProfile extends AppCompatActivity
         ((EditText)findViewById(R.id.mob_no_edit)).setText(((TextView)findViewById(R.id.mob_no)).getText().toString());
         ((EditText)findViewById(R.id.email_edit)).setText(((TextView)findViewById(R.id.email)).getText().toString());
     }
-    public void proceedClickForUpdate(View view){
+    public void proceedClickForUpdate(final View view){
+        view.setVisibility(View.GONE);
         final EditText name=(EditText)findViewById(R.id.name_edit);
         final EditText mob=(EditText)findViewById(R.id.mob_no_edit);
         if(name.getText().length()==0||mob.getText().length()==0){
@@ -86,6 +87,7 @@ public class MyProfile extends AppCompatActivity
             @Override
             public void run() {
                 Toast.makeText(MyProfile.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                view.setVisibility(View.VISIBLE);
             }
         };
         common.AsynchronousThread(MyProfile.this,

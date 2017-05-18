@@ -80,7 +80,12 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/cart"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ManageAddresses"
+        <activity
+            android:name=".ManageAddresses"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/manage_addresses"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".PaymentGateway"
             android:configChanges="orientation|screenSize"
             android:label="@string/manage_addresses"
             android:theme="@style/AppTheme.NoActionBar"/>

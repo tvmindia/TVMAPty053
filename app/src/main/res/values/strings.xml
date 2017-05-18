@@ -146,4 +146,6 @@
     <string name="edit">Edit</string>
     <string name="default_address">Default Address</string>
     <string name="no_filters_available">No filters available</string>
+    <string name="payment">Payment</string>
+    <string name="no_items_available">No items available</string>
 </resources>

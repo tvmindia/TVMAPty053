@@ -135,9 +135,6 @@
                 app:indicatorColor="@color/colorAccent"
                 android:id="@+id/loading_indicator_proceed"
                 android:visibility="gone"
-                android:layout_marginRight="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_gravity="end"
                 />
         </LinearLayout>
     </RelativeLayout>

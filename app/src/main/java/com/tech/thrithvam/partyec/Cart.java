@@ -44,7 +44,7 @@ public class Cart extends AppCompatActivity {
     CustomerAddress customerAddress;
     CustomerAddress billingAddress;
     LayoutInflater inflater;
-    Double totalPrice =0.0,totalShipping=0.0;
+    Double totalPrice =0.0,totalShipping=0.0;Double totalAmount=0.0;
     String locationID="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +154,7 @@ public class Cart extends AppCompatActivity {
                         totalShipping += Double.parseDouble(common.dataArrayList.get(i)[7].equals("null") ? "0" : common.dataArrayList.get(i)[7]);
                     }
                 }
-                Double totalAmount=totalPrice+totalShipping;
+                totalAmount=totalPrice+totalShipping;
                 ((TextView)findViewById(R.id.total_price)).setText(getString(R.string.total_price,String.format(Locale.US, "%.2f", totalPrice)));
                 ((TextView)findViewById(R.id.total_shipping)).setText(getString(R.string.total_shipping,String.format(Locale.US, "%.2f",totalShipping)));
                 ((TextView)findViewById(R.id.total_amount)).setText(getString(R.string.total_amount,String.format(Locale.US, "%.2f",totalAmount)));
@@ -183,7 +183,6 @@ public class Cart extends AppCompatActivity {
                         String webService="api/order/RemoveProductFromCart";
                         String postData =  "{\"ID\":\""+(String) view.getTag()+"\"}";
                         String[] dataColumns={};
-                        Toast.makeText(Cart.this, postData, Toast.LENGTH_SHORT).show();
                         Runnable postThread=new Runnable() {
                             @Override
                             public void run() {
@@ -729,8 +728,11 @@ public class Cart extends AppCompatActivity {
             Toast.makeText(this, "Please select shipping address having location", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        Common common=new Common();
+        if(totalAmount==0){
+            Toast.makeText(this, R.string.no_items_available, Toast.LENGTH_SHORT).show();
+          //  return;
+        }
+        final Common common=new Common();
         view.setVisibility(GONE);
 
         //Customer Address-----------------
@@ -779,11 +781,18 @@ public class Cart extends AppCompatActivity {
         Runnable postThread = new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(Cart.this, R.string.success, Toast.LENGTH_SHORT).show();
-               /* Intent clearIntent = new Intent(ProductOrdering.this, Home.class);
+                JSONObject jsonObject= null;
+                try {
+                    jsonObject = new JSONObject(common.json);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                String orderID=jsonObject.optString("ReturnValues");
+                Intent clearIntent = new Intent(Cart.this, PaymentGateway.class);
+                clearIntent.putExtra("orderID",orderID);
                 clearIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(clearIntent);
-                finish();*/
+                finish();
                 if (progressDialog.isShowing())
                     progressDialog.dismiss();
             }
