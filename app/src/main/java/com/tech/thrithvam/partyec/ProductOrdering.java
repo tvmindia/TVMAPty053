@@ -47,6 +47,7 @@ import static android.view.View.GONE;
 
 public class ProductOrdering extends AppCompatActivity {
     Common common=new Common();
+    DatabaseHandler db;
     String productID="";
     LayoutInflater inflater;
 
@@ -74,7 +75,8 @@ public class ProductOrdering extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Order: "+getIntent().getExtras().getString("productName",""));
         productID=getIntent().getExtras().getString("productID");
-        customerID="1009";//TODO change
+        db=DatabaseHandler.getInstance(ProductOrdering.this);
+        customerID=db.GetCustomerDetails("CustomerID");
         inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         (findViewById(R.id.price_n_stock)).setVisibility(View.GONE);
         TextView actualPrice=(TextView)findViewById(R.id.actual_price);
@@ -656,7 +658,7 @@ public class ProductOrdering extends AppCompatActivity {
                                                     "\"ContactNo\":\"" + ((EditText)newAddressView.findViewById(R.id.contact_no)).getText().toString() + "\"}" ;
                                             String postData = "{\"ID\":\"" + customerID
                                                     + "\"," + customerAddressJSON
-                                                    + "}";//Replace with customer id TODO
+                                                    + "}";
                                             progressDialog.show();
                                             String[] dataColumns = {"ReturnValues"};
                                             Runnable postThread = new Runnable() {
@@ -866,7 +868,7 @@ public class ProductOrdering extends AppCompatActivity {
                     + "\",\"ItemID\":\"" + selectedProductDetailID
                     + "\",\"Qty\":\"" + 1
                     + "\"," + attributeValuesJSON
-                    + "}";//Replace with customer id TODO
+                    + "}";
             AVLoadingIndicatorView loadingIndicator = (AVLoadingIndicatorView) findViewById(R.id.loading_indicator_proceed);
             String[] dataColumns = {};
             Runnable postThread = new Runnable() {
@@ -952,7 +954,7 @@ public class ProductOrdering extends AppCompatActivity {
                     + "\",\"Qty\":\"" + 1
                     + "\"," + attributeValuesJSON
                     + "," + customerAddressJSON
-                    + "}";//Replace with customer id TODO
+                    + "}";
             AVLoadingIndicatorView loadingIndicator = (AVLoadingIndicatorView) findViewById(R.id.loading_indicator_proceed);
             String[] dataColumns = {};
             Runnable postThread = new Runnable() {
@@ -1021,7 +1023,7 @@ public class ProductOrdering extends AppCompatActivity {
                     + "\",\"SourceIP\":\"" + getLocalIpAddress()
                     + "\",\"Message\":\"" + ((EditText) findViewById(R.id.quote_message)).getText().toString()
                     + "\"," + attributeValuesJSON
-                    + "}";//Replace with customer id TODO
+                    + "}";
             AVLoadingIndicatorView loadingIndicator = (AVLoadingIndicatorView) findViewById(R.id.loading_indicator_proceed);
             String[] dataColumns = {};
             Runnable postThread = new Runnable() {

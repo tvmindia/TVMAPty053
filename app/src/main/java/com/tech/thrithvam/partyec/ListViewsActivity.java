@@ -29,6 +29,8 @@ import org.json.JSONObject;
 public class ListViewsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Common common=new Common();
+    DatabaseHandler db;
+    String customerID;
     ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,8 @@ public class ListViewsActivity extends AppCompatActivity
         setContentView(R.layout.activity_list_views);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        db=DatabaseHandler.getInstance(ListViewsActivity.this);
+        customerID=db.GetCustomerDetails("CustomerID");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -140,7 +143,7 @@ public class ListViewsActivity extends AppCompatActivity
         listView.setSelector(android.R.color.transparent);
         //Threading-------------------------------------------------------------------------
         String webService="api/Customer/GetCustomerWishlist";
-        String postData =  "{\"CustomerID\":\""+1009+"\"}";
+        String postData =  "{\"CustomerID\":\""+customerID+"\"}";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
         String[] dataColumns={"ProductID","ProductName","ImageURL","DaysinWL","Price"};
         Runnable postThread=new Runnable() {
@@ -171,7 +174,7 @@ public class ListViewsActivity extends AppCompatActivity
         listView.setSelector(android.R.color.transparent);
         //Threading-------------------------------------------------------------------------
         String webService="api/Customer/GetCustomerBookings";
-        String postData =  "{\"CustomerID\":\""+1009+"\"}";
+        String postData =  "{\"CustomerID\":\""+customerID+"\"}";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
         String[] dataColumns={"BookingNo","ProductID","RequiredDate","BookingDate","StatusText","ProductName","ImageUrl"};
         Runnable postThread=new Runnable() {
@@ -202,7 +205,7 @@ public class ListViewsActivity extends AppCompatActivity
         listView.setSelector(android.R.color.transparent);
         //Threading-------------------------------------------------------------------------
         String webService="api/Customer/GetCustomerQuotations";
-        String postData =  "{\"CustomerID\":\""+1009+"\"}";
+        String postData =  "{\"CustomerID\":\""+customerID+"\"}";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
         String[] dataColumns={"QuotationNo","ProductID","RequiredDate","QuotationDate","StatusText","ProductName","ImageUrl"};
         Runnable postThread=new Runnable() {
@@ -233,7 +236,7 @@ public class ListViewsActivity extends AppCompatActivity
         listView.setSelector(android.R.color.transparent);
         //Threading-------------------------------------------------------------------------
         String webService="api/Customer/GetCustomerOrders";
-        String postData =  "{\"CustomerID\":\""+1007+"\"}";
+        String postData =  "{\"CustomerID\":\""+customerID+"\"}";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
         String[] dataColumns={"OrderNo","OrderDate","OrderStatus","TotalOrderAmt","ID"};
         Runnable postThread=new Runnable() {

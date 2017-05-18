@@ -277,7 +277,7 @@ public class Login extends AppCompatActivity
                                                     + "\",\"Mobile\":\"" + mob.getText().toString()
                                                     + "\",\"Gender\":\"" + (((RadioGroup)findViewById(R.id.gender)).getCheckedRadioButtonId()==R.id.radio_male?"Male":"Female")
                                                     + "\"," + customerAddressJSON
-                                                    + "}";//Replace with customer id TODO
+                                                    + "}";
                                             progressDialog.show();
                                             String[] dataColumns = {};
                                             Runnable postThread = new Runnable() {

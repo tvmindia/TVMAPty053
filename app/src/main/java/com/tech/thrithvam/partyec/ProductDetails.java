@@ -42,12 +42,14 @@ import static android.view.View.GONE;
 public class ProductDetails extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Common common=new Common();
+    DatabaseHandler db;
     TextView actualPrice;
     String productID;
     String productName;
     String attributeSetID;
     Boolean isFav=false;
     String actionType;
+    String customerID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +57,8 @@ public class ProductDetails extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         productID=getIntent().getExtras().getString("productID");
-
+        db=DatabaseHandler.getInstance(ProductDetails.this);
+        customerID=db.GetCustomerDetails("CustomerID");
         actualPrice=(TextView)findViewById(R.id.actual_price);
         actualPrice.setPaintFlags(actualPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         loadProductDetails();
@@ -74,7 +77,7 @@ public class ProductDetails extends AppCompatActivity
         (findViewById(R.id.product_details_scroll_view)).setVisibility(GONE);
         //Threading--------------------------------------------------
         String webService="api/product/GetProductDetails";
-        String postData =  "{\"ID\":\""+productID+"\",\"CustomerID\":\""+1010+"\"}";//Replace with customerID TODO
+        String postData =  "{\"ID\":\""+productID+"\",\"CustomerID\":\""+customerID+"\"}";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
         String[] dataColumns={};
         Runnable postThread=new Runnable() {
@@ -484,13 +487,19 @@ public class ProductDetails extends AppCompatActivity
                 postFailThread);
     }
     public void buyProduct(View view){
-        //Check whether logged int TODO
-        Intent intent=new Intent(ProductDetails.this, ProductOrdering.class);
-        intent.putExtra("productID",productID);
-        intent.putExtra("productName",productName);
-        intent.putExtra("cartORbuy","buy");
-        intent.putExtra("actionType",actionType);
-        startActivity(intent);
+        if(db.GetCustomerDetails("CustomerID")!=null) {
+            Intent intent = new Intent(ProductDetails.this, ProductOrdering.class);
+            intent.putExtra("productID", productID);
+            intent.putExtra("productName", productName);
+            intent.putExtra("cartORbuy", "buy");
+            intent.putExtra("actionType", actionType);
+            startActivity(intent);
+        }
+        else {
+            Intent loginIntent=new Intent(this,Login.class);
+            startActivity(loginIntent);
+            finish();
+        }
     }
     public void addToCart(View view){
         Intent intent=new Intent(ProductDetails.this, ProductOrdering.class);
@@ -511,7 +520,7 @@ public class ProductDetails extends AppCompatActivity
         final Common common=new Common();
         //Threading--------------------------------------------------
         String webService="api/product/UpdateWishlist";
-        String postData =  "{\"CustomerID\":\""+1009+"\",\"ProductID\":\""+productID+"\"}";//Replace with customerID TODO
+        String postData =  "{\"CustomerID\":\""+customerID+"\",\"ProductID\":\""+productID+"\"}";
         String[] dataColumns={};
         Runnable postThread=new Runnable() {
             @Override

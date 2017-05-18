@@ -319,7 +319,7 @@ public class ManageAddresses extends AppCompatActivity {
                                                     "\"ContactNo\":\"" + ((EditText)newAddressView.findViewById(R.id.contact_no)).getText().toString() + "\"}" ;
                                             String postData = "{\"ID\":\"" + customerID
                                                     + "\"," + customerAddressJSON
-                                                    + "}";//Replace with customer id TODO
+                                                    + "}";
                                             progressDialog.show();
                                             String[] dataColumns = {"ReturnValues"};
                                             Runnable postThread = new Runnable() {
@@ -516,7 +516,7 @@ public class ManageAddresses extends AppCompatActivity {
                                                     "\"ContactNo\":\"" + ((EditText)newAddressView.findViewById(R.id.contact_no)).getText().toString() + "\"}" ;
                                             String postData = "{\"ID\":\"" + customerID
                                                     + "\"," + customerAddressJSON
-                                                    + "}";//Replace with customer id TODO
+                                                    + "}";
                                             progressDialog.show();
                                             String[] dataColumns = {"ReturnValues"};
                                             Runnable postThread = new Runnable() {
