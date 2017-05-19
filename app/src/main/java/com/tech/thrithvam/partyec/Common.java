@@ -38,11 +38,24 @@ class Common {
 
         if (id == R.id.nav_shop_by_category) {
             Intent intent=new Intent(context,CategoryList.class);
+            intent.putExtra("from","shopByCategory");
             context.startActivity(intent);
-        } else if (id == R.id.nav_register_event) {
+        }
+        else if (id == R.id.nav_shop_by_occasion) {
+            Intent intent=new Intent(context,CategoryList.class);
+            intent.putExtra("from","shopByOccasion");
+            context.startActivity(intent);
+        }
+        else if (id == R.id.nav_offers) {
+            Intent intent=new Intent(context,CategoryList.class);
+            intent.putExtra("from","offers");
+            context.startActivity(intent);
+        }
+        else if (id == R.id.nav_register_event) {
             Intent intent=new Intent(context,RegisterEvent.class);
             context.startActivity(intent);
-        } else if (id == R.id.nav_contact_us) {
+        }
+        else if (id == R.id.nav_contact_us) {
             Intent intent=new Intent(context,ContactUs.class);
             context.startActivity(intent);
         }
@@ -67,14 +80,7 @@ class Common {
             Intent intent=new Intent (context,ListViewsActivity.class);
             intent.putExtra("list","orders");
             context.startActivity(intent);
-        }/* else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }*/
-
+        }
     }
     void NavigationBarHeaderClick(final Context context, NavigationView navigationView){
         db=DatabaseHandler.getInstance(context);

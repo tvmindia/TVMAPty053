@@ -58,7 +58,7 @@
         android:background="@color/partyec"
         android:layout_margin="2dp"
         android:padding="5dp"
-        android:onClick="shopByCategory">
+        android:onClick="shopByOccasion">
         <ImageView
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -92,7 +92,8 @@
         android:layout_height="match_parent"
         android:background="@color/partyec"
         android:layout_margin="2dp"
-        android:padding="5dp">
+        android:padding="5dp"
+        android:onClick="offers">
         <ImageView
             android:layout_width="40dp"
             android:layout_height="match_parent"

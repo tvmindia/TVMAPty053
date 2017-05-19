@@ -24,7 +24,7 @@ String orderID;
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.payment);
         orderID=getIntent().getExtras().getString("orderID");
-        ((TextView)findViewById(R.id.order_id_text)).setText(orderID);
+        ((TextView)findViewById(R.id.order_id_text)).setText("Order No : " + orderID);
     }
     public void payClick(View view){
          final Common common = new Common();

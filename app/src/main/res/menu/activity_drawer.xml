@@ -11,7 +11,7 @@
             android:icon="@drawable/shop"
             android:title="@string/shop_by_category" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_shop_by_occasion"
             android:icon="@drawable/occation"
             android:title="@string/shop_by_occasion" />
         <item

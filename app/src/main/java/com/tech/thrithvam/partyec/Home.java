@@ -40,6 +40,17 @@ Common common=new Common();
     }
     public void shopByCategory(View view){
         Intent intent=new Intent(this,CategoryList.class);
+        intent.putExtra("from","shopByCategory");
+        startActivity(intent);
+    }
+    public void shopByOccasion(View view){
+        Intent intent=new Intent(this,CategoryList.class);
+        intent.putExtra("from","shopByOccasion");
+        startActivity(intent);
+    }
+    public void offers(View view){
+        Intent intent=new Intent(this,CategoryList.class);
+        intent.putExtra("from","offers");
         startActivity(intent);
     }
     @Override

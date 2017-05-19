@@ -18,6 +18,12 @@ import android.widget.TextView;
 
 import com.wang.avi.AVLoadingIndicatorView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 public class CategoryList extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Common common=new Common();
@@ -31,6 +37,41 @@ public class CategoryList extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         categoryListView=(ListView)findViewById(R.id.category_listview);
+        if(getIntent().hasExtra("from")){
+            switch (getIntent().getExtras().getString("from")){
+                case "shopByCategory":
+                    getSupportActionBar().setTitle(R.string.shop_by_category);
+                    shopByCategory();
+                    break;
+                case "shopByOccasion":
+                    getSupportActionBar().setTitle(R.string.shop_by_occasion);
+                    shopByOccasion();
+                    break;
+                case "offers":
+                    getSupportActionBar().setTitle(R.string.offers);
+                    offers();
+                    break;
+            }
+        }
+        else {
+            finish();return;
+        }
+
+
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        common.NavigationBarHeaderClick(this,navigationView);
+    }
+
+    void shopByCategory(){
         //Threading------------------------------------------------------------------------------------------------------
         String webService="api/category/GetMainCategories";
         String postData =  "";
@@ -54,28 +95,110 @@ public class CategoryList extends AppCompatActivity
             }
         };
         common.AsynchronousThread(CategoryList.this,
-                                    webService,
-                                    postData,
-                                    loadingIndicator,
-                                    dataColumns,
-                                    postThread,
-                                    null);
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                null);
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        common.NavigationBarHeaderClick(this,navigationView);
     }
-
-
+    void shopByOccasion(){
+        //Threading--------------------------------------------------
+        String webService="api/category/GetCategoryMainPageItems";
+        String postData =  "{\"ID\":\""+"2063"+"\"}";
+        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
+        String[] dataColumns={};
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                final ArrayList<String[]> subCategories=new ArrayList<>();
+                JSONObject jsonRootObject;
+                try {
+                    jsonRootObject = new JSONObject(common.json);
+                    JSONArray jsonArray =jsonRootObject.optJSONArray("SubCategories");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String[] data = new String[3];
+                        data[0] = jsonObject.optString("URL");
+                        data[1] = jsonObject.optString("Name");
+                        data[2] = jsonObject.optString("ID");
+                        subCategories.add(data);
+                    }
+                    adapter=new CustomAdapter(CategoryList.this, subCategories,"CategoryList");
+                    categoryListView.setAdapter(adapter);
+                    categoryListView.setVisibility(View.VISIBLE);
+                    categoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent=new Intent(CategoryList.this,ProductList.class);
+                            intent.putExtra("CategoryCode",subCategories.get(position)[2]);
+                            intent.putExtra("CategoryName",subCategories.get(position)[1]);
+                            startActivity(intent);
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        common.AsynchronousThread(CategoryList.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                null);
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    }
+    void offers(){
+        //Threading--------------------------------------------------
+        String webService="api/category/GetCategoryMainPageItems";
+        String postData =  "{\"ID\":\""+"2072"+"\"}";
+        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
+        String[] dataColumns={};
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                final ArrayList<String[]> subCategories=new ArrayList<>();
+                JSONObject jsonRootObject;
+                try {
+                    jsonRootObject = new JSONObject(common.json);
+                    JSONArray jsonArray =jsonRootObject.optJSONArray("SubCategories");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String[] data = new String[3];
+                        data[0] = jsonObject.optString("URL");
+                        data[1] = jsonObject.optString("Name");
+                        data[2] = jsonObject.optString("ID");
+                        subCategories.add(data);
+                    }
+                    adapter=new CustomAdapter(CategoryList.this, subCategories,"CategoryList");
+                    categoryListView.setAdapter(adapter);
+                    categoryListView.setVisibility(View.VISIBLE);
+                    categoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent=new Intent(CategoryList.this,ProductList.class);
+                            intent.putExtra("CategoryCode",subCategories.get(position)[2]);
+                            intent.putExtra("CategoryName",subCategories.get(position)[1]);
+                            startActivity(intent);
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        common.AsynchronousThread(CategoryList.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                null);
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
