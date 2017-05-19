@@ -126,6 +126,7 @@ public class ProductDetails extends AppCompatActivity
                                 ((TextView) findViewById(R.id.stock_availability)).setTextColor(getResources().getColor(android.R.color.holo_red_light));
                                 proceed.setEnabled(false);
                                 proceed.setBackgroundColor(Color.GRAY);
+                                (findViewById(R.id.add_to_cart)).setVisibility(GONE);
                             }
                         }
 
