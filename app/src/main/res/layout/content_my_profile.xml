@@ -191,7 +191,8 @@
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:background="?attr/selectableItemBackground"
-                android:clickable="true">
+                android:clickable="true"
+                android:onClick="cartClick">
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
@@ -223,7 +224,8 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:background="?attr/selectableItemBackground"
-        android:clickable="true">
+        android:clickable="true"
+        android:onClick="wishlistClick">
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
@@ -255,7 +257,8 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:background="?attr/selectableItemBackground"
-        android:clickable="true">
+        android:clickable="true"
+        android:onClick="ordersClick">
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"

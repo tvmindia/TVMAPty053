@@ -102,6 +102,20 @@ public class MyProfile extends AppCompatActivity
         Intent addressIntent=new Intent(this,ManageAddresses.class);
         startActivity(addressIntent);
     }
+    public void cartClick(View view){
+        Intent intent=new Intent(MyProfile.this,Cart.class);
+        startActivity(intent);
+    }
+    public void wishlistClick(View view){
+        Intent intent=new Intent (MyProfile.this,ListViewsActivity.class);
+        intent.putExtra("list","wishlist");
+        startActivity(intent);
+    }
+    public void ordersClick(View view){
+        Intent intent=new Intent (MyProfile.this,ListViewsActivity.class);
+        intent.putExtra("list","orders");
+        startActivity(intent);
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
