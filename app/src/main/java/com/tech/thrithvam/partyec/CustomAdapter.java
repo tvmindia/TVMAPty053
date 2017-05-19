@@ -89,7 +89,7 @@ class CustomAdapter extends BaseAdapter{
         //Quotations-------------------------
         TextView quotationNo,quotationDate;
         //Cart---------------------------------
-        TextView shipping,quantity,attributes;
+        TextView shipping,quantity,attributes,priceChangeAlert;
         ImageView closeIcon;
         TextView outOfStockCover;
         //Order----------------------------------
@@ -399,6 +399,7 @@ class CustomAdapter extends BaseAdapter{
                     holder.quantity=(TextView) convertView.findViewById(R.id.quantity);
                     holder.price=(TextView) convertView.findViewById(R.id.price);
                     holder.shipping=(TextView) convertView.findViewById(R.id.shipping);
+                    holder.priceChangeAlert=(TextView) convertView.findViewById(R.id.price_change_alert);
                     holder.attributes=(TextView) convertView.findViewById(R.id.attributes);
                     holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
                     holder.closeIcon=(ImageView) convertView.findViewById(R.id.close_icon);
@@ -423,6 +424,13 @@ class CustomAdapter extends BaseAdapter{
                 }
                 else {
                     holder.outOfStockCover.setVisibility(View.VISIBLE);
+                }
+                if(filteredObjects.get(position)[9].equals("null")){
+                    holder.priceChangeAlert.setVisibility(View.GONE);
+                }
+                else {
+                    holder.priceChangeAlert.setVisibility(View.VISIBLE);
+                    holder.priceChangeAlert.setText(filteredObjects.get(position)[9]);
                 }
                 break;
             //---------------------------------------- Orders --------------------------------------

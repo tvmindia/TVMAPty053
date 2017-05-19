@@ -107,7 +107,8 @@ public class Cart extends AppCompatActivity {
                 "Qty",//5
                 "CurrentPrice",//6
                 "ShippingCharge",//7
-                "StockAvailableYN"//8
+                "StockAvailableYN",//8
+                "PriceChangedText"//9
                 };
         AVLoadingIndicatorView loadingIndicatorView=(AVLoadingIndicatorView)findViewById(R.id.loading_indicator);
         Runnable postThread=new Runnable() {

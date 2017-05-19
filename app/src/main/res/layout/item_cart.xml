@@ -97,14 +97,24 @@
                     android:text="@string/price_display_2"
                     android:textColor="@color/primary_text"
                     android:textSize="14sp" />
-
+                <TextView
+                    android:id="@+id/price_change_alert"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:text="Price change alert"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="12sp"
+                    android:gravity="end"
+                    android:layout_below="@id/price"/>
                 <TextView
                     android:id="@+id/shipping"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:layout_below="@id/price"
+                    android:layout_below="@id/price_change_alert"
                     android:paddingBottom="3dp"
                     android:text="@string/shipping_charge"
                     android:textColor="@color/primary_text"
