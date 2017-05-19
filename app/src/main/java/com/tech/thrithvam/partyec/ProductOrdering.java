@@ -894,8 +894,11 @@ public class ProductOrdering extends AppCompatActivity {
             Runnable postThread = new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(ProductOrdering.this, R.string.success, Toast.LENGTH_SHORT).show();//TODO navigate
-                    Intent clearIntent=new Intent(ProductOrdering.this,Home.class);
+                    Toast.makeText(ProductOrdering.this, R.string.success, Toast.LENGTH_SHORT).show();
+                    if(getIntent().getExtras().getString("cartORbuy").equals("cart")){
+                        finish();return;
+                    }
+                    Intent clearIntent=new Intent(ProductOrdering.this,Cart.class);
                     clearIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(clearIntent);
                     finish();

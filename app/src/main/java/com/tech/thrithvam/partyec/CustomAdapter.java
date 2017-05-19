@@ -133,7 +133,7 @@ class CustomAdapter extends BaseAdapter{
                 }
                 //Label loading--------------------
                 holder.navCatName.setText(filteredObjects.get(position)[1]);
-                holder.itemsCount.setText(filteredObjects.get(position)[2]);
+                holder.itemsCount.setText(filteredObjects.get(position)[2].equals("0")||filteredObjects.get(position)[2].equals("null")?"":filteredObjects.get(position)[2]);
                 break;
             //--------------------------for All products list items------------------
             case "AllProducts":

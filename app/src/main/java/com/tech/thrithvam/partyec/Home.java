@@ -62,9 +62,11 @@ Common common=new Common();
             super.onBackPressed();
         }
     }
+    Menu menu;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_menu, menu);
+        this.menu=menu;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             menu.getItem(0).getIcon().setColorFilter(getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
         }else {
@@ -72,6 +74,20 @@ Common common=new Common();
         }
         return true;
     }
+
+    @Override
+    protected void onResume() {//To avoid recoloring of menu icon
+        super.onResume();
+        if(menu!=null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                menu.getItem(0).getIcon().setColorFilter(getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+            } else {
+                menu.getItem(0).getIcon().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+            }
+        }
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

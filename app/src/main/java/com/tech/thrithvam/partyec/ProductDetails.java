@@ -519,6 +519,7 @@ public class ProductDetails extends AppCompatActivity
             intent.putExtra("productID", productID);
             intent.putExtra("productName", productName);
             intent.putExtra("cartORbuy", "cart");
+            intent.putExtra("actionType", actionType);
             startActivity(intent);
         }
         else {
