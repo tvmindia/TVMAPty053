@@ -148,4 +148,8 @@
     <string name="no_filters_available">No filters available</string>
     <string name="payment">Payment</string>
     <string name="no_items_available">No items available</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="online_payment">Online Payment</string>
+    <string name="cash_on_delivery">Cash On Delivery</string>
+    <string name="place_order">Place Order</string>
 </resources>

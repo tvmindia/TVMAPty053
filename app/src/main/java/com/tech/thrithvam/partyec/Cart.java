@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.IdRes;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,6 +70,20 @@ public class Cart extends AppCompatActivity {
         loadCart();
         //Load customer address-----------------------------------
         getCustomerAddress();
+        //Payment method-----------
+        ((RadioGroup)findViewById(R.id.payment_method)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                switch (checkedId){
+                    case R.id.radio_cod:
+                        ((Button)findViewById(R.id.proceed_button)).setText(R.string.place_order);
+                        break;
+                    case R.id.radio_online:
+                        ((Button)findViewById(R.id.proceed_button)).setText(R.string.make_payment);
+                        break;
+                }
+            }
+        });
     }
     void loadCart(){
         final Common common=new Common();
@@ -764,11 +781,21 @@ public class Cart extends AppCompatActivity {
                 "\"StateProvince\":\"" + billingAddress.StateProvince + "\"," +
                 "\"ContactNo\":\"" + billingAddress.ContactNo + "\"}";
 
+        //Payment method-----------------------
+        String paymentMethod="";
+        switch (((RadioGroup)findViewById(R.id.payment_method)).getCheckedRadioButtonId()){
+            case R.id.radio_cod:paymentMethod="COD";
+                break;
+            case R.id.radio_online: paymentMethod="ONL";
+                break;
+        }
+        ((RadioButton)findViewById(R.id.radio_cod)).setEnabled(false);
+        ((RadioButton)findViewById(R.id.radio_online)).setEnabled(false);
         //Threading--------------------------------------------------
         String webService = "api/Order/InsertOrder";
         String postData = "{\"CustomerID\":\"" + customerID
                 + "\",\"shippingLocationID\":\"" + locationID
-                + "\",\"PaymentType\":\"" + "COD"
+                + "\",\"PaymentType\":\"" + paymentMethod
                 + "\",\"PaymentStatus\":\"" + "0"
                 + "\",\"SourceIP\":\"" + getLocalIpAddress()
                 + "\"," + customerShippingAddressJSON
@@ -788,11 +815,25 @@ public class Cart extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 String orderID=jsonObject.optString("ReturnValues");
-                Intent clearIntent = new Intent(Cart.this, PaymentGateway.class);
-                clearIntent.putExtra("orderID",orderID);
-                clearIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(clearIntent);
-                finish();
+
+                switch (((RadioGroup)findViewById(R.id.payment_method)).getCheckedRadioButtonId()){
+                    case R.id.radio_cod:
+                        Intent intent = new Intent(Cart.this, ListViewsActivity.class);
+                        intent.putExtra("list", "orders");
+                        intent.putExtra("orderid", orderID);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    case R.id.radio_online:
+                        Intent clearIntent = new Intent(Cart.this, PaymentGateway.class);
+                        clearIntent.putExtra("orderID",orderID);
+                        clearIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(clearIntent);
+                        finish();
+                        break;
+                }
+
                 if (progressDialog.isShowing())
                     progressDialog.dismiss();
             }

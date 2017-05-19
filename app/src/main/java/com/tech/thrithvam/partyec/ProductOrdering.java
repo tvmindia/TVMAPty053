@@ -894,8 +894,8 @@ public class ProductOrdering extends AppCompatActivity {
             Runnable postThread = new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(ProductOrdering.this, R.string.success, Toast.LENGTH_SHORT).show();
                     if(getIntent().getExtras().getString("cartORbuy").equals("cart")){
+                        Toast.makeText(ProductOrdering.this, R.string.success, Toast.LENGTH_SHORT).show();
                         finish();return;
                     }
                     Intent clearIntent=new Intent(ProductOrdering.this,Cart.class);
