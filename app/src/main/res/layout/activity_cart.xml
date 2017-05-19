@@ -52,16 +52,16 @@
             app:cardUseCompatPadding="true"
             android:id="@+id/cart_items"
             android:visibility="visible">
-        <ListView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/listview"
+            android:orientation="vertical"
+            android:id="@+id/cart_linear"
             android:paddingLeft="7dp"
             android:paddingRight="7dp"
             android:divider="@color/gray"
-            android:dividerHeight="1dp"
-            android:scrollbars="none"
-            android:clipToPadding="false"/>
+            android:dividerHeight="1dp"/>
+
         </android.support.v7.widget.CardView>
         <com.wang.avi.AVLoadingIndicatorView
             android:layout_width="wrap_content"

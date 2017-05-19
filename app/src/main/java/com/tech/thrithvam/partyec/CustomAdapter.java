@@ -88,10 +88,8 @@ class CustomAdapter extends BaseAdapter{
         TextView bookingNo,RequiredDate,Status,BookingDate;
         //Quotations-------------------------
         TextView quotationNo,quotationDate;
-        //Cart---------------------------------
-        TextView shipping,quantity,attributes,priceChangeAlert;
-        ImageView closeIcon;
-        TextView outOfStockCover;
+        //xCart(now used for other purposes)--------------------
+        TextView shipping,quantity,attributes;
         //Order----------------------------------
         TextView orderNo,orderDate,orderStatus,totalAmount,taxAmount;
 
@@ -389,49 +387,6 @@ class CustomAdapter extends BaseAdapter{
                 holder.RequiredDate.setText(filteredObjects.get(position)[2].equals("null")?"":adapterContext.getResources().getString(R.string.required_dates,filteredObjects.get(position)[2]));
                 holder.quotationDate.setText(filteredObjects.get(position)[3].equals("null")?"":adapterContext.getResources().getString(R.string.quotation_dates,filteredObjects.get(position)[3]));
                 holder.Status.setText(filteredObjects.get(position)[4].equals("null")?"":adapterContext.getResources().getString(R.string.quotation_status,filteredObjects.get(position)[4]));
-                break;
-            //---------------------------------------- Shopping Cart --------------------------------------
-            case "Cart":
-                if (convertView == null) {
-                    holder = new Holder();
-                    convertView = inflater.inflate(R.layout.item_cart, null);
-                    holder.productName = (TextView) convertView.findViewById(R.id.product_name);
-                    holder.quantity=(TextView) convertView.findViewById(R.id.quantity);
-                    holder.price=(TextView) convertView.findViewById(R.id.price);
-                    holder.shipping=(TextView) convertView.findViewById(R.id.shipping);
-                    holder.priceChangeAlert=(TextView) convertView.findViewById(R.id.price_change_alert);
-                    holder.attributes=(TextView) convertView.findViewById(R.id.attributes);
-                    holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
-                    holder.closeIcon=(ImageView) convertView.findViewById(R.id.close_icon);
-                    holder.outOfStockCover=(TextView)convertView.findViewById(R.id.out_of_stock_cover);
-                    convertView.setTag(holder);
-                } else {
-                    holder = (Holder) convertView.getTag();
-                }
-                //Label loading--------------------
-                holder.closeIcon.setTag(filteredObjects.get(position)[0]);
-                holder.productName.setText(filteredObjects.get(position)[2]);
-                common.LoadImage(adapterContext,
-                        holder.productImage,
-                        adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[3],
-                        R.drawable.dim_icon);
-                holder.quantity.setText(adapterContext.getResources().getString(R.string.quantity,filteredObjects.get(position)[5].equals("null")?"-":filteredObjects.get(position)[5]));
-                holder.price.setText(adapterContext.getResources().getString(R.string.price_display_2,filteredObjects.get(position)[6].equals("null")?"-":filteredObjects.get(position)[6]));
-                holder.shipping.setText(adapterContext.getResources().getString(R.string.shipping_charge,filteredObjects.get(position)[7].equals("null")?"-":filteredObjects.get(position)[7]));
-                holder.attributes.setText(filteredObjects.get(position)[4]);
-                if(filteredObjects.get(position)[8].equals("true")){
-                    holder.outOfStockCover.setVisibility(View.GONE);
-                }
-                else {
-                    holder.outOfStockCover.setVisibility(View.VISIBLE);
-                }
-                if(filteredObjects.get(position)[9].equals("null")){
-                    holder.priceChangeAlert.setVisibility(View.GONE);
-                }
-                else {
-                    holder.priceChangeAlert.setVisibility(View.VISIBLE);
-                    holder.priceChangeAlert.setText(filteredObjects.get(position)[9]);
-                }
                 break;
             //---------------------------------------- Orders --------------------------------------
             case "Orders":

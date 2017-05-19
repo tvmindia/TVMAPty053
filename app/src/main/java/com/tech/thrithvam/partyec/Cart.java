@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.IdRes;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -40,6 +42,7 @@ import java.util.Enumeration;
 import java.util.Locale;
 
 import static android.view.View.GONE;
+import static android.view.View.inflate;
 
 public class Cart extends AppCompatActivity {
     DatabaseHandler db;
@@ -138,32 +141,58 @@ public class Cart extends AppCompatActivity {
                 }
 
                 //cart list
-                CustomAdapter adapter=new CustomAdapter(Cart.this, common.dataArrayList,"Cart");
-                cartListView.setAdapter(adapter);
-                cartListView.setSelector(android.R.color.transparent);
-                int desiredWidth = View.MeasureSpec.makeMeasureSpec(cartListView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-                int totalHeight = 0;
-                View view = null;
-                for (int i = 0; i < cartListView.getCount(); i++) {
-                    view = adapter.getView(i, view, cartListView);
-                    if (i == 0)
-                        view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, LinearLayout.LayoutParams.WRAP_CONTENT));
-
-                    view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-                    totalHeight += view.getMeasuredHeight();
-                }
-                ViewGroup.LayoutParams params = cartListView.getLayoutParams();
-                params.height = totalHeight + (cartListView.getDividerHeight() * (adapter.getCount() - 1));
-                cartListView.setLayoutParams(params);
-              /*  cartListView.setOnTouchListener(new View.OnTouchListener() {
-                    // Setting on Touch Listener for handling the touch inside ScrollView
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        // Disallow the touch request for parent scroll on touch of child view
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        return false;
+                LinearLayout cartLinear=(LinearLayout)findViewById(R.id.cart_linear);
+                if(cartLinear.getChildCount() > 0)
+                    cartLinear.removeAllViews();
+                for(int i=0;i<common.dataArrayList.size();i++){
+                    if(i!=0){
+                        //divider
+                        View divider = new View(Cart.this);
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
+                        lp.setMargins(15,0,15,0);
+                        divider.setLayoutParams(lp);
+                        divider.setBackgroundColor(Color.GRAY);
+                        divider.setPadding(0, 5, 0, 5);
+                        cartLinear.addView(divider);
                     }
-                });*/
+                    View view=inflater.inflate(R.layout.item_cart, null);
+                    ImageView productImage,closeIcon;
+                    TextView  productName,price,shipping,quantity,attributes,priceChangeAlert,outOfStockCover;
+                    productName = (TextView) view.findViewById(R.id.product_name);
+                    quantity=(TextView) view.findViewById(R.id.quantity);
+                    price=(TextView) view.findViewById(R.id.price);
+                    shipping=(TextView) view.findViewById(R.id.shipping);
+                    priceChangeAlert=(TextView) view.findViewById(R.id.price_change_alert);
+                    attributes=(TextView) view.findViewById(R.id.attributes);
+                    productImage=(ImageView) view.findViewById(R.id.product_image);
+                    closeIcon=(ImageView) view.findViewById(R.id.close_icon);
+                    outOfStockCover=(TextView)view.findViewById(R.id.out_of_stock_cover);
+                    //Label loading--------------------
+                    closeIcon.setTag(common.dataArrayList.get(i)[0]);
+                    productName.setText(common.dataArrayList.get(i)[2]);
+                    common.LoadImage(Cart.this,
+                            productImage,
+                            getResources().getString(R.string.url)+common.dataArrayList.get(i)[3],
+                            R.drawable.dim_icon);
+                    quantity.setText(getResources().getString(R.string.quantity,common.dataArrayList.get(i)[5].equals("null")?"-":common.dataArrayList.get(i)[5]));
+                    price.setText(getResources().getString(R.string.price_display_2,common.dataArrayList.get(i)[6].equals("null")?"-":common.dataArrayList.get(i)[6]));
+                    shipping.setText(getResources().getString(R.string.shipping_charge,common.dataArrayList.get(i)[7].equals("null")?"-":common.dataArrayList.get(i)[7]));
+                    attributes.setText(common.dataArrayList.get(i)[4]);
+                    if(common.dataArrayList.get(i)[8].equals("true")){
+                        outOfStockCover.setVisibility(View.GONE);
+                    }
+                    else {
+                        outOfStockCover.setVisibility(View.VISIBLE);
+                    }
+                    if(common.dataArrayList.get(i)[9].equals("null")){
+                        priceChangeAlert.setVisibility(View.GONE);
+                    }
+                    else {
+                        priceChangeAlert.setVisibility(View.VISIBLE);
+                        priceChangeAlert.setText(common.dataArrayList.get(i)[9]);
+                    }
+                    cartLinear.addView(view);
+                }
               (findViewById(R.id.cart_scrollview)).setVisibility(View.VISIBLE);
               //Totaling-----------------------------------
                 for(int i=0;i<common.dataArrayList.size();i++){
