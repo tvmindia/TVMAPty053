@@ -248,6 +248,11 @@ public class ProductOrdering extends AppCompatActivity {
                 ArrayAdapter adapter = new ArrayAdapter<String>(ProductOrdering.this, android.R.layout.simple_spinner_item, arrayList);
                 spinners.get(j).setAdapter(adapter);
             }
+
+            //setting default price and id
+            calculatePrice(productDetailsArrayList.get(0).PriceDifference,productDetailsArrayList.get(0).DiscountAmount);
+            selectedProductDetailID=productDetailsArrayList.get(0).ID;
+
             for (int i = 0; i < spinners.size(); i++) {
                 final int Fi = i;
                 spinners.get(i).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

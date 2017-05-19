@@ -65,18 +65,19 @@
                 android:paddingTop="5dp"
                 android:layout_below="@id/order_Status"
                 android:layout_marginBottom="2dp"/>
+
             <TextView
+                android:id="@+id/order_Amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/order_Date"
+                android:paddingRight="5dp"
                 android:text="@string/order_total"
                 android:textColor="@color/primary_text"
-                android:textSize="14sp"
-                android:id="@+id/order_Amount"
-                android:paddingRight="5dp"
-                android:layout_below="@id/order_Date"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                />
+                android:textSize="15sp"
+                android:textStyle="bold" />
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
