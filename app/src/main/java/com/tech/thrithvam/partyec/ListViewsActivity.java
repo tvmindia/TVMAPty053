@@ -63,13 +63,7 @@ public class ListViewsActivity extends AppCompatActivity
                 loadOrder();
                 break;
             case "ordersDetails":
-
-
                 loadOrderDetails(getIntent().getExtras().getString("ID"));
-
-
-
-
                 break;
             default:
                 finish();
@@ -268,6 +262,7 @@ public class ListViewsActivity extends AppCompatActivity
             public void run() {
                 CustomAdapter adapter=new CustomAdapter(ListViewsActivity.this, common.dataArrayList,"Orders");
                 listView.setAdapter(adapter);
+
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -281,6 +276,18 @@ public class ListViewsActivity extends AppCompatActivity
                         startActivity(intent);
                     }
                 });
+
+                //if from order placement
+                if(getIntent().hasExtra("orderid")){
+                    for(int i=0;i<common.dataArrayList.size();i++){
+                        if(common.dataArrayList.get(i)[4].equals(getIntent().getExtras().getString("orderid"))){
+                            listView.performItemClick(
+                                    listView.getAdapter().getView(i, null, null),
+                                    i,
+                                    listView.getAdapter().getItemId(i));
+                        }
+                    }
+                }
             }
         };
         common.AsynchronousThread(ListViewsActivity.this,

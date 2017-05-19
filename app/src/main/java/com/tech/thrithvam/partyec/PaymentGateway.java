@@ -63,6 +63,7 @@ String orderID;
                                 public void run() {
                                     Intent intent = new Intent(PaymentGateway.this, ListViewsActivity.class);
                                     intent.putExtra("list", "orders");
+                                    intent.putExtra("orderid", orderID);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);
                                     finish();

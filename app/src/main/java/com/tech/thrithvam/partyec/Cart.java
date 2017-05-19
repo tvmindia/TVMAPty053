@@ -724,7 +724,7 @@ public class Cart extends AppCompatActivity {
         String ContactNo="";
     }
     public void proceedClick(final View view) {
-        if(locationID.equals("")){
+        if(locationID.equals("")||locationID.equals("0")){
             Toast.makeText(this, "Please select shipping address having location", Toast.LENGTH_SHORT).show();
             return;
         }

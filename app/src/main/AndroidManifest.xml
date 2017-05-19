@@ -23,7 +23,8 @@
             android:name=".Home"
             android:configChanges="orientation|screenSize"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".CategoryList"
             android:configChanges="orientation|screenSize"
