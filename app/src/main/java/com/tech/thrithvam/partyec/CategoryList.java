@@ -106,7 +106,7 @@ public class CategoryList extends AppCompatActivity
     void shopByOccasion(){
         //Threading--------------------------------------------------
         String webService="api/category/GetCategoryMainPageItems";
-        String postData =  "{\"ID\":\""+"2063"+"\"}";
+        String postData =  "{\"ID\":\""+getResources().getString(R.string.occasion_code)+"\"}";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
         String[] dataColumns={};
         Runnable postThread=new Runnable() {
@@ -154,7 +154,7 @@ public class CategoryList extends AppCompatActivity
     void offers(){
         //Threading--------------------------------------------------
         String webService="api/category/GetCategoryMainPageItems";
-        String postData =  "{\"ID\":\""+"2072"+"\"}";
+        String postData =  "{\"ID\":\""+getResources().getString(R.string.offers_code)+"\"}";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
         String[] dataColumns={};
         Runnable postThread=new Runnable() {
