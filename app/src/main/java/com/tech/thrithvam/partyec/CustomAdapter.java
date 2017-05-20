@@ -11,9 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -428,7 +426,7 @@ class CustomAdapter extends BaseAdapter{
                 //Label loading--------------------
                 holder.productName.setText(filteredObjects.get(position)[1].equals("null")?"":filteredObjects.get(position)[1]);
                 holder.attributes.setText(filteredObjects.get(position)[2]);
-                holder.quantity.setText(adapterContext.getResources().getString(R.string.quantity,filteredObjects.get(position)[3].equals("null")?"-":filteredObjects.get(position)[3]));
+                holder.quantity.setText(adapterContext.getResources().getString(R.string.quantity_display,filteredObjects.get(position)[3].equals("null")?"-":filteredObjects.get(position)[3]));
                 holder.price.setText(adapterContext.getResources().getString(R.string.price_display_2,filteredObjects.get(position)[4].equals("null")?"-":filteredObjects.get(position)[4]));
                 holder.shipping.setText(adapterContext.getResources().getString(R.string.shipping_charge,filteredObjects.get(position)[5].equals("null")?"-":filteredObjects.get(position)[5]));
                 holder.taxAmount.setText(adapterContext.getResources().getString(R.string.tax_amount,filteredObjects.get(position)[6].equals("null")?"-":filteredObjects.get(position)[6]));

@@ -113,7 +113,8 @@
     <string name="please_wait">Please wait…</string>
     <string name="not_selecting">Not selected</string>
     <string name="cart">Cart</string>
-    <string name="quantity">Quantity : %1$s</string>
+    <string name="quantity_display">Quantity : %1$s</string>
+    <string name="quantity">Quantity</string>
     <string name="price_display_2">Price : %1$s QR</string>
     <string name="shipping_charge">Shipping charge : %1$s QR</string>
     <string name="tax_amount">Tax Amount : %1$s QR</string>

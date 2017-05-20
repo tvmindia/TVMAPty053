@@ -128,7 +128,7 @@ public class Login extends AppCompatActivity
         }
     }
     public void UserVerification(final String otp, final Boolean isUser){
-        Toast.makeText(Login.this,otp,Toast.LENGTH_LONG).show();
+//        Toast.makeText(Login.this,otp,Toast.LENGTH_LONG).show();
         final AlertDialog.Builder alert = new AlertDialog.Builder(Login.this);
         alert.setTitle(R.string.enter_otp);
         final EditText otpInput=new EditText(Login.this);

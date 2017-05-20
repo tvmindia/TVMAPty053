@@ -6,13 +6,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.IdRes;
-import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.format.Formatter;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -42,7 +43,6 @@ import java.util.Enumeration;
 import java.util.Locale;
 
 import static android.view.View.GONE;
-import static android.view.View.inflate;
 
 public class Cart extends AppCompatActivity {
     DatabaseHandler db;
@@ -174,7 +174,8 @@ public class Cart extends AppCompatActivity {
                             productImage,
                             getResources().getString(R.string.url)+common.dataArrayList.get(i)[3],
                             R.drawable.dim_icon);
-                    quantity.setText(getResources().getString(R.string.quantity,common.dataArrayList.get(i)[5].equals("null")?"-":common.dataArrayList.get(i)[5]));
+                    quantity.setText(getResources().getString(R.string.quantity_display,common.dataArrayList.get(i)[5].equals("null")?"-":common.dataArrayList.get(i)[5]));
+                    quantity.setTag(common.dataArrayList.get(i)[0]);
                     price.setText(getResources().getString(R.string.price_display_2,common.dataArrayList.get(i)[6].equals("null")?"-":common.dataArrayList.get(i)[6]));
                     shipping.setText(getResources().getString(R.string.shipping_charge,common.dataArrayList.get(i)[7].equals("null")?"-":common.dataArrayList.get(i)[7]));
                     attributes.setText(common.dataArrayList.get(i)[4]);
@@ -197,7 +198,7 @@ public class Cart extends AppCompatActivity {
               //Totaling-----------------------------------
                 for(int i=0;i<common.dataArrayList.size();i++){
                     if(common.dataArrayList.get(i)[8].equals("true")) {
-                        totalPrice += Double.parseDouble(common.dataArrayList.get(i)[6].equals("null") ? "0" : common.dataArrayList.get(i)[6]);
+                        totalPrice += (Double.parseDouble(common.dataArrayList.get(i)[6].equals("null") ? "0" : common.dataArrayList.get(i)[6])*Integer.parseInt(common.dataArrayList.get(i)[5].equals("null")?"0":common.dataArrayList.get(i)[5]));
                         totalShipping += Double.parseDouble(common.dataArrayList.get(i)[7].equals("null") ? "0" : common.dataArrayList.get(i)[7]);
                     }
                 }
@@ -257,6 +258,58 @@ public class Cart extends AppCompatActivity {
                                 postFailThread);
                     }
                 }).setNegativeButton(R.string.no, null).show();
+    }
+    public void changeQuantity(final View view){
+        final AlertDialog.Builder alert = new AlertDialog.Builder(Cart.this);
+        alert.setTitle(R.string.quantity);
+        LinearLayout linearLayout=new LinearLayout(Cart.this);
+        linearLayout.setGravity(Gravity.CENTER);
+        final NumberPicker qtyInput=new NumberPicker(Cart.this);
+        qtyInput.setMinValue(1);
+        qtyInput.setMaxValue(100);
+        qtyInput.setWrapSelectorWheel(false);
+        //qtyInput.setLayoutParams(new LinearLayout.LayoutParams(100, ViewGroup.LayoutParams.WRAP_CONTENT));
+        qtyInput.setGravity(Gravity.CENTER_HORIZONTAL);
+        linearLayout.addView(qtyInput);
+        alert.setView(linearLayout);
+        alert.setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                Common common=new Common();
+                final ProgressDialog progressDialog=new ProgressDialog(Cart.this);
+                progressDialog.setMessage(getResources().getString(R.string.please_wait));
+                progressDialog.setCancelable(false);progressDialog.show();
+                //Threading--------------------------------------------------
+                String webService="api/order/UpdateShoppingCartQuantity";
+                String postData =  "{\"ID\":\""+(String) view.getTag()+"\",\"Qty\":\""+qtyInput.getValue()+"\"}";
+                String[] dataColumns={};
+                Runnable postThread=new Runnable() {
+                    @Override
+                    public void run() {
+                        if (progressDialog.isShowing())
+                            progressDialog.dismiss();
+                        //Refresh Cart----------------------
+                        totalShipping=0.0;totalPrice=0.0;
+                        loadCart();
+                    }
+                };
+                Runnable postFailThread=new Runnable() {
+                    @Override
+                    public void run() {
+                        if (progressDialog.isShowing())
+                            progressDialog.dismiss();
+                        Toast.makeText(Cart.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                    }
+                };
+                common.AsynchronousThread(Cart.this,
+                        webService,
+                        postData,
+                        null,
+                        dataColumns,
+                        postThread,
+                        postFailThread);
+            }
+        });
+        alert.show();
     }
     //Address--------------------------------------------------------------------------------------------------------------------
     View addressView,billingAddressView;
