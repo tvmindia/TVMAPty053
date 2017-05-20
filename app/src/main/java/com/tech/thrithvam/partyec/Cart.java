@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -157,11 +156,12 @@ public class Cart extends AppCompatActivity {
                     }
                     View view=inflater.inflate(R.layout.item_cart, null);
                     ImageView productImage,closeIcon;
-                    TextView  productName,price,shipping,quantity,attributes,priceChangeAlert,outOfStockCover;
+                    TextView  productName,price,shipping,itemTotalText,quantity,attributes,priceChangeAlert,outOfStockCover;
                     productName = (TextView) view.findViewById(R.id.product_name);
                     quantity=(TextView) view.findViewById(R.id.quantity);
                     price=(TextView) view.findViewById(R.id.price);
                     shipping=(TextView) view.findViewById(R.id.shipping);
+                    itemTotalText=(TextView)view.findViewById(R.id.item_total);
                     priceChangeAlert=(TextView) view.findViewById(R.id.price_change_alert);
                     attributes=(TextView) view.findViewById(R.id.attributes);
                     productImage=(ImageView) view.findViewById(R.id.product_image);
@@ -178,6 +178,11 @@ public class Cart extends AppCompatActivity {
                     quantity.setTag(common.dataArrayList.get(i)[0]);
                     price.setText(getResources().getString(R.string.price_display_2,common.dataArrayList.get(i)[6].equals("null")?"-":common.dataArrayList.get(i)[6]));
                     shipping.setText(getResources().getString(R.string.shipping_charge,common.dataArrayList.get(i)[7].equals("null")?"-":common.dataArrayList.get(i)[7]));
+                    Double itemTotal=(Double.parseDouble(common.dataArrayList.get(i)[6].equals("null") ? "0" : common.dataArrayList.get(i)[6])
+                                            *
+                                                Integer.parseInt(common.dataArrayList.get(i)[5].equals("null")?"0":common.dataArrayList.get(i)[5]))
+                                                    + Double.parseDouble(common.dataArrayList.get(i)[7].equals("null") ? "0" : common.dataArrayList.get(i)[7]);
+                    itemTotalText.setText(getString(R.string.cart_item_total,String.format(Locale.US, "%.2f", itemTotal)));
                     attributes.setText(common.dataArrayList.get(i)[4]);
                     if(common.dataArrayList.get(i)[8].equals("true")){
                         outOfStockCover.setVisibility(View.GONE);
@@ -267,6 +272,10 @@ public class Cart extends AppCompatActivity {
         final NumberPicker qtyInput=new NumberPicker(Cart.this);
         qtyInput.setMinValue(1);
         qtyInput.setMaxValue(100);
+        try {
+            String quantity  = ((TextView)view).getText().toString().replaceAll("[^0-9]", "");
+            qtyInput.setValue(Integer.parseInt(quantity));
+        }catch (Exception e){}
         qtyInput.setWrapSelectorWheel(false);
         //qtyInput.setLayoutParams(new LinearLayout.LayoutParams(100, ViewGroup.LayoutParams.WRAP_CONTENT));
         qtyInput.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -274,7 +283,7 @@ public class Cart extends AppCompatActivity {
         alert.setView(linearLayout);
         alert.setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                Common common=new Common();
+                final Common common=new Common();
                 final ProgressDialog progressDialog=new ProgressDialog(Cart.this);
                 progressDialog.setMessage(getResources().getString(R.string.please_wait));
                 progressDialog.setCancelable(false);progressDialog.show();
@@ -287,9 +296,23 @@ public class Cart extends AppCompatActivity {
                     public void run() {
                         if (progressDialog.isShowing())
                             progressDialog.dismiss();
-                        //Refresh Cart----------------------
-                        totalShipping=0.0;totalPrice=0.0;
-                        loadCart();
+
+                        JSONObject jsonObject= null;
+                        try {
+                            jsonObject = new JSONObject(common.json);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        int statusCode=jsonObject.optInt("StatusCode");
+                        if(statusCode==0){
+                            Toast.makeText(Cart.this, R.string.stock_not_available, Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            //Refresh Cart----------------------
+                            totalShipping=0.0;totalPrice=0.0;
+                            loadCart();
+                        }
+
                     }
                 };
                 Runnable postFailThread=new Runnable() {

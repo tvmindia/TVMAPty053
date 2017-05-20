@@ -121,6 +121,17 @@
                     android:text="@string/shipping_charge"
                     android:textColor="@color/primary_text"
                     android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/item_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/shipping"
+                    android:paddingBottom="3dp"
+                    android:text="@string/cart_item_total"
+                    android:textColor="@color/primary_text"
+                    android:textSize="14sp" />
             </RelativeLayout>
         </LinearLayout>
 
