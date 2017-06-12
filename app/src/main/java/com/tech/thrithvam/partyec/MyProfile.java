@@ -115,6 +115,11 @@ public class MyProfile extends AppCompatActivity
         intent.putExtra("list","orders");
         startActivity(intent);
     }
+    public void historyClick(View view){
+        Intent intent=new Intent (MyProfile.this,ListViewsActivity.class);
+        intent.putExtra("list","history");
+        startActivity(intent);
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

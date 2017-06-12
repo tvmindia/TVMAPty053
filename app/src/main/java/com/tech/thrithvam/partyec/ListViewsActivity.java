@@ -65,6 +65,9 @@ public class ListViewsActivity extends AppCompatActivity
             case "ordersDetails":
                 loadOrderDetails(getIntent().getExtras().getString("ID"));
                 break;
+            case "history":
+                loadOrderHistory();
+                break;
             default:
                 finish();
         }
@@ -347,6 +350,62 @@ public class ListViewsActivity extends AppCompatActivity
 
                 CustomAdapter adapter=new CustomAdapter(ListViewsActivity.this, common.dataArrayList,"OrderDetails");
                 listView.setAdapter(adapter);
+            }
+        };
+        common.AsynchronousThread(ListViewsActivity.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                null);
+    }
+    void loadOrderHistory(){
+        if(customerID==null) {
+            Intent loginIntent=new Intent(this,Login.class);
+            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            startActivity(loginIntent);
+            finish();
+            return;
+        }
+        getSupportActionBar().setTitle("Orders History");
+        listView.setSelector(android.R.color.transparent);
+        //Threading-------------------------------------------------------------------------
+        String webService="api/Customer/GetCustomerOrdersHistory";
+        String postData =  "{\"CustomerID\":\""+customerID+"\"}";
+        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
+        String[] dataColumns={"OrderNo","OrderDate","OrderStatus","TotalOrderAmt","ID"};
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                CustomAdapter adapter=new CustomAdapter(ListViewsActivity.this, common.dataArrayList,"Orders");
+                listView.setAdapter(adapter);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent=new Intent (ListViewsActivity.this,ListViewsActivity.class);
+                        intent.putExtra("list","ordersDetails");
+                        intent.putExtra("ID",common.dataArrayList.get(position)[4]);
+                        intent.putExtra("OrderNo",common.dataArrayList.get(position)[0]);
+                        intent.putExtra("OrderDate",common.dataArrayList.get(position)[1]);
+                        intent.putExtra("OrderStatus",common.dataArrayList.get(position)[2]);
+                        intent.putExtra("TotalOrderAmt",common.dataArrayList.get(position)[3]);
+                        startActivity(intent);
+                    }
+                });
+
+                //if from order placement
+                if(getIntent().hasExtra("orderid")){
+                    for(int i=0;i<common.dataArrayList.size();i++){
+                        if(common.dataArrayList.get(i)[4].equals(getIntent().getExtras().getString("orderid"))){
+                            listView.performItemClick(
+                                    listView.getAdapter().getView(i, null, null),
+                                    i,
+                                    listView.getAdapter().getItemId(i));
+                        }
+                    }
+                }
             }
         };
         common.AsynchronousThread(ListViewsActivity.this,
