@@ -4,9 +4,11 @@ package com.tech.thrithvam.partyec;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.view.Menu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -81,7 +83,7 @@ public class RegisterEvent extends AppCompatActivity
         common.NavigationBarHeaderClick(RegisterEvent.this,navigationView);
     }
     public void submitRequest(View view){
-        if(eventName.getText().toString().length()==0 || !eventName.getText().toString().matches(common.UserNameRegularExpression)){
+        if(eventName.getText().toString().length()==0){// || !eventName.getText().toString().matches(common.UserNameRegularExpression)){
             eventName.setError(getResources().getString(R.string.give_valid));
             eventName.requestFocus();
         }
@@ -135,9 +137,9 @@ public class RegisterEvent extends AppCompatActivity
             if(!requirements.getText().toString().trim().equals(""))
                 postData+="\"RequirementSpec\":\""+requirements.getText().toString().trim()+"\",";
 
-
-            //  TO:DO
-            //Customer id is to be passed if logged in
+            if(db.GetCustomerDetails("CustomerID")!=null) {
+                postData+="\"CustomerID\":\""+db.GetCustomerDetails("CustomerID")+"\",";
+            }
 
             postData+="\"ContactName\":\""+name.getText().toString().trim()+"\",";
 
@@ -355,29 +357,22 @@ public class RegisterEvent extends AppCompatActivity
         }
     }
 
-   /* @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.register_event, menu);
+        getMenuInflater().inflate(R.menu.request_event_menu, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        //Filter menu------------------------
+        if (id == R.id.menu_add_address) {
+            Intent intent=new Intent (RegisterEvent.this,ListViewsActivity.class);
+            intent.putExtra("list","event_requests");
+            startActivity(intent);
         }
-
         return super.onOptionsItemSelected(item);
     }
-*/
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
