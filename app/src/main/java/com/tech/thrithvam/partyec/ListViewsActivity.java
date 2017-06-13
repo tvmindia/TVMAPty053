@@ -311,7 +311,7 @@ public class ListViewsActivity extends AppCompatActivity
         String webService="api/Customer/GetCustomerOrderDetails";
         String postData =  "{\"OrderID\":\""+ID+"\"}";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
-        final String[] dataColumns={"OrderDetailID","ProductName","AttributeValues","Qty","Price","ShippingAmt","TaxAmt","SubTotal","ImageUrl"};
+        final String[] dataColumns={"OrderDetailID","ProductName","AttributeValues","Qty","Price","ShippingAmt","TaxAmt","SubTotal","ImageUrl","ProductID"};
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
@@ -353,6 +353,14 @@ public class ListViewsActivity extends AppCompatActivity
 
                 CustomAdapter adapter=new CustomAdapter(ListViewsActivity.this, common.dataArrayList,"OrderDetails");
                 listView.setAdapter(adapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent=new Intent(ListViewsActivity.this,ProductDetails.class);
+                        intent.putExtra("productID",common.dataArrayList.get(position)[9]);
+                        startActivity(intent);
+                    }
+                });
             }
         };
         common.AsynchronousThread(ListViewsActivity.this,

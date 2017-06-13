@@ -164,7 +164,7 @@ public class RegisterEvent extends AppCompatActivity
             Runnable postThread=new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(RegisterEvent.this,R.string.success,Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterEvent.this,R.string.event_request_success,Toast.LENGTH_LONG).show();
                     finish();
                 }
             };

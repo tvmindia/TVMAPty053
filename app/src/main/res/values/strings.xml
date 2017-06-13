@@ -168,4 +168,5 @@
     <string name="request_history">Request History</string>
     <string name="no_of_persons_value">No of persons : %1$s</string>
     <string name="budget_value">Budget : %1$s</string>
+    <string name="event_request_success">Event request is submitted successfully</string>
 </resources>
