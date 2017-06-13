@@ -177,7 +177,7 @@ public class ProductList extends AppCompatActivity
                     intent.putExtra("CategoryCode",navigationCategories.get(position)[0]);
                     intent.putExtra("CategoryName",navigationCategories.get(position)[1]);
                     startActivity(intent);
-                    finish();
+//                    finish();
                 }
             });
         } catch (JSONException e) {
@@ -331,7 +331,7 @@ public class ProductList extends AppCompatActivity
                     intent.putExtra("CategoryCode",navigationCategories.get(final_i)[0]);
                     intent.putExtra("CategoryName",navigationCategories.get(final_i)[1]);
                     startActivity(intent);
-                    finish();
+//                    finish();
                 }
             });
             filterMenuLinear.addView(textView);
