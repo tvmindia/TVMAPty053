@@ -128,8 +128,9 @@
     <string name="shipping_charge">Shipping charge : %1$s QR</string>
     <string name="cart_item_total">Item total : %1$s QR</string>
     <string name="tax_amount">Tax Amount : %1$s QR</string>
-    <string name="total_price">Total price : %1$s QR</string>
+    <string name="total_price">Total Price : %1$s QR</string>
     <string name="total_amount">Total Amount : %1$s QR</string>
+    <string name="total_discount">Total discount : %1$s QR</string>
     <string name="total_shipping">Total delivery charges : %1$s QR</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -165,4 +166,6 @@
     <string name="place_order">Place Order</string>
     <string name="stock_not_available">Stock not available</string>
     <string name="request_history">Request History</string>
+    <string name="no_of_persons_value">No of persons : %1$s</string>
+    <string name="budget_value">Budget : %1$s</string>
 </resources>

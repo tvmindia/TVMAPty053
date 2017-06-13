@@ -64,35 +64,34 @@ class CustomAdapter extends BaseAdapter{
         return position;
     }
 
-    private class Holder
-    {
+    private class Holder {
         //Category list---------------------
         TextView categoryName;
         ImageView categoryImage;
         //Navigation Category List----------
-        TextView navCatName,itemsCount;
+        TextView navCatName, itemsCount;
         //All products list-----------------
         TextView productName;
         ImageView productImage;
         //Product Reviews-------------------
-        TextView customerName,reviewDate,review;
+        TextView customerName, reviewDate, review;
         RatingBar ratingReview;
         ImageView customerImage;
         //Address-------------------------
-        TextView address,location,city,state,country,contactNo,setDefault,remove,edit;
+        TextView address, location, city, state, country, contactNo, setDefault, remove, edit;
         //WishList-------------------------
-        TextView daysCount,price;
+        TextView daysCount, price;
         //Bookings----------------------------
-        TextView bookingNo,RequiredDate,Status,BookingDate;
+        TextView bookingNo, RequiredDate, Status, BookingDate;
         //Quotations-------------------------
-        TextView quotationNo,quotationDate;
+        TextView quotationNo, quotationDate;
         //xCart(now used for other purposes)--------------------
-        TextView shipping,quantity,attributes;
+        TextView shipping, quantity, attributes;
         //Order----------------------------------
-        TextView orderNo,orderDate,orderStatus,totalAmount,taxAmount;
-
+        TextView orderNo, orderDate, orderStatus, totalAmount, taxAmount;
+        //Event Requests-------------------------
+        TextView eventReqNo, eventType, eventTitle, eventDateTime, eventTime, lookingFor, requirementSpec, message, noOfPersons, budget, eventRequestStatus, adminRemarks, totalPrice, totalTaxAmt, totalDiscountAmt;
     }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder;
@@ -435,6 +434,63 @@ class CustomAdapter extends BaseAdapter{
                         holder.productImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[8],
                         R.drawable.dim_icon);
+                break;
+            //--------------------------for event request history list items------------------
+            case "EventRequests":
+                if (convertView == null) {
+                    holder = new Holder();
+                    convertView = inflater.inflate(R.layout.item_event_request, null);
+                    holder.eventReqNo = (TextView) convertView.findViewById(R.id.event_req_no);
+                    holder.eventType=(TextView) convertView.findViewById(R.id.event_type);
+                    holder.eventTitle=(TextView) convertView.findViewById(R.id.event_name);
+                    holder.eventDateTime=(TextView) convertView.findViewById(R.id.event_date);
+                    holder.eventTime=(TextView) convertView.findViewById(R.id.event_time);
+                    holder.lookingFor=(TextView) convertView.findViewById(R.id.looking_for);
+                    holder.requirementSpec=(TextView) convertView.findViewById(R.id.req_specification);
+                    holder.message=(TextView) convertView.findViewById(R.id.message);
+                    holder.noOfPersons=(TextView) convertView.findViewById(R.id.no_of_persons);
+                    holder.budget=(TextView) convertView.findViewById(R.id.budget);
+                    holder.eventRequestStatus=(TextView) convertView.findViewById(R.id.request_status);
+                    holder.adminRemarks=(TextView) convertView.findViewById(R.id.admin_remark);
+                    holder.totalPrice=(TextView) convertView.findViewById(R.id.total_price);
+                    holder.totalTaxAmt=(TextView) convertView.findViewById(R.id.tax_amount);
+                    holder.totalDiscountAmt=(TextView) convertView.findViewById(R.id.discount_amount);
+                    holder.totalAmount=(TextView) convertView.findViewById(R.id.total_amount);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (Holder) convertView.getTag();
+                }
+                //Label loading--------------------
+                holder.eventReqNo.setText(filteredObjects.get(position)[1]);
+                holder.eventType.setText(filteredObjects.get(position)[2]);
+                holder.eventTitle.setText(filteredObjects.get(position)[3]);
+                holder.eventDateTime.setText(filteredObjects.get(position)[4]);
+                holder.eventTime.setText(filteredObjects.get(position)[5].equals("12:00:00 AM")||filteredObjects.get(position)[5].equals("null")?"":filteredObjects.get(position)[5]);
+
+                holder.lookingFor.setText(filteredObjects.get(position)[6].equals("null")?"":filteredObjects.get(position)[6]);
+                if(holder.lookingFor.getText().equals("")) holder.lookingFor.setVisibility(View.GONE); else holder.lookingFor.setVisibility(View.VISIBLE);
+
+                holder.requirementSpec.setText(filteredObjects.get(position)[7].equals("null")?"":filteredObjects.get(position)[7]);
+                if(holder.requirementSpec.getText().equals("")) holder.requirementSpec.setVisibility(View.GONE); else holder.requirementSpec.setVisibility(View.VISIBLE);
+
+                holder.message.setText(filteredObjects.get(position)[8].equals("null")?"":filteredObjects.get(position)[8]);
+                if(holder.message.getText().equals("")) holder.message.setVisibility(View.GONE); else holder.message.setVisibility(View.VISIBLE);
+
+                holder.noOfPersons.setText(filteredObjects.get(position)[9].equals("null")?"":adapterContext.getResources().getString(R.string.no_of_persons_value,filteredObjects.get(position)[9]));
+                holder.budget.setText(filteredObjects.get(position)[10].equals("0.0")||filteredObjects.get(position)[10].equals("null")?"":adapterContext.getResources().getString(R.string.budget_value,filteredObjects.get(position)[10]));
+                holder.eventRequestStatus.setText(filteredObjects.get(position)[11].equals("null")?"":filteredObjects.get(position)[11]);
+
+                holder.adminRemarks.setText(filteredObjects.get(position)[12].equals("null")?"":filteredObjects.get(position)[12]);
+                if(holder.adminRemarks.getText().equals("")) holder.adminRemarks.setVisibility(View.GONE); else holder.adminRemarks.setVisibility(View.VISIBLE);
+
+                holder.totalPrice.setText(filteredObjects.get(position)[14].equals("null")?"":adapterContext.getResources().getString(R.string.total_price,filteredObjects.get(position)[14]));
+                holder.totalTaxAmt.setText(filteredObjects.get(position)[15].equals("null")?"":adapterContext.getResources().getString(R.string.tax_amount,filteredObjects.get(position)[15]));
+                holder.totalDiscountAmt.setText(filteredObjects.get(position)[16].equals("null")?"":adapterContext.getResources().getString(R.string.total_discount,filteredObjects.get(position)[16]));
+                String totalAmountValue= String.format(Locale.US, "%.2f",
+                                    Double.parseDouble(filteredObjects.get(position)[14].equals("null")?"0.0":filteredObjects.get(position)[14])
+                                    + Double.parseDouble(filteredObjects.get(position)[15].equals("null")?"0.0":filteredObjects.get(position)[15])
+                                    - Double.parseDouble(filteredObjects.get(position)[16].equals("null")?"0.0":filteredObjects.get(position)[16]));
+                holder.totalAmount.setText(adapterContext.getResources().getString(R.string.total_amount,totalAmountValue));
                 break;
             default:
                 break;

@@ -359,14 +359,16 @@ public class RegisterEvent extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        if(db.GetCustomerDetails("CustomerID")!=null){
         getMenuInflater().inflate(R.menu.request_event_menu, menu);
+        }
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         //Filter menu------------------------
-        if (id == R.id.menu_add_address) {
+        if (id == R.id.menu_request_history) {
             Intent intent=new Intent (RegisterEvent.this,ListViewsActivity.class);
             intent.putExtra("list","event_requests");
             startActivity(intent);

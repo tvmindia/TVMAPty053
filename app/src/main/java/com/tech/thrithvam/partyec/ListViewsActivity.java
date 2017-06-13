@@ -68,6 +68,9 @@ public class ListViewsActivity extends AppCompatActivity
             case "history":
                 loadOrderHistory();
                 break;
+            case "event_requests":
+                loadEventRequests();
+                break;
             default:
                 finish();
         }
@@ -416,7 +419,54 @@ public class ListViewsActivity extends AppCompatActivity
                 postThread,
                 null);
     }
-
+    void loadEventRequests(){
+        if(customerID==null) {
+            Intent loginIntent=new Intent(this,Login.class);
+            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            startActivity(loginIntent);
+            finish();
+            return;
+        }
+        getSupportActionBar().setTitle("Event Requests");
+        listView.setSelector(android.R.color.transparent);
+        //Threading-------------------------------------------------------------------------
+        String webService="api/event/GetEventRequestStatus";
+        String postData =  "{\"CustomerID\":\""+customerID+"\"}";
+        AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
+        String[] dataColumns={"ID",//0
+                "EventReqNo",//1
+                "EventType",//2
+                "EventTitle",//3
+                "EventDateTime",//4
+                "EventTime",//5
+                "LookingFor",//6
+                "RequirementSpec",//7
+                "Message",//8
+                "NoOfPersons",//9
+                "Budget",//10
+                "EventDesc",//11
+                "AdminRemarks",//12
+                "EventStatus",//13
+                "TotalAmt",//14
+                "TotalTaxAmt",//15
+                "TotalDiscountAmt"//16
+                };
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                CustomAdapter adapter=new CustomAdapter(ListViewsActivity.this, common.dataArrayList,"EventRequests");
+                listView.setAdapter(adapter);
+                listView.setDivider(null);
+            }
+        };
+        common.AsynchronousThread(ListViewsActivity.this,
+                webService,
+                postData,
+                loadingIndicator,
+                dataColumns,
+                postThread,
+                null);
+    }
 
     @Override
     public void onBackPressed() {
