@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.IntentCompat;
 import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,10 +37,19 @@ class Common {
     void NavigationBarItemClick(Context context, MenuItem item){
         int id = item.getItemId();
 
-        if (id == R.id.nav_shop_by_category) {
-            Intent intent=new Intent(context,CategoryList.class);
-            intent.putExtra("from","shopByCategory");
-            context.startActivity(intent);
+        if (id == R.id.nav_home) {
+            if(!(context instanceof Home)){
+                Intent intent=new Intent(context,Home.class);
+                /*intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);*/
+                context.startActivity(intent);
+            }
+        }
+        else if (id == R.id.nav_shop_by_category) {
+                Intent intent = new Intent(context, CategoryList.class);
+                intent.putExtra("from", "shopByCategory");
+                context.startActivity(intent);
         }
         else if (id == R.id.nav_shop_by_occasion) {
             Intent intent=new Intent(context,CategoryList.class);
@@ -52,31 +62,39 @@ class Common {
             context.startActivity(intent);
         }
         else if (id == R.id.nav_register_event) {
-            Intent intent=new Intent(context,RegisterEvent.class);
-            context.startActivity(intent);
+            if(!(context instanceof RegisterEvent)) {
+                Intent intent = new Intent(context, RegisterEvent.class);
+                context.startActivity(intent);
+            }
         }
         else if (id == R.id.nav_contact_us) {
-            Intent intent=new Intent(context,ContactUs.class);
-            context.startActivity(intent);
+            if(!(context instanceof ContactUs)) {
+                Intent intent = new Intent(context, ContactUs.class);
+                context.startActivity(intent);
+            }
         }
         else if (id == R.id.nav_cart) {
-            Intent intent=new Intent(context,Cart.class);
-            context.startActivity(intent);
+            if(!(context instanceof Cart)) {
+                Intent intent = new Intent(context, Cart.class);
+                context.startActivity(intent);
+            }
         }
         else if (id==R.id.nav_wishlist){
             Intent intent=new Intent (context,ListViewsActivity.class);
             intent.putExtra("list","wishlist");
             context.startActivity(intent);
-
-        }else if (id==R.id.nav_view_bookings){
+        }
+        else if (id==R.id.nav_view_bookings){
             Intent intent=new Intent (context,ListViewsActivity.class);
             intent.putExtra("list","bookings");
             context.startActivity(intent);
-        }else if (id==R.id.nav_view_quotations){
+        }
+        else if (id==R.id.nav_view_quotations){
             Intent intent=new Intent (context,ListViewsActivity.class);
             intent.putExtra("list","quotations");
             context.startActivity(intent);
-        }else if (id==R.id.nav_view_orders){
+        }
+        else if (id==R.id.nav_view_orders){
             Intent intent=new Intent (context,ListViewsActivity.class);
             intent.putExtra("list","orders");
             context.startActivity(intent);
