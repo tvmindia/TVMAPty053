@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -162,6 +163,7 @@ public class ProductOrdering extends AppCompatActivity {
                         productDetailsObj.DiscountAmount=(jsonObject.optString("DiscountAmount").equals("null")?0:jsonObject.optDouble("DiscountAmount"));
                         productDetailsObj.stockAvailable=jsonObject.optBoolean("StockAvailable");
                         productDetailsObj.quantity=jsonObject.optInt("Qty");
+                        productDetailsObj.isDefault=jsonObject.optBoolean("DefaultOption");
 
                         JSONArray productAttributes=jsonObject.optJSONArray("ProductAttributes");
                         if(productAttributes!=null) {
@@ -315,6 +317,28 @@ public class ProductOrdering extends AppCompatActivity {
 
                     }
                 });
+            }
+        // Make default item to be selected by default
+            for(int i=0;i<productDetailsArrayList.size();i++){
+                if(productDetailsArrayList.get(i).isDefault){
+                    for(int j=0;j<spinners.size();j++){
+                        Handler handler = new Handler();
+                        final int finalJ = j;
+
+                        final int finalI = i;
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                spinners.get(finalJ).setSelection(
+                                        ((ArrayAdapter<String>)spinners.get(finalJ).getAdapter())
+                                                .getPosition(productDetailsArrayList.get(finalI).productAttributes.get(finalJ).Value),true);
+                                Toast.makeText(ProductOrdering.this, Integer.toString(((ArrayAdapter<String>)spinners.get(finalJ).getAdapter())
+                                        .getPosition(productDetailsArrayList.get(finalI).productAttributes.get(finalJ).Value)), Toast.LENGTH_SHORT).show();
+                            }
+                        }, 1000*finalJ);
+                    }
+                    break;
+                }
             }
         }
         //Order attributes
@@ -834,6 +858,7 @@ public class ProductOrdering extends AppCompatActivity {
         Boolean stockAvailable;
         int quantity;
         ArrayList<Attributes> productAttributes;
+        boolean isDefault;
     }
     private class Attributes
     {
