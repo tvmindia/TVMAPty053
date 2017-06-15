@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,7 +55,7 @@ public class ProductOrdering extends AppCompatActivity {
 
     //Product detail attributes
     ArrayList<ProductDetails> productDetailsArrayList=new ArrayList<>();
-    ArrayList<Spinner> spinners = new ArrayList<>();
+    ArrayList<LinearLayout> attributeViews = new ArrayList<>();
 
     //Order attributes
     ArrayList<Attributes> orderAttributesArrayList=new ArrayList<>();
@@ -233,22 +234,44 @@ public class ProductOrdering extends AppCompatActivity {
                 label.setText(productDetailsArrayList.get(0).productAttributes.get(i).Caption);
                 label.setPadding(5, 5, 5, 0);
                 attributesLinear.addView(label);
-                Spinner spinner = new Spinner(ProductOrdering.this);
-                attributesLinear.addView(spinner);
-                spinners.add(spinner);
+                View attributeSelector = inflater.inflate(R.layout.item_attributes, null);
+                attributesLinear.addView(attributeSelector);
+                attributeViews.add((LinearLayout)attributeSelector);
             }
             //setup values
             for (int j = 0; j < productDetailsArrayList.get(0).productAttributes.size(); j++) {
-                ArrayList<String> arrayList = new ArrayList<>();
+                final ArrayList<String> arrayList = new ArrayList<>();
                 for (int i = 0; i < productDetailsArrayList.size(); i++) {
                     if (!arrayList.contains(productDetailsArrayList.get(i).productAttributes.get(j).Value)) {
                         arrayList.add(productDetailsArrayList.get(i).productAttributes.get(j).Value);
                     }
                 }
-                ArrayAdapter adapter = new ArrayAdapter<String>(ProductOrdering.this, android.R.layout.simple_spinner_item, arrayList);
-                spinners.get(j).setAdapter(adapter);
+                final int FinalJ=j;
+                View.OnClickListener popupOptions=new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog dialog = new AlertDialog.Builder(ProductOrdering.this)
+                                .setTitle(R.string.select)
+                                .setSingleChoiceItems(arrayList.toArray(new CharSequence[arrayList.size()]),
+                                        -1,
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                ((TextView)attributeViews.get(FinalJ).findViewById(R.id.attribute_text)).setText(arrayList.get(which));
+                                                dialog.dismiss();
+                                            }
+                                        })/*.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int id) {
+                                    }
+                                })*/.create();
+                        dialog.show();
+                    }
+                };
+                attributeViews.get(FinalJ).findViewById(R.id.attribute_text).setOnClickListener(popupOptions);
+                attributeViews.get(FinalJ).findViewById(R.id.change).setOnClickListener(popupOptions);
             }
-
+/*
             //setting default price and id
             calculatePrice(productDetailsArrayList.get(0).PriceDifference,productDetailsArrayList.get(0).DiscountAmount);
             selectedProductDetailID=productDetailsArrayList.get(0).ID;
@@ -339,7 +362,7 @@ public class ProductOrdering extends AppCompatActivity {
                     }
                     break;
                 }
-            }
+            }*/
         }
         //Order attributes
         if(orderAttributesArrayList.size()!=0){
@@ -1105,7 +1128,7 @@ public class ProductOrdering extends AppCompatActivity {
     }
     String getProductDetailAttributeValuesFromSpinners(){
         String json="";
-        for (int i = 0; i < spinners.size(); i++) {
+        /*for (int i = 0; i < spinners.size(); i++) {
             String attributeJsonObject = "{" +
                     "\"Name\":\"" + productDetailsArrayList.get(0).productAttributes.get(i).Name + "\"," +
                     "\"Caption\":\"" + productDetailsArrayList.get(0).productAttributes.get(i).Caption + "\"," +
@@ -1114,7 +1137,7 @@ public class ProductOrdering extends AppCompatActivity {
                     "\"Isconfigurable\":\"false\"" +
                     "}";
             json += attributeJsonObject + ",";
-        }
+        }*/
         return json;
     }
 }
