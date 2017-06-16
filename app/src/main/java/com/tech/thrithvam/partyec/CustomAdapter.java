@@ -191,6 +191,7 @@ class CustomAdapter extends BaseAdapter{
                     convertView = inflater.inflate(R.layout.item_product_horizontal, null);
                     holder.productName = (TextView) convertView.findViewById(R.id.product_name);
                     holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
+                    holder.stickerImage=(ImageView) convertView.findViewById(R.id.sticker);
                     convertView.setTag(holder);
                 } else {
                     holder = (Holder) convertView.getTag();
@@ -201,6 +202,10 @@ class CustomAdapter extends BaseAdapter{
                         holder.productImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[2],
                         R.drawable.dim_icon);
+                common.LoadImage(adapterContext,
+                        holder.stickerImage,
+                        adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[3],
+                        0);
                 break;
             //-------------------------for product images slider-----------------------------
             case "ProductImages":
@@ -324,6 +329,7 @@ class CustomAdapter extends BaseAdapter{
                     holder.productName=(TextView)convertView.findViewById(R.id.product_name);
                     holder.daysCount =(TextView)convertView.findViewById(R.id.days_Count);
                     holder.price =(TextView)convertView.findViewById(R.id.price);
+                    holder.stickerImage=(ImageView)convertView.findViewById(R.id.sticker);
                     convertView.setTag(holder);
                 } else {
                     holder = (Holder) convertView.getTag();
@@ -334,7 +340,10 @@ class CustomAdapter extends BaseAdapter{
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[2],
                         R.drawable.dim_icon);
                 holder.productName.setText(filteredObjects.get(position)[1].equals("null")?"":filteredObjects.get(position)[1]);
-
+                common.LoadImage(adapterContext,
+                        holder.stickerImage,
+                        adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[5],
+                        0);
                 holder.daysCount.setText(filteredObjects.get(position)[3].equals("null")?"":adapterContext.getResources().getString(R.string.wishlist_days,filteredObjects.get(position)[3]));
                 holder.price.setText(filteredObjects.get(position)[4].equals("null")?"":adapterContext.getResources().getString(R.string.price_display,filteredObjects.get(position)[4]));
                 break;

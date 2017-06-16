@@ -438,7 +438,7 @@ public class ProductDetails extends AppCompatActivity
         String webService="api/product/GetRelatedProducts";
         String postData =  "{\"ID\":\""+productID+"\",\"count\":\""+"3"+"\"}";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator_ball_pulse2);
-        String[] dataColumns={"ID","Name","ImageURL"};
+        String[] dataColumns={"ID","Name","ImageURL","StickerURL"};
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
@@ -454,7 +454,9 @@ public class ProductDetails extends AppCompatActivity
                     ((TextView) (productItem.findViewById(R.id.product_name))).setEllipsize(TextUtils.TruncateAt.END);
                     ImageView relatedProductImage=(ImageView) productItem.findViewById(R.id.product_image);
                     relatedProductImage.getLayoutParams().height = 120;
+                    ((ImageView)(productItem.findViewById(R.id.sticker))).getLayoutParams().height=50;
                     common.LoadImage(ProductDetails.this, relatedProductImage ,getResources().getString(R.string.url)+common.dataArrayList.get(i)[2], R.drawable.dim_icon);
+                    common.LoadImage(ProductDetails.this, (ImageView)(productItem.findViewById(R.id.sticker)),getResources().getString(R.string.url)+common.dataArrayList.get(i)[3],0);
                     (productItem.findViewById(R.id.dim_icon)).setVisibility(GONE);
                     final int Fi=i;
                     productItem.setOnClickListener(new View.OnClickListener() {

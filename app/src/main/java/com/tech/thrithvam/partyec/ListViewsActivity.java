@@ -109,7 +109,7 @@ public class ListViewsActivity extends AppCompatActivity
         String webService="api/product/GetRelatedProducts";
         String postData =  "{\"ID\":\""+getIntent().getExtras().getString("productID")+"\",\"count\":\""+"-1"+"\"}";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
-        String[] dataColumns={"ID","Name","ImageURL"};
+        String[] dataColumns={"ID","Name","ImageURL","StickerURL"};
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
@@ -148,7 +148,7 @@ public class ListViewsActivity extends AppCompatActivity
         String webService="api/Customer/GetCustomerWishlist";
         String postData =  "{\"CustomerID\":\""+customerID+"\"}";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator);
-        String[] dataColumns={"ProductID","ProductName","ImageURL","DaysinWL","Price"};
+        String[] dataColumns={"ProductID","ProductName","ImageURL","DaysinWL","Price","StickerURL"};
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
