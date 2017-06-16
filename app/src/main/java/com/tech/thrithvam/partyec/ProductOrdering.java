@@ -13,7 +13,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -238,7 +240,26 @@ public class ProductOrdering extends AppCompatActivity {
                 attributesLinear.addView(attributeSelector);
                 attributeViews.add((LinearLayout)attributeSelector);
             }
-            //setup values
+            // Make default item to be selected by default
+            for(int i=0;i<productDetailsArrayList.size();i++){
+                if(productDetailsArrayList.get(i).isDefault){
+                    for(int j=0;j<attributeViews.size();j++){
+                       // Handler handler = new Handler();
+                        final int finalJ = j;
+                        final int finalI = i;
+                        ((TextView)attributeViews.get(finalJ).findViewById(R.id.attribute_text)).setText(
+                                productDetailsArrayList.get(finalI).productAttributes.get(finalJ).Value);
+
+                    }
+                    /*
+                    //setting default price and id
+                    calculatePrice(productDetailsArrayList.get(0).PriceDifference,productDetailsArrayList.get(0).DiscountAmount);
+                    selectedProductDetailID=productDetailsArrayList.get(0).ID;*/
+                    break;
+                }
+            }
+
+         /*   //setup available values
             for (int j = 0; j < productDetailsArrayList.get(0).productAttributes.size(); j++) {
                 final ArrayList<String> arrayList = new ArrayList<>();
                 for (int i = 0; i < productDetailsArrayList.size(); i++) {
@@ -260,110 +281,44 @@ public class ProductOrdering extends AppCompatActivity {
                                                 ((TextView)attributeViews.get(FinalJ).findViewById(R.id.attribute_text)).setText(arrayList.get(which));
                                                 dialog.dismiss();
                                             }
-                                        })/*.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int id) {
-                                    }
-                                })*/.create();
+                                        }).create();
                         dialog.show();
                     }
                 };
                 attributeViews.get(FinalJ).findViewById(R.id.attribute_text).setOnClickListener(popupOptions);
                 attributeViews.get(FinalJ).findViewById(R.id.change).setOnClickListener(popupOptions);
-            }
-/*
-            //setting default price and id
-            calculatePrice(productDetailsArrayList.get(0).PriceDifference,productDetailsArrayList.get(0).DiscountAmount);
-            selectedProductDetailID=productDetailsArrayList.get(0).ID;
-
-            for (int i = 0; i < spinners.size(); i++) {
-                final int Fi = i;
-                spinners.get(i).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        if (Fi + 1 < spinners.size()) {
-                            //setup values
-
-                        ArrayList<String> arrayList = new ArrayList<>();
-                            for (int j = 0; j < productDetailsArrayList.size(); j++) {
-                                Boolean flag1 = true;
-                                for (int k = 0; k <= Fi; k++) {
-                                        if(!(productDetailsArrayList.get(j).productAttributes.get(k).Value
-                                                .equals(spinners.get(k).getSelectedItem().toString()))){
-                                            flag1=false;
-                                            break;
-                                        }
-                                }
-                                if(flag1){
-                                    if (!arrayList.contains(productDetailsArrayList.get(j).productAttributes.get(Fi + 1).Value)) {
-                                        arrayList.add(productDetailsArrayList.get(j).productAttributes.get(Fi + 1).Value);
-                                    }
-                                }
-                            }
-                            ArrayAdapter adapter = new ArrayAdapter<String>(ProductOrdering.this, android.R.layout.simple_spinner_item, arrayList);
-                            spinners.get(Fi + 1).setAdapter(adapter);
-                        }
-                        //Checking price and stock
-                        if(!actionType.equals("Q")){ //Quotable product doesn't show price and stock info
-                            for (int j = 0; j < productDetailsArrayList.size(); j++) {
-                                Boolean flag=true;
-                                for (int k=0;k<productDetailsArrayList.get(j).productAttributes.size();k++){
-                                    if(productDetailsArrayList.get(j).productAttributes.get(k).Value
-                                        .equals(spinners.get(k).getSelectedItem().toString())){
-                                    }
-                                    else {
-                                        flag=false;
-                                        break;
-                                    }
-                                }
-                                if(flag){
-                                    //display changes
-                                    if(productDetailsArrayList.get(j).stockAvailable){
-                                        if(productDetailsArrayList.get(j).quantity>0){
-                                            inStock=true;
-                                        }
-                                        else {
-                                            inStock=false;
-                                        }
-                                    }
-                                    else {
-                                        inStock=false;
-                                    }
-                                    calculatePrice(productDetailsArrayList.get(j).PriceDifference,productDetailsArrayList.get(j).DiscountAmount);
-                                    selectedProductDetailID=productDetailsArrayList.get(j).ID;
-                                }
-                            }
-                        }
-                    }
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
-            }
-        // Make default item to be selected by default
-            for(int i=0;i<productDetailsArrayList.size();i++){
-                if(productDetailsArrayList.get(i).isDefault){
-                    for(int j=0;j<spinners.size();j++){
-                        Handler handler = new Handler();
-                        final int finalJ = j;
-
-                        final int finalI = i;
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                spinners.get(finalJ).setSelection(
-                                        ((ArrayAdapter<String>)spinners.get(finalJ).getAdapter())
-                                                .getPosition(productDetailsArrayList.get(finalI).productAttributes.get(finalJ).Value),true);
-                                Toast.makeText(ProductOrdering.this, Integer.toString(((ArrayAdapter<String>)spinners.get(finalJ).getAdapter())
-                                        .getPosition(productDetailsArrayList.get(finalI).productAttributes.get(finalJ).Value)), Toast.LENGTH_SHORT).show();
-                            }
-                        }, 1000*finalJ);
-                    }
-                    break;
-                }
             }*/
+
+            //First option selection view's popup---
+            final ArrayList<String> arrayListOfFirstAttribute = new ArrayList<>();
+            for (int i = 0; i < productDetailsArrayList.size(); i++) {
+                if (!arrayListOfFirstAttribute.contains(productDetailsArrayList.get(i).productAttributes.get(0).Value)) {
+                    arrayListOfFirstAttribute.add(productDetailsArrayList.get(i).productAttributes.get(0).Value);
+                }
+            }
+            View.OnClickListener popupOptionsOfFirstAttribute=new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog dialog = new AlertDialog.Builder(ProductOrdering.this)
+                            .setTitle(R.string.select)
+                            .setSingleChoiceItems(arrayListOfFirstAttribute.toArray(new CharSequence[arrayListOfFirstAttribute.size()]),
+                                    -1,
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            ((TextView)attributeViews.get(0).findViewById(R.id.attribute_text)).setText(arrayListOfFirstAttribute.get(which));
+                                            dialog.dismiss();
+                                        }
+                                    }).create();
+                    dialog.show();
+                }
+            };
+            setAttributeTextAndClick(0,popupOptionsOfFirstAttribute);
+            //Other option selection view's popup------------------------------
+            setAttributePopups(0,true);
         }
+
+
         //Order attributes
         if(orderAttributesArrayList.size()!=0){
             for (int i=0;i<orderAttributesArrayList.size();i++){
@@ -434,6 +389,99 @@ public class ProductOrdering extends AppCompatActivity {
                 }
             }
         }
+    }
+    void setAttributePopups(int setAttributeIndex,Boolean isFirstTime){
+        Toast.makeText(this, "called me"+setAttributeIndex, Toast.LENGTH_SHORT).show();
+        for (int i = setAttributeIndex; i < attributeViews.size(); i++) {
+            final int Fi = i;
+            if (Fi + 1 < attributeViews.size()) {
+                if(!isFirstTime)
+                    ((TextView)attributeViews.get(Fi+1).findViewById(R.id.attribute_text)).setText("");
+                //setup values
+                final ArrayList<String> arrayList = new ArrayList<>();
+                for (int j = 0; j < productDetailsArrayList.size(); j++) {
+                    Boolean flag1 = true;
+                    for (int k = 0; k <= Fi; k++) {
+                        if (!(productDetailsArrayList.get(j).productAttributes.get(k).Value
+                                .equals(((TextView) attributeViews.get(k).findViewById(R.id.attribute_text)).getText().toString()))) {
+                            flag1 = false;
+                            break;
+                        }
+                    }
+                    if (flag1) {
+                        if (!arrayList.contains(productDetailsArrayList.get(j).productAttributes.get(Fi + 1).Value)) {
+                            arrayList.add(productDetailsArrayList.get(j).productAttributes.get(Fi + 1).Value);
+                        }
+                    }
+                }
+                View.OnClickListener popupOptions=new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        AlertDialog dialog = new AlertDialog.Builder(ProductOrdering.this)
+                                .setTitle(R.string.select)
+                                .setSingleChoiceItems(arrayList.toArray(new CharSequence[arrayList.size()]),
+                                        -1,
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                ((TextView) attributeViews.get(Fi + 1).findViewById(R.id.attribute_text)).setText(arrayList.get(which));
+                                                dialog.dismiss();
+                                            }
+                                        }).create();
+                        dialog.show();
+
+                    }
+                };
+                setAttributeTextAndClick(Fi+1,popupOptions);
+            }
+                      /*  //Checking price and stock
+                        if(!actionType.equals("Q")){ //Quotable product doesn't show price and stock info
+                            for (int j = 0; j < productDetailsArrayList.size(); j++) {
+                                Boolean flag=true;
+                                for (int k=0;k<productDetailsArrayList.get(j).productAttributes.size();k++){
+                                    if(productDetailsArrayList.get(j).productAttributes.get(k).Value
+                                            .equals(spinners.get(k).getSelectedItem().toString())){
+                                    }
+                                    else {
+                                        flag=false;
+                                        break;
+                                    }
+                                }
+                                if(flag){
+                                    //display changes
+                                    if(productDetailsArrayList.get(j).stockAvailable){
+                                        if(productDetailsArrayList.get(j).quantity>0){
+                                            inStock=true;
+                                        }
+                                        else {
+                                            inStock=false;
+                                        }
+                                    }
+                                    else {
+                                        inStock=false;
+                                    }
+                                    calculatePrice(productDetailsArrayList.get(j).PriceDifference,productDetailsArrayList.get(j).DiscountAmount);
+                                    selectedProductDetailID=productDetailsArrayList.get(j).ID;
+                                }
+                            }
+                        }*/
+        }
+    }
+    void setAttributeTextAndClick(final int index, View.OnClickListener popupOptions){
+        attributeViews.get(index).findViewById(R.id.attribute_text).setOnClickListener(popupOptions);
+        ((EditText)attributeViews.get(index).findViewById(R.id.attribute_text)).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+                Toast.makeText(ProductOrdering.this, "text changed"+index, Toast.LENGTH_SHORT).show();
+                setAttributePopups(index,false);
+            }
+        });
+        attributeViews.get(index).findViewById(R.id.change).setOnClickListener(popupOptions);
     }
     String price="";
     void calculatePrice(Double priceDifference, Double discountAmount){
