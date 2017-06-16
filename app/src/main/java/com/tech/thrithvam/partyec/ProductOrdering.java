@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
-import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,13 +19,11 @@ import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -251,44 +248,10 @@ public class ProductOrdering extends AppCompatActivity {
                                 productDetailsArrayList.get(finalI).productAttributes.get(finalJ).Value);
 
                     }
-                    /*
-                    //setting default price and id
-                    calculatePrice(productDetailsArrayList.get(0).PriceDifference,productDetailsArrayList.get(0).DiscountAmount);
-                    selectedProductDetailID=productDetailsArrayList.get(0).ID;*/
                     break;
                 }
             }
-
-         /*   //setup available values
-            for (int j = 0; j < productDetailsArrayList.get(0).productAttributes.size(); j++) {
-                final ArrayList<String> arrayList = new ArrayList<>();
-                for (int i = 0; i < productDetailsArrayList.size(); i++) {
-                    if (!arrayList.contains(productDetailsArrayList.get(i).productAttributes.get(j).Value)) {
-                        arrayList.add(productDetailsArrayList.get(i).productAttributes.get(j).Value);
-                    }
-                }
-                final int FinalJ=j;
-                View.OnClickListener popupOptions=new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AlertDialog dialog = new AlertDialog.Builder(ProductOrdering.this)
-                                .setTitle(R.string.select)
-                                .setSingleChoiceItems(arrayList.toArray(new CharSequence[arrayList.size()]),
-                                        -1,
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                ((TextView)attributeViews.get(FinalJ).findViewById(R.id.attribute_text)).setText(arrayList.get(which));
-                                                dialog.dismiss();
-                                            }
-                                        }).create();
-                        dialog.show();
-                    }
-                };
-                attributeViews.get(FinalJ).findViewById(R.id.attribute_text).setOnClickListener(popupOptions);
-                attributeViews.get(FinalJ).findViewById(R.id.change).setOnClickListener(popupOptions);
-            }*/
-
+            displayOrHidePriceAndProceed();
             //First option selection view's popup---
             final ArrayList<String> arrayListOfFirstAttribute = new ArrayList<>();
             for (int i = 0; i < productDetailsArrayList.size(); i++) {
@@ -445,37 +408,6 @@ public class ProductOrdering extends AppCompatActivity {
                     setAttributeTextAndClick(Fi + 1, popupOptions);
                 }
             }
-                      /*  //Checking price and stock
-                        if(!actionType.equals("Q")){ //Quotable product doesn't show price and stock info
-                            for (int j = 0; j < productDetailsArrayList.size(); j++) {
-                                Boolean flag=true;
-                                for (int k=0;k<productDetailsArrayList.get(j).productAttributes.size();k++){
-                                    if(productDetailsArrayList.get(j).productAttributes.get(k).Value
-                                            .equals(spinners.get(k).getSelectedItem().toString())){
-                                    }
-                                    else {
-                                        flag=false;
-                                        break;
-                                    }
-                                }
-                                if(flag){
-                                    //display changes
-                                    if(productDetailsArrayList.get(j).stockAvailable){
-                                        if(productDetailsArrayList.get(j).quantity>0){
-                                            inStock=true;
-                                        }
-                                        else {
-                                            inStock=false;
-                                        }
-                                    }
-                                    else {
-                                        inStock=false;
-                                    }
-                                    calculatePrice(productDetailsArrayList.get(j).PriceDifference,productDetailsArrayList.get(j).DiscountAmount);
-                                    selectedProductDetailID=productDetailsArrayList.get(j).ID;
-                                }
-                            }
-                        }*/
         }
     }
     void setAttributeTextAndClick(final int index, View.OnClickListener popupOptions){
@@ -488,11 +420,58 @@ public class ProductOrdering extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 setAttributePopups(index,false);
+                displayOrHidePriceAndProceed();
             }
         });
         attributeViews.get(index).findViewById(R.id.change).setOnClickListener(popupOptions);
     }
     String price="";
+    void displayOrHidePriceAndProceed(){
+        //Checking price and stock
+        if(!actionType.equals("Q")){ //Quotable product doesn't show price and stock info
+            Boolean isCompleted=true;
+            for(int i=0;i<attributeViews.size();i++){
+                if(((EditText)attributeViews.get(i).findViewById(R.id.attribute_text)).getText().toString().equals("")){
+                    isCompleted=false;
+                    break;
+                }
+            }
+            if(isCompleted) {
+                for (int j = 0; j < productDetailsArrayList.size(); j++) {
+                    Boolean flag = true;
+                    for (int k = 0; k < productDetailsArrayList.get(j).productAttributes.size(); k++) {
+                        if (productDetailsArrayList.get(j).productAttributes.get(k).Value
+                                .equals(((EditText)attributeViews.get(k).findViewById(R.id.attribute_text)).getText().toString())) {
+                        } else {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if (flag) {
+                        //display changes
+                        if (productDetailsArrayList.get(j).stockAvailable) {
+                            if (productDetailsArrayList.get(j).quantity > 0) {
+                                inStock = true;
+                            } else {
+                                inStock = false;
+                            }
+                        } else {
+                            inStock = false;
+                        }
+                        calculatePrice(productDetailsArrayList.get(j).PriceDifference, productDetailsArrayList.get(j).DiscountAmount);
+                        selectedProductDetailID = productDetailsArrayList.get(j).ID;
+                        break;
+                    }
+                }
+            }
+            else {
+                (findViewById(R.id.price_n_stock)).setVisibility(View.GONE);
+                Button proceed=(Button)findViewById(R.id.proceed_button);
+                proceed.setEnabled(false);
+                proceed.setBackgroundColor(Color.GRAY);
+            }
+        }
+    }
     void calculatePrice(Double priceDifference, Double discountAmount){
         (findViewById(R.id.price_n_stock)).setVisibility(View.VISIBLE);
         if(showPrice) {
