@@ -391,49 +391,59 @@ public class ProductOrdering extends AppCompatActivity {
         }
     }
     void setAttributePopups(int setAttributeIndex,Boolean isFirstTime){
-        Toast.makeText(this, "called me"+setAttributeIndex, Toast.LENGTH_SHORT).show();
         for (int i = setAttributeIndex; i < attributeViews.size(); i++) {
             final int Fi = i;
             if (Fi + 1 < attributeViews.size()) {
-                if(!isFirstTime)
-                    ((TextView)attributeViews.get(Fi+1).findViewById(R.id.attribute_text)).setText("");
-                //setup values
-                final ArrayList<String> arrayList = new ArrayList<>();
-                for (int j = 0; j < productDetailsArrayList.size(); j++) {
-                    Boolean flag1 = true;
-                    for (int k = 0; k <= Fi; k++) {
-                        if (!(productDetailsArrayList.get(j).productAttributes.get(k).Value
-                                .equals(((TextView) attributeViews.get(k).findViewById(R.id.attribute_text)).getText().toString()))) {
-                            flag1 = false;
-                            break;
+                if(Fi+1==setAttributeIndex+1 || isFirstTime) {
+                    if (!isFirstTime)
+                        ((TextView) attributeViews.get(Fi + 1).findViewById(R.id.attribute_text)).setText("");
+                    //setup values
+                    final ArrayList<String> arrayList = new ArrayList<>();
+                    for (int j = 0; j < productDetailsArrayList.size(); j++) {
+                        Boolean flag1 = true;
+                        for (int k = 0; k <= Fi; k++) {
+                            if (!(productDetailsArrayList.get(j).productAttributes.get(k).Value
+                                    .equals(((TextView) attributeViews.get(k).findViewById(R.id.attribute_text)).getText().toString()))) {
+                                flag1 = false;
+                                break;
+                            }
+                        }
+                        if (flag1) {
+                            if (!arrayList.contains(productDetailsArrayList.get(j).productAttributes.get(Fi + 1).Value)) {
+                                arrayList.add(productDetailsArrayList.get(j).productAttributes.get(Fi + 1).Value);
+                            }
                         }
                     }
-                    if (flag1) {
-                        if (!arrayList.contains(productDetailsArrayList.get(j).productAttributes.get(Fi + 1).Value)) {
-                            arrayList.add(productDetailsArrayList.get(j).productAttributes.get(Fi + 1).Value);
+                    View.OnClickListener popupOptions = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            AlertDialog dialog = new AlertDialog.Builder(ProductOrdering.this)
+                                    .setTitle(R.string.select)
+                                    .setSingleChoiceItems(arrayList.toArray(new CharSequence[arrayList.size()]),
+                                            -1,
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    ((TextView) attributeViews.get(Fi + 1).findViewById(R.id.attribute_text)).setText(arrayList.get(which));
+                                                    dialog.dismiss();
+                                                }
+                                            }).create();
+                            dialog.show();
+
                         }
-                    }
+                    };
+                    attributeViews.get(Fi+1).findViewById(R.id.change).setVisibility(View.VISIBLE);
+                    setAttributeTextAndClick(Fi + 1, popupOptions);
                 }
-                View.OnClickListener popupOptions=new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        AlertDialog dialog = new AlertDialog.Builder(ProductOrdering.this)
-                                .setTitle(R.string.select)
-                                .setSingleChoiceItems(arrayList.toArray(new CharSequence[arrayList.size()]),
-                                        -1,
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                ((TextView) attributeViews.get(Fi + 1).findViewById(R.id.attribute_text)).setText(arrayList.get(which));
-                                                dialog.dismiss();
-                                            }
-                                        }).create();
-                        dialog.show();
-
-                    }
-                };
-                setAttributeTextAndClick(Fi+1,popupOptions);
+                else {
+                    if (!isFirstTime)
+                        ((TextView) attributeViews.get(Fi + 1).findViewById(R.id.attribute_text)).setText("");
+                    //Disabling click and change
+                    View.OnClickListener popupOptions =null;
+                    attributeViews.get(Fi+1).findViewById(R.id.change).setVisibility(GONE);
+                    setAttributeTextAndClick(Fi + 1, popupOptions);
+                }
             }
                       /*  //Checking price and stock
                         if(!actionType.equals("Q")){ //Quotable product doesn't show price and stock info
@@ -477,7 +487,6 @@ public class ProductOrdering extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable s) {
-                Toast.makeText(ProductOrdering.this, "text changed"+index, Toast.LENGTH_SHORT).show();
                 setAttributePopups(index,false);
             }
         });
