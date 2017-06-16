@@ -178,6 +178,11 @@ public class ProductDetails extends AppCompatActivity
                         }
                     }
 
+                    common.LoadImage(ProductDetails.this,
+                            ((ImageView)findViewById(R.id.sticker)),
+                            getResources().getString(R.string.url)+jsonRootObject.getString("StickerURL"),
+                            0);
+
                     JSONArray productOtherAttributes=jsonRootObject.optJSONArray("ProductOtherAttributes");
                     LinearLayout otherAttributes=(LinearLayout)findViewById(R.id.other_attributes_linear);
                     if(productOtherAttributes!=null){
