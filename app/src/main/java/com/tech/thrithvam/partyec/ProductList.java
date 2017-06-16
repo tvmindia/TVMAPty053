@@ -107,10 +107,11 @@ public class ProductList extends AppCompatActivity
                     JSONArray jsonArray =jsonRootObject.optJSONArray("Products");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        String[] data = new String[3];
+                        String[] data = new String[4];
                         data[0] = jsonObject.optString("Name");
                         data[1] = jsonObject.optString("ImageURL");
                         data[2] = jsonObject.optString("ID");
+                        data[3] = jsonObject.optString("StickerURL");
                         initialProducts.add(data);
                         initialProductsHorizontal(i);
                     }
@@ -143,6 +144,10 @@ public class ProductList extends AppCompatActivity
                 getResources().getString(R.string.url)+initialProducts.get(i)[1],
                 R.drawable.dim_icon);
         (productItem.findViewById(R.id.dim_icon)).setVisibility(GONE);
+        common.LoadImage(ProductList.this,
+                (ImageView)(productItem.findViewById(R.id.sticker)),
+                getResources().getString(R.string.url)+initialProducts.get(i)[3],
+                0);
         final int Fi=i;
         productItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,10 +220,11 @@ public class ProductList extends AppCompatActivity
                                         JSONArray jsonArray =jsonRootObject.optJSONArray("Products");
                                         for (int i = 0; i < jsonArray.length(); i++) {
                                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                            String[] data = new String[3];
+                                            String[] data = new String[4];
                                             data[0] = jsonObject.optString("Name");
                                             data[1] = jsonObject.optString("ImageURL");
                                             data[2] = jsonObject.optString("ID");
+                                            data[3] = jsonObject.optString("StickerURL");
                                             allProducts.add(data);
                                         }
                                     } catch (JSONException e) {

@@ -72,7 +72,7 @@ class CustomAdapter extends BaseAdapter{
         TextView navCatName, itemsCount;
         //All products list-----------------
         TextView productName;
-        ImageView productImage;
+        ImageView productImage,stickerImage;
         //Product Reviews-------------------
         TextView customerName, reviewDate, review;
         RatingBar ratingReview;
@@ -142,6 +142,7 @@ class CustomAdapter extends BaseAdapter{
                         convertView = inflater.inflate(R.layout.item_product_single, null);
                     holder.productName = (TextView) convertView.findViewById(R.id.product_name);
                     holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
+                    holder.stickerImage=(ImageView) convertView.findViewById(R.id.sticker);
                     convertView.setTag(holder);
                 } else {
                     holder = (Holder) convertView.getTag();
@@ -152,6 +153,10 @@ class CustomAdapter extends BaseAdapter{
                         holder.productImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[1],
                         R.drawable.dim_icon);
+                common.LoadImage(adapterContext,
+                        holder.stickerImage,
+                        adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[3],
+                        0);
                 break;
             //--------------------------for reviews list items------------------
             case "ReviewList":
