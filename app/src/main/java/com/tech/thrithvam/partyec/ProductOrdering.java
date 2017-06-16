@@ -1164,16 +1164,16 @@ public class ProductOrdering extends AppCompatActivity {
     }
     String getProductDetailAttributeValuesFromSpinners(){
         String json="";
-        /*for (int i = 0; i < spinners.size(); i++) {
+        for (int i = 0; i < attributeViews.size(); i++) {
             String attributeJsonObject = "{" +
                     "\"Name\":\"" + productDetailsArrayList.get(0).productAttributes.get(i).Name + "\"," +
                     "\"Caption\":\"" + productDetailsArrayList.get(0).productAttributes.get(i).Caption + "\"," +
-                    "\"Value\":\"" + spinners.get(i).getSelectedItem().toString() + "\"," +
+                    "\"Value\":\"" + ((EditText)attributeViews.get(i).findViewById(R.id.attribute_text)).getText().toString() + "\"," +
                     "\"DataType\":\"" + productDetailsArrayList.get(0).productAttributes.get(i).DataType + "\"," +
                     "\"Isconfigurable\":\"false\"" +
                     "}";
             json += attributeJsonObject + ",";
-        }*/
+        }
         return json;
     }
 }
