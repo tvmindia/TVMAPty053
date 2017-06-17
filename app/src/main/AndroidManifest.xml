@@ -23,8 +23,8 @@
             android:name=".Home"
             android:configChanges="orientation|screenSize"
             android:label=""
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CategoryList"
             android:configChanges="orientation|screenSize"
@@ -86,10 +86,13 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/manage_addresses"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".PaymentGateway"
+        <activity
+            android:name=".PaymentGateway"
             android:configChanges="orientation|screenSize"
             android:label="@string/manage_addresses"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ImageViewer"
+            android:configChanges="orientation|screenSize"></activity>
     </application>
 
 </manifest>
