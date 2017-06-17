@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.AdapterView;
 import android.widget.AdapterViewFlipper;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -251,6 +252,14 @@ public class ProductDetails extends AppCompatActivity
                     }
                     CustomAdapter imagesAdapter=new CustomAdapter(ProductDetails.this,productImages,"ProductImages");
                     imageSlides.setAdapter(imagesAdapter);
+                    (findViewById(R.id.product_image_area)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent photoViewIntent=new Intent(ProductDetails.this,ImageViewer.class);
+                            photoViewIntent.putExtra("imageUrl",getResources().getString(R.string.url)+productImages.get(imageSlides.getDisplayedChild())[1]);
+                            startActivity(photoViewIntent);
+                        }
+                    });
                     imageSlides.setFlipInterval(2000);
                     imageSlides.startFlipping();
                     //Next and Previous buttons

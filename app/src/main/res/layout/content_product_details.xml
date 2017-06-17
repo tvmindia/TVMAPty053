@@ -52,10 +52,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                    <AdapterViewFlipper
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:id="@+id/product_images"/>
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="match_parent"
@@ -84,6 +80,19 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/next_image"
+                    android:layout_toStartOf="@+id/next_image"
+                    android:layout_toRightOf="@+id/previous_image"
+                    android:layout_toEndOf="@+id/previous_image"
+                    android:id="@+id/product_image_area">
+                <AdapterViewFlipper
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:id="@+id/product_images"
+                    android:clickable="true"/>
                 <ImageView
                     android:layout_width="70dp"
                     android:layout_height="70dp"
@@ -94,6 +103,7 @@
                     android:id="@+id/sticker"
                     android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"/>
+                </RelativeLayout>
             </RelativeLayout>
             <TextView
                 android:layout_width="match_parent"
