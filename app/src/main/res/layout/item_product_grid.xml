@@ -48,6 +48,35 @@
         android:layout_below="@+id/product_image"
         android:maxLines="2"
         android:ellipsize="end"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/product_name"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/price"
+                android:id="@+id/total_price"
+                android:layout_toLeftOf="@+id/actual_price"
+                android:layout_toStartOf="@+id/actual_price"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:textSize="14sp"
+                android:textColor="@color/primary_text"
+                android:visibility="gone"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="actual price"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:id="@+id/actual_price"
+                android:textColor="@color/secondary_text"
+                android:visibility="gone"
+                android:textSize="12sp"/>
+        </RelativeLayout>
     </RelativeLayout>
         <ImageView
             android:layout_width="70dp"

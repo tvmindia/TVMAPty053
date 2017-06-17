@@ -220,11 +220,13 @@ public class ProductList extends AppCompatActivity
                                         JSONArray jsonArray =jsonRootObject.optJSONArray("Products");
                                         for (int i = 0; i < jsonArray.length(); i++) {
                                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                            String[] data = new String[4];
+                                            String[] data = new String[6];
                                             data[0] = jsonObject.optString("Name");
                                             data[1] = jsonObject.optString("ImageURL");
                                             data[2] = jsonObject.optString("ID");
                                             data[3] = jsonObject.optString("StickerURL");
+                                            data[4] = jsonObject.optString("TotalPrice");
+                                            data[5] = jsonObject.optString("DiscountAmount");
                                             allProducts.add(data);
                                         }
                                     } catch (JSONException e) {

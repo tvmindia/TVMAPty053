@@ -2,6 +2,7 @@ package com.tech.thrithvam.partyec;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
@@ -71,7 +72,7 @@ class CustomAdapter extends BaseAdapter{
         //Navigation Category List----------
         TextView navCatName, itemsCount;
         //All products list-----------------
-        TextView productName;
+        TextView productName,actualPrice;
         ImageView productImage,stickerImage;
         //Product Reviews-------------------
         TextView customerName, reviewDate, review;
@@ -143,6 +144,8 @@ class CustomAdapter extends BaseAdapter{
                     holder.productName = (TextView) convertView.findViewById(R.id.product_name);
                     holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
                     holder.stickerImage=(ImageView) convertView.findViewById(R.id.sticker);
+                    holder.totalPrice=(TextView)convertView.findViewById(R.id.total_price);
+                    holder.actualPrice=(TextView)convertView.findViewById(R.id.actual_price);
                     convertView.setTag(holder);
                 } else {
                     holder = (Holder) convertView.getTag();
@@ -157,6 +160,20 @@ class CustomAdapter extends BaseAdapter{
                         holder.stickerImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[3],
                         0);
+                holder.totalPrice.setVisibility(View.VISIBLE);
+                holder.actualPrice.setVisibility(View.VISIBLE);
+                holder.totalPrice.setText(adapterContext.getResources().getString(R.string.price_display, (filteredObjects.get(position)[4]).equals("null")|| (filteredObjects.get(position)[4].equals("0.0")) ? "" : filteredObjects.get(position)[4]));
+                if(!(filteredObjects.get(position)[5].equals("null"))   &&  !(Double.parseDouble(filteredObjects.get(position)[5])==0)) {
+                    holder.actualPrice.setPaintFlags(holder.actualPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    String actualPriceString = String.format(Locale.US, "%.2f",
+                            ((filteredObjects.get(position)[4]).equals("null") ? 0.0 : Double.parseDouble(filteredObjects.get(position)[4]))
+                                    +
+                                    ((filteredObjects.get(position)[5]).equals("null") ? 0.0 : Double.parseDouble(filteredObjects.get(position)[5])));
+                    holder.actualPrice.setText(adapterContext.getResources().getString(R.string.price_display, actualPriceString));
+                }
+                else {
+                    holder.actualPrice.setText("");
+                }
                 break;
             //--------------------------for reviews list items------------------
             case "ReviewList":
