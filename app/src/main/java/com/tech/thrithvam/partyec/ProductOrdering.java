@@ -253,30 +253,32 @@ public class ProductOrdering extends AppCompatActivity {
             }
             displayOrHidePriceAndProceed();
             //First option selection view's popup---
-            final ArrayList<String> arrayListOfFirstAttribute = new ArrayList<>();
-            for (int i = 0; i < productDetailsArrayList.size(); i++) {
-                if (!arrayListOfFirstAttribute.contains(productDetailsArrayList.get(i).productAttributes.get(0).Value)) {
-                    arrayListOfFirstAttribute.add(productDetailsArrayList.get(i).productAttributes.get(0).Value);
+            if(productDetailsArrayList.get(0).productAttributes.size()>0) {
+                final ArrayList<String> arrayListOfFirstAttribute = new ArrayList<>();
+                for (int i = 0; i < productDetailsArrayList.size(); i++) {
+                    if (!arrayListOfFirstAttribute.contains(productDetailsArrayList.get(i).productAttributes.get(0).Value)) {
+                        arrayListOfFirstAttribute.add(productDetailsArrayList.get(i).productAttributes.get(0).Value);
+                    }
                 }
+                View.OnClickListener popupOptionsOfFirstAttribute = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog dialog = new AlertDialog.Builder(ProductOrdering.this)
+                                .setTitle(R.string.select)
+                                .setSingleChoiceItems(arrayListOfFirstAttribute.toArray(new CharSequence[arrayListOfFirstAttribute.size()]),
+                                        -1,
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                ((TextView) attributeViews.get(0).findViewById(R.id.attribute_text)).setText(arrayListOfFirstAttribute.get(which));
+                                                dialog.dismiss();
+                                            }
+                                        }).create();
+                        dialog.show();
+                    }
+                };
+                setAttributeTextAndClick(0, popupOptionsOfFirstAttribute);
             }
-            View.OnClickListener popupOptionsOfFirstAttribute=new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AlertDialog dialog = new AlertDialog.Builder(ProductOrdering.this)
-                            .setTitle(R.string.select)
-                            .setSingleChoiceItems(arrayListOfFirstAttribute.toArray(new CharSequence[arrayListOfFirstAttribute.size()]),
-                                    -1,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            ((TextView)attributeViews.get(0).findViewById(R.id.attribute_text)).setText(arrayListOfFirstAttribute.get(which));
-                                            dialog.dismiss();
-                                        }
-                                    }).create();
-                    dialog.show();
-                }
-            };
-            setAttributeTextAndClick(0,popupOptionsOfFirstAttribute);
             //Other option selection view's popup------------------------------
             setAttributePopups(0,true);
         }
