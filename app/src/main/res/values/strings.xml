@@ -1,15 +1,15 @@
 <resources>
     <string name="app_name">PartyEC</string>
     <!--Local publish-->
-    <!--<string name="url" translatable="false">http://192.168.1.109:456/</string>-->
-    <!--<string name="offers_code">2072</string>-->
-    <!--<string name="occasion_code">2063</string>-->
+    <string name="url" translatable="false">http://192.168.1.109:456/</string>
+    <string name="offers_code">2072</string>
+    <string name="occasion_code">2063</string>
     <!--<string name="url" translatable="false">http://192.168.1.110:97/</string>-->
 
     <!--Web publish-->
-    <string name="url" translatable="false">http://jdadmin-001-site5.itempurl.com/</string>
-    <string name="offers_code">1080</string>
-    <string name="occasion_code">1079</string>
+    <!--<string name="url" translatable="false">http://jdadmin-001-site5.itempurl.com/</string>-->
+    <!--<string name="offers_code">1080</string>-->
+    <!--<string name="occasion_code">1079</string>-->
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -77,8 +77,8 @@
     <string name="price_display">%1$s QR</string>
     <string name="wishlist_days">%1$s days in Wishlist</string>
     <string name="price">Price:</string>
-    <string name="order_total">Order Total: %1$s</string>
-    <string name="item_total">Item Total: %1$s</string>
+    <string name="order_total">Order Total: %1$s QR</string>
+    <string name="item_total">Item Total: %1$s QR</string>
     <string name="order_status">Order Status: %1$s</string>
     <string name="order_no">Order No: %1$s</string>
     <string name="order_dates">Order Date: %1$s</string>
