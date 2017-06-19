@@ -170,4 +170,5 @@
     <string name="budget_value">Budget : %1$s</string>
     <string name="event_request_success">Event request is submitted successfully</string>
     <string name="select">Select</string>
+    <string name="skip">Skip</string>
 </resources>

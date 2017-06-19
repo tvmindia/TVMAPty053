@@ -128,7 +128,7 @@ public class Login extends AppCompatActivity
         }
     }
     public void UserVerification(final String otp, final Boolean isUser){
-//        Toast.makeText(Login.this,otp,Toast.LENGTH_LONG).show();
+        Toast.makeText(Login.this,otp,Toast.LENGTH_LONG).show();
         final AlertDialog.Builder alert = new AlertDialog.Builder(Login.this);
         alert.setTitle(R.string.enter_otp);
         final EditText otpInput=new EditText(Login.this);
@@ -219,17 +219,19 @@ public class Login extends AppCompatActivity
                         countrySpinner.setAdapter(countryAdapter);
                         newAddressDialogue.setView(newAddressView);
 
-                        newAddressDialogue.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        newAddressDialogue.setNegativeButton(R.string.skip, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                name.setEnabled(true);name.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+                               /* name.setEnabled(true);name.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
                                 mob.setEnabled(true);mob.setInputType(InputType.TYPE_CLASS_PHONE);
-                                (findViewById(R.id.signup_button)).setVisibility(View.VISIBLE);
+                                (findViewById(R.id.signup_button)).setVisibility(View.VISIBLE);*/
+                               registerUser(dialog,progressDialog,"");
                                 dialog.dismiss();
                             }
                         });
 
                         newAddressDialogue.setPositiveButton(R.string.ok_button, null);
+                        newAddressDialogue.setCancelable(false);
                         AlertDialog getAddress=newAddressDialogue.create();
                         getAddress.setOnShowListener(new DialogInterface.OnShowListener() {
 
@@ -257,9 +259,6 @@ public class Login extends AppCompatActivity
                                             ((EditText)newAddressView.findViewById(R.id.contact_no)).setError(getResources().getString(R.string.give_valid));
                                         }
                                         else {
-                                            final Common common3=new Common();
-                                            //Threading--------------------------------------------------
-                                            String webService = "api/Customer/RegisterUser";
                                             String customerAddressJSON = "\"customerAddress\":{";
                                             customerAddressJSON+="\"ID\":\"" + 0 + "\"," +
                                                     "\"CustomerID\":\"" + 0 + "\"," +
@@ -273,56 +272,7 @@ public class Login extends AppCompatActivity
                                                     "\"CountryCode\":\"" + common2.dataArrayList.get(((Spinner)newAddressView.findViewById(R.id.country)).getSelectedItemPosition())[0] + "\"," +
                                                     "\"StateProvince\":\"" + ((EditText)newAddressView.findViewById(R.id.stateprovince)).getText().toString() + "\"," +
                                                     "\"ContactNo\":\"" + ((EditText)newAddressView.findViewById(R.id.contact_no)).getText().toString() + "\"}" ;
-                                            String postData = "{\"Email\":\"" + emailInput.getText().toString()
-                                                    + "\",\"Name\":\"" + name.getText().toString()
-                                                    + "\",\"Mobile\":\"" + mob.getText().toString()
-                                                    + "\",\"Gender\":\"" + (((RadioGroup)findViewById(R.id.gender)).getCheckedRadioButtonId()==R.id.radio_male?"Male":"Female")
-                                                    + "\"," + customerAddressJSON
-                                                    + "}";
-                                            progressDialog.show();
-                                            String[] dataColumns = {};
-                                            Runnable postThread = new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    //Displaying
-                                                    try {
-                                                        JSONObject jsonObject=new JSONObject(common3.json);
-                                                        String customerID=jsonObject.optString("ReturnValues");
-                                                        db.InsertCustomer(customerID,
-                                                                name.getText().toString(),
-                                                                emailInput.getText().toString(),
-                                                                mob.getText().toString(),
-                                                                (((RadioGroup)findViewById(R.id.gender)).getCheckedRadioButtonId()==R.id.radio_male?"Male":"Female"));
-                                                        Intent intentUser = new Intent(Login.this, MyProfile.class);
-                                                        intentUser.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                        finish();
-                                                        startActivity(intentUser);
-                                                        dialog.dismiss();
-                                                        if (progressDialog.isShowing())
-                                                            progressDialog.dismiss();
-                                                    } catch (JSONException e) {
-                                                        Toast.makeText(Login.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }
-                                            };
-                                            Runnable postFailThread = new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    Toast.makeText(Login.this, R.string.failed_try_again, Toast.LENGTH_SHORT).show();
-                                                    name.setEnabled(true);name.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-                                                    mob.setEnabled(true);mob.setInputType(InputType.TYPE_CLASS_PHONE);
-                                                    (findViewById(R.id.signup_button)).setVisibility(View.VISIBLE);
-                                                    if (progressDialog.isShowing())
-                                                        progressDialog.dismiss();
-                                                }
-                                            };
-                                            common3.AsynchronousThread(Login.this,
-                                                    webService,
-                                                    postData,
-                                                    null,
-                                                    dataColumns,
-                                                    postThread,
-                                                    postFailThread);
+                                            registerUser(dialog, progressDialog,customerAddressJSON);
                                         }
                                     }
                                 });
@@ -366,6 +316,62 @@ public class Login extends AppCompatActivity
             }
         };
         common1.AsynchronousThread(Login.this,
+                webService,
+                postData,
+                null,
+                dataColumns,
+                postThread,
+                postFailThread);
+    }
+    void registerUser(final DialogInterface dialog, final ProgressDialog progressDialog, String customerAddressJSON){
+        final Common common3=new Common();
+        //Threading--------------------------------------------------
+        String webService = "api/Customer/RegisterUser";
+
+        String postData = "{\"Email\":\"" + emailInput.getText().toString()
+                + "\",\"Name\":\"" + name.getText().toString()
+                + "\",\"Mobile\":\"" + mob.getText().toString()
+                + "\",\"Gender\":\"" + (((RadioGroup)findViewById(R.id.gender)).getCheckedRadioButtonId()==R.id.radio_male?"Male":"Female")
+                + "\"," + customerAddressJSON
+                + "}";
+        progressDialog.show();
+        String[] dataColumns = {};
+        Runnable postThread = new Runnable() {
+            @Override
+            public void run() {
+                //Displaying
+                try {
+                    JSONObject jsonObject=new JSONObject(common3.json);
+                    String customerID=jsonObject.optString("ReturnValues");
+                    db.InsertCustomer(customerID,
+                            name.getText().toString(),
+                            emailInput.getText().toString(),
+                            mob.getText().toString(),
+                            (((RadioGroup)findViewById(R.id.gender)).getCheckedRadioButtonId()==R.id.radio_male?"Male":"Female"));
+                    Intent intentUser = new Intent(Login.this, MyProfile.class);
+                    intentUser.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    finish();
+                    startActivity(intentUser);
+                    dialog.dismiss();
+                    if (progressDialog.isShowing())
+                        progressDialog.dismiss();
+                } catch (JSONException e) {
+                    Toast.makeText(Login.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        Runnable postFailThread = new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(Login.this, R.string.failed_try_again, Toast.LENGTH_SHORT).show();
+                name.setEnabled(true);name.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+                mob.setEnabled(true);mob.setInputType(InputType.TYPE_CLASS_PHONE);
+                (findViewById(R.id.signup_button)).setVisibility(View.VISIBLE);
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
+            }
+        };
+        common3.AsynchronousThread(Login.this,
                 webService,
                 postData,
                 null,
