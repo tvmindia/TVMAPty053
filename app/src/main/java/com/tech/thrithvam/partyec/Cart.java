@@ -594,7 +594,31 @@ public class Cart extends AppCompatActivity {
         Runnable postFailThread=new Runnable() {
             @Override
             public void run() {
-                (findViewById(R.id.customer_address)).setVisibility(GONE);
+                JSONObject jsonObject= null;
+                try {
+                    jsonObject = new JSONObject(common.json);
+
+                String message=jsonObject.optString("Message");
+                    if(message.equals("No items")) {
+                        //No address for this customer
+                        (findViewById(R.id.customer_address)).setVisibility(View.VISIBLE);
+                        addressView.setVisibility(GONE);
+                        ((TextView)findViewById(R.id.change_address)).setText(R.string.add_address);
+                        (findViewById(R.id.change_address)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ((TextView)findViewById(R.id.change_address)).setText(R.string.add_or_change_address);
+                                inputNewAddress(addressView, customerAddress);
+                            }
+                        });
+                    }
+                    else {
+                        (findViewById(R.id.customer_address)).setVisibility(View.GONE);
+                        Toast.makeText(Cart.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         };
         common.AsynchronousThread(Cart.this,
@@ -831,6 +855,8 @@ public class Cart extends AppCompatActivity {
         addressObject.CountryCode=countryCode;
         addressObject.StateProvince=(StateProvince.equals("null")?"":StateProvince);
         addressObject.ContactNo=(ContactNo.equals("null")?"":ContactNo);
+
+        addressView.setVisibility(View.VISIBLE);
     }
     private class CustomerAddress{
         String ID="";

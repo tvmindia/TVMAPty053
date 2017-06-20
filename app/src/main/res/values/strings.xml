@@ -171,4 +171,6 @@
     <string name="event_request_success">Event request is submitted successfully</string>
     <string name="select">Select</string>
     <string name="skip">Skip</string>
+    <string name="add_address">Add address</string>
+    <string name="add_or_change_address">Add or change address</string>
 </resources>
