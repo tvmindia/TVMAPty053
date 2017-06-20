@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.IntentCompat;
 import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
@@ -230,12 +229,13 @@ class Common {
                                 dataArrayList.add(data);
                             }
                         }
-                        else {//Take coming jason as it is
+                        else {//Take coming json as it is
                             json=jsonRootObject.optString("Records");
                         }
                     }
                     else {
                         msg=jsonRootObject.optString("Message");
+                        json=strJson;
                     }
                 } catch (Exception ex) {
                     msg=ex.getMessage();
