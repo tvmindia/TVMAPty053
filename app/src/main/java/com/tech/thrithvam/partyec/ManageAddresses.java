@@ -31,6 +31,7 @@ public class ManageAddresses extends AppCompatActivity {
     DatabaseHandler db;
     String customerID;
     LayoutInflater inflater;
+    String from="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,12 @@ public class ManageAddresses extends AppCompatActivity {
         customerID=db.GetCustomerDetails("CustomerID");
         inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         getCustomerAddresses();
+        if(getIntent().getExtras().getString("from").equals("my_profile")){
+            from="my_profile";
+        }
+        else {
+            from="cart";
+        }
     }
     ArrayList<CustomerAddress> addresses;
     void getCustomerAddresses(){
@@ -76,7 +83,13 @@ public class ManageAddresses extends AppCompatActivity {
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
-                CustomAdapter customAdapter=new CustomAdapter(ManageAddresses.this,common.dataArrayList,"AddressManagement");
+                CustomAdapter customAdapter;
+                if(from.equals("my_profile")){
+                    customAdapter=new CustomAdapter(ManageAddresses.this,common.dataArrayList,"AddressManagement");
+                }
+                else {
+                    customAdapter=new CustomAdapter(ManageAddresses.this,common.dataArrayList,"AddressSelection");
+                }
                 ListView addressList=(ListView)findViewById(R.id.address_list_view);
                 addressList.setAdapter(customAdapter);
                 for (int i=0;i<common.dataArrayList.size();i++){

@@ -153,7 +153,7 @@
     <string name="manage_addresses">Manage Addresses</string>
     <string name="orders">Orders</string>
     <string name="history">History</string>
-    <string name="select_default">Select Default</string>
+    <string name="select_default">Set as Default</string>
     <string name="remove">Remove</string>
     <string name="edit">Edit</string>
     <string name="default_address">Default Address</string>
@@ -173,4 +173,5 @@
     <string name="skip">Skip</string>
     <string name="add_address">Add address</string>
     <string name="add_or_change_address">Add or change address</string>
+    <string name="select_this_address">Select this address</string>
 </resources>

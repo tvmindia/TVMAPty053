@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -80,6 +81,7 @@ class CustomAdapter extends BaseAdapter{
         ImageView customerImage;
         //Address-------------------------
         TextView address, location, city, state, country, contactNo, setDefault, remove, edit;
+        LinearLayout unwantedControls;
         //WishList-------------------------
         TextView daysCount, price;
         //Bookings----------------------------
@@ -290,11 +292,13 @@ class CustomAdapter extends BaseAdapter{
                     holder.setDefault=(TextView) convertView.findViewById(R.id.select_default);
                     holder.remove=(TextView)convertView.findViewById(R.id.remove);
                     holder.edit=(TextView)convertView.findViewById(R.id.edit);
+                    holder.unwantedControls=(LinearLayout)convertView.findViewById(R.id.address_select_controls);
                     convertView.setTag(holder);
                 } else {
                     holder = (Holder) convertView.getTag();
                 }
                 //Label loading--------------------
+                holder.unwantedControls.setVisibility(View.GONE);
                 String name1=(filteredObjects.get(position)[1].equals("null")?"":filteredObjects.get(position)[1])+   " "
                         +   (filteredObjects.get(position)[2].equals("null")?"":filteredObjects.get(position)[2])+   " "
                         +   (filteredObjects.get(position)[3].equals("null")?"":filteredObjects.get(position)[3])+   " "
@@ -312,6 +316,69 @@ class CustomAdapter extends BaseAdapter{
                     e.printStackTrace();
                 }
                 holder.country.setText(country1.equals("null")?"-":country1);
+                holder.contactNo.setText(filteredObjects.get(position)[10].equals("null")?"-":filteredObjects.get(position)[10]);
+                holder.setDefault.setTag(filteredObjects.get(position)[0]);
+                holder.remove.setTag(filteredObjects.get(position)[0]);
+                holder.edit.setTag(filteredObjects.get(position)[0]);
+                if(filteredObjects.get(position)[12].equals("true")){
+                    holder.setDefault.setText(adapterContext.getResources().getString(R.string.default_address));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        holder.setDefault.setTextColor(adapterContext.getColor(R.color.secondary_text));
+                    }
+                    else {
+                        holder.setDefault.setTextColor(adapterContext.getResources().getColor(R.color.secondary_text));
+                    }
+                    holder.remove.setVisibility(View.GONE);
+                }
+                else {
+                    holder.setDefault.setText(adapterContext.getResources().getString(R.string.select_default));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        holder.setDefault.setTextColor(adapterContext.getColor(R.color.colorAccent));
+                    }
+                    else {
+                        holder.setDefault.setTextColor(adapterContext.getResources().getColor(R.color.colorAccent));
+                    }
+                    holder.remove.setVisibility(View.VISIBLE);
+                }
+                break;
+            case "AddressSelection":
+                if (convertView == null) {
+                    holder = new Holder();
+                    convertView = inflater.inflate(R.layout.item_address_edit, null);
+                    holder.customerName=(TextView) convertView.findViewById(R.id.name);
+                    holder.address=(TextView) convertView.findViewById(R.id.address);
+                    holder.location=(TextView) convertView.findViewById(R.id.location);
+                    holder.city=(TextView) convertView.findViewById(R.id.city);
+                    holder.state=(TextView) convertView.findViewById(R.id.stateprovince);
+                    holder.country=(TextView) convertView.findViewById(R.id.country);
+                    holder.contactNo=(TextView) convertView.findViewById(R.id.contact_no);
+                    holder.setDefault=(TextView) convertView.findViewById(R.id.select_default);
+                    holder.remove=(TextView)convertView.findViewById(R.id.remove);
+                    holder.edit=(TextView)convertView.findViewById(R.id.edit);
+                    holder.unwantedControls=(LinearLayout)convertView.findViewById(R.id.address_edit_controls);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (Holder) convertView.getTag();
+                }
+                //Label loading--------------------
+                holder.unwantedControls.setVisibility(View.GONE);
+                String name2=(filteredObjects.get(position)[1].equals("null")?"":filteredObjects.get(position)[1])+   " "
+                        +   (filteredObjects.get(position)[2].equals("null")?"":filteredObjects.get(position)[2])+   " "
+                        +   (filteredObjects.get(position)[3].equals("null")?"":filteredObjects.get(position)[3])+   " "
+                        +   (filteredObjects.get(position)[4].equals("null")?"":filteredObjects.get(position)[4]);
+                holder.customerName.setText(name2);
+                holder.address.setText(filteredObjects.get(position)[5].equals("null")?"":filteredObjects.get(position)[5]);
+                holder.location.setText(filteredObjects.get(position)[6].equals("null")?"-":filteredObjects.get(position)[6]);
+                holder.city.setText(filteredObjects.get(position)[7].equals("null")?"-":filteredObjects.get(position)[7]);
+                holder.state.setText(filteredObjects.get(position)[8].equals("null")?"-":filteredObjects.get(position)[8]);
+                String country2="";
+                try {
+                    JSONObject jsonObjectCountry=new JSONObject(filteredObjects.get(position)[9]);
+                    country2=jsonObjectCountry.getString("Name");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                holder.country.setText(country2.equals("null")?"-":country2);
                 holder.contactNo.setText(filteredObjects.get(position)[10].equals("null")?"-":filteredObjects.get(position)[10]);
                 holder.setDefault.setTag(filteredObjects.get(position)[0]);
                 holder.remove.setTag(filteredObjects.get(position)[0]);

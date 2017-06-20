@@ -99,6 +99,7 @@ public class MyProfile extends AppCompatActivity
     }
     public void manageAddresses(View view){
         Intent addressIntent=new Intent(this,ManageAddresses.class);
+        addressIntent.putExtra("from","my_profile");
         startActivity(addressIntent);
     }
     public void cartClick(View view){
