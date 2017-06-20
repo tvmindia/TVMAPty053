@@ -36,7 +36,7 @@
         android:id="@+id/address_list_view"
         android:layout_below="@+id/app_bar"
         android:divider="@null"
-        android:listSelector="@android:color/holo_orange_light"
+        android:listSelector="@android:color/transparent"
         android:scrollbars="none"
         android:clipToPadding="false"
         android:animateLayoutChanges="true"
