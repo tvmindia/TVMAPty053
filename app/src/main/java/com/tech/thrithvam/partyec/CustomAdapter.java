@@ -80,7 +80,7 @@ class CustomAdapter extends BaseAdapter{
         RatingBar ratingReview;
         ImageView customerImage;
         //Address-------------------------
-        TextView address, location, city, state, country, contactNo, setDefault, remove, edit;
+        TextView address, location, city, state, country, contactNo, setDefault, select,remove, edit;
         LinearLayout unwantedControls;
         //WishList-------------------------
         TextView daysCount, price;
@@ -352,8 +352,7 @@ class CustomAdapter extends BaseAdapter{
                     holder.state=(TextView) convertView.findViewById(R.id.stateprovince);
                     holder.country=(TextView) convertView.findViewById(R.id.country);
                     holder.contactNo=(TextView) convertView.findViewById(R.id.contact_no);
-                    holder.setDefault=(TextView) convertView.findViewById(R.id.select_default);
-                    holder.remove=(TextView)convertView.findViewById(R.id.remove);
+                    holder.select=(TextView) convertView.findViewById(R.id.select_address);
                     holder.edit=(TextView)convertView.findViewById(R.id.edit);
                     holder.unwantedControls=(LinearLayout)convertView.findViewById(R.id.address_edit_controls);
                     convertView.setTag(holder);
@@ -380,29 +379,8 @@ class CustomAdapter extends BaseAdapter{
                 }
                 holder.country.setText(country2.equals("null")?"-":country2);
                 holder.contactNo.setText(filteredObjects.get(position)[10].equals("null")?"-":filteredObjects.get(position)[10]);
-                holder.setDefault.setTag(filteredObjects.get(position)[0]);
-                holder.remove.setTag(filteredObjects.get(position)[0]);
+                holder.select.setTag(filteredObjects.get(position)[0]);
                 holder.edit.setTag(filteredObjects.get(position)[0]);
-                if(filteredObjects.get(position)[12].equals("true")){
-                    holder.setDefault.setText(adapterContext.getResources().getString(R.string.default_address));
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        holder.setDefault.setTextColor(adapterContext.getColor(R.color.secondary_text));
-                    }
-                    else {
-                        holder.setDefault.setTextColor(adapterContext.getResources().getColor(R.color.secondary_text));
-                    }
-                    holder.remove.setVisibility(View.GONE);
-                }
-                else {
-                    holder.setDefault.setText(adapterContext.getResources().getString(R.string.select_default));
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        holder.setDefault.setTextColor(adapterContext.getColor(R.color.colorAccent));
-                    }
-                    else {
-                        holder.setDefault.setTextColor(adapterContext.getResources().getColor(R.color.colorAccent));
-                    }
-                    holder.remove.setVisibility(View.VISIBLE);
-                }
                 break;
             //----------------------------------  WishList  ------------------------------
             case "WishList":

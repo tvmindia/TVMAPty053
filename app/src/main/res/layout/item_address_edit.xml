@@ -173,7 +173,7 @@
                     android:textColor="@color/colorAccent"
                     android:id="@+id/select_address"
                     android:text="@string/select_this_address"
-                    android:onClick="setDefault"/>
+                    android:onClick="selectAddress"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

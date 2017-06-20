@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.StateListDrawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +34,9 @@ public class ManageAddresses extends AppCompatActivity {
     String customerID;
     LayoutInflater inflater;
     String from="";
+    String SHIPPING_ADDRESS_ID="";
+    String BILLING_ADDRESS_ID="";
+    ListView addressList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,13 +53,17 @@ public class ManageAddresses extends AppCompatActivity {
             return;
         }
         customerID=db.GetCustomerDetails("CustomerID");
+        addressList=(ListView)findViewById(R.id.address_list_view);
         inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         getCustomerAddresses();
         if(getIntent().getExtras().getString("from").equals("my_profile")){
             from="my_profile";
+            addressList.setSelector(new StateListDrawable());
         }
         else {
             from="cart";
+            SHIPPING_ADDRESS_ID=getIntent().getExtras().getString("shipping_address_id");
+            BILLING_ADDRESS_ID=getIntent().getExtras().getString("billing_address_id");
         }
     }
     ArrayList<CustomerAddress> addresses;
@@ -90,7 +99,6 @@ public class ManageAddresses extends AppCompatActivity {
                 else {
                     customAdapter=new CustomAdapter(ManageAddresses.this,common.dataArrayList,"AddressSelection");
                 }
-                ListView addressList=(ListView)findViewById(R.id.address_list_view);
                 addressList.setAdapter(customAdapter);
                 for (int i=0;i<common.dataArrayList.size();i++){
                     CustomerAddress customerAddress=new CustomerAddress();
@@ -115,6 +123,20 @@ public class ManageAddresses extends AppCompatActivity {
                     customerAddress.ContactNo=(common.dataArrayList.get(i)[10].equals("null")?"":common.dataArrayList.get(i)[10]);
                     addresses.add(customerAddress);
                 }
+                //If cart functions
+              /*  if(from.equals("cart")){
+                    for (int i=0;i<addresses.size();i++){
+                        if(addresses.get(i).ID.equals(SHIPPING_ADDRESS_ID)){
+//                            View addressView=addressList.getChildAt(i);
+//                            (addressView.findViewById(R.id.select_address)).setVisibility(View.GONE);
+                            addressList.setItemChecked(i,true);
+                            break;
+                        }
+                        else if(addresses.get(i).ID.equals(BILLING_ADDRESS_ID)){
+                            break;
+                        }
+                    }
+                }*/
             }
         };
         common.AsynchronousThread(ManageAddresses.this,
@@ -408,6 +430,18 @@ public class ManageAddresses extends AppCompatActivity {
                 dataColumns,
                 postThread,
                 postFailThread);
+    }
+    public void selectAddress(View view){
+        if(SHIPPING_ADDRESS_ID.equals("")){
+            SHIPPING_ADDRESS_ID=view.getTag().toString();
+        }
+        else if(BILLING_ADDRESS_ID.equals("")){
+            BILLING_ADDRESS_ID=view.getTag().toString();
+        }
+        Intent cartIntent=new Intent(ManageAddresses.this,Cart.class);
+        cartIntent.putExtra("shipping_address_id",SHIPPING_ADDRESS_ID);
+        cartIntent.putExtra("billing_address_id",BILLING_ADDRESS_ID);
+        startActivity(cartIntent);
     }
     private class CustomerAddress{
         String ID="";

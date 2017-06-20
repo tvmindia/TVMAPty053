@@ -51,6 +51,9 @@ public class Cart extends AppCompatActivity {
     LayoutInflater inflater;
     Double totalPrice =0.0,totalShipping=0.0;Double totalAmount=0.0;
     String locationID="";
+
+    String SHIPPING_ADDRESS_ID="";
+    String BILLING_ADDRESS_ID="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +89,11 @@ public class Cart extends AppCompatActivity {
                 }
             }
         });
+        //If already know the addresses
+        if(getIntent().hasExtra("shipping_address_id"))
+            SHIPPING_ADDRESS_ID=getIntent().getExtras().getString("shipping_address_id");
+        if(getIntent().hasExtra("billing_address_id"))
+            BILLING_ADDRESS_ID=getIntent().getExtras().getString("billing_address_id");
     }
     void loadCart(){
         final Common common=new Common();
@@ -368,6 +376,8 @@ public class Cart extends AppCompatActivity {
             public void onClick(View v) {
                 Intent addressIntent=new Intent(Cart.this,ManageAddresses.class);
                 addressIntent.putExtra("from","cart");
+                addressIntent.putExtra("shipping_address_id","");//customerAddress.ID);
+                addressIntent.putExtra("billing_address_id",billingAddress.ID);
                 startActivity(addressIntent);
                                /* final Common common1=new Common();
                                 //Threading--------------------------------------------------
@@ -461,6 +471,8 @@ public class Cart extends AppCompatActivity {
             public void onClick(View v) {
                 Intent addressIntent=new Intent(Cart.this,ManageAddresses.class);
                 addressIntent.putExtra("from","cart");
+                addressIntent.putExtra("shipping_address_id",customerAddress.ID);
+                addressIntent.putExtra("billing_address_id","");//billingAddress.ID);
                 startActivity(addressIntent);
                         /*final Common common2=new Common();
                         //Threading--------------------------------------------------
@@ -560,39 +572,77 @@ public class Cart extends AppCompatActivity {
             public void run() {
                 int i;
                 for (i=0;i<common.dataArrayList.size();i++){
-                    if(common.dataArrayList.get(i)[12].equals("true")){
-                        setAddressDisplayAndObject(addressView,
-                                customerAddress,
-                                common.dataArrayList.get(i)[0],
-                                common.dataArrayList.get(i)[1],
-                                common.dataArrayList.get(i)[2],
-                                common.dataArrayList.get(i)[3],
-                                common.dataArrayList.get(i)[4],
-                                common.dataArrayList.get(i)[5],
-                                common.dataArrayList.get(i)[6],
-                                common.dataArrayList.get(i)[7],
-                                common.dataArrayList.get(i)[8],
-                                common.dataArrayList.get(i)[9],
-                                common.dataArrayList.get(i)[10],
-                                common.dataArrayList.get(i)[13]
-                        );
-                        //By default
-                        billingAddress.ID=customerAddress.ID;
-                        billingAddress.CustomerID=customerAddress.CustomerID;
-                        billingAddress.Prefix=customerAddress.Prefix;
-                        billingAddress.FirstName=customerAddress.FirstName;
-                        billingAddress.MidName=customerAddress.MidName;
-                        billingAddress.LastName=customerAddress.LastName;
-                        billingAddress.Address=customerAddress.Address;
-                        billingAddress.LocationID=customerAddress.LocationID;
-                        billingAddress.City=customerAddress.City;
-                        billingAddress.CountryCode=customerAddress.CountryCode;
-                        billingAddress.StateProvince=customerAddress.StateProvince;
-                        billingAddress.ContactNo=customerAddress.ContactNo;
+                    if(!SHIPPING_ADDRESS_ID.equals("")) {//Known shipping address
+                        if (common.dataArrayList.get(i)[0].equals(SHIPPING_ADDRESS_ID)) {
+                            setAddressDisplayAndObject(addressView,
+                                    customerAddress,
+                                    common.dataArrayList.get(i)[0],
+                                    common.dataArrayList.get(i)[1],
+                                    common.dataArrayList.get(i)[2],
+                                    common.dataArrayList.get(i)[3],
+                                    common.dataArrayList.get(i)[4],
+                                    common.dataArrayList.get(i)[5],
+                                    common.dataArrayList.get(i)[6],
+                                    common.dataArrayList.get(i)[7],
+                                    common.dataArrayList.get(i)[8],
+                                    common.dataArrayList.get(i)[9],
+                                    common.dataArrayList.get(i)[10],
+                                    common.dataArrayList.get(i)[13]
+                            );
+                            //By default
+                            billingAddress.ID = customerAddress.ID;
+                            billingAddress.CustomerID = customerAddress.CustomerID;
+                            billingAddress.Prefix = customerAddress.Prefix;
+                            billingAddress.FirstName = customerAddress.FirstName;
+                            billingAddress.MidName = customerAddress.MidName;
+                            billingAddress.LastName = customerAddress.LastName;
+                            billingAddress.Address = customerAddress.Address;
+                            billingAddress.LocationID = customerAddress.LocationID;
+                            billingAddress.City = customerAddress.City;
+                            billingAddress.CountryCode = customerAddress.CountryCode;
+                            billingAddress.StateProvince = customerAddress.StateProvince;
+                            billingAddress.ContactNo = customerAddress.ContactNo;
 
-                        locationID=customerAddress.LocationID;
+                            locationID = customerAddress.LocationID;
 
-                        break;
+                            break;
+                        }
+                    }
+                    else {//Taking default
+                        if (common.dataArrayList.get(i)[12].equals("true")) {
+                            setAddressDisplayAndObject(addressView,
+                                    customerAddress,
+                                    common.dataArrayList.get(i)[0],
+                                    common.dataArrayList.get(i)[1],
+                                    common.dataArrayList.get(i)[2],
+                                    common.dataArrayList.get(i)[3],
+                                    common.dataArrayList.get(i)[4],
+                                    common.dataArrayList.get(i)[5],
+                                    common.dataArrayList.get(i)[6],
+                                    common.dataArrayList.get(i)[7],
+                                    common.dataArrayList.get(i)[8],
+                                    common.dataArrayList.get(i)[9],
+                                    common.dataArrayList.get(i)[10],
+                                    common.dataArrayList.get(i)[13]
+                            );
+                            //By default
+                            billingAddress.ID = customerAddress.ID;
+                            billingAddress.CustomerID = customerAddress.CustomerID;
+                            billingAddress.Prefix = customerAddress.Prefix;
+                            billingAddress.FirstName = customerAddress.FirstName;
+                            billingAddress.MidName = customerAddress.MidName;
+                            billingAddress.LastName = customerAddress.LastName;
+                            billingAddress.Address = customerAddress.Address;
+                            billingAddress.LocationID = customerAddress.LocationID;
+                            billingAddress.City = customerAddress.City;
+                            billingAddress.CountryCode = customerAddress.CountryCode;
+                            billingAddress.StateProvince = customerAddress.StateProvince;
+                            billingAddress.ContactNo = customerAddress.ContactNo;
+
+                            locationID = customerAddress.LocationID;
+
+                            break;
+                        }
                     }
                 }
                 if(i==common.dataArrayList.size()){//Error case: no default address
