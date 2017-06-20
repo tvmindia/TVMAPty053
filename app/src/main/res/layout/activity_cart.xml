@@ -101,11 +101,19 @@
                     android:textColor="@color/primary_text"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@string/add_an_address_request"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp"
+                    android:id="@+id/no_address_label"/>
             </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/change"
+                android:text="@string/add_or_change"
                 android:textColor="@color/colorAccent"
                 android:padding="5dp"
                 android:layout_gravity="end"
@@ -150,7 +158,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/change"
+                android:text="@string/add_or_change"
                 android:textColor="@color/colorAccent"
                 android:padding="5dp"
                 android:layout_gravity="end"

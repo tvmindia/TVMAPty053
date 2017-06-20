@@ -362,46 +362,14 @@ public class Cart extends AppCompatActivity {
                 "ShipDefaultYN",//12
                 "LocationID"//13
         };
-        Runnable postThread=new Runnable() {
+
+        (findViewById(R.id.change_address)).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                for (int i=0;i<common.dataArrayList.size();i++){
-                    if(common.dataArrayList.get(i)[11].equals("true")){
-                        setAddressDisplayAndObject(addressView,
-                                customerAddress,
-                                common.dataArrayList.get(i)[0],
-                                common.dataArrayList.get(i)[1],
-                                common.dataArrayList.get(i)[2],
-                                common.dataArrayList.get(i)[3],
-                                common.dataArrayList.get(i)[4],
-                                common.dataArrayList.get(i)[5],
-                                common.dataArrayList.get(i)[6],
-                                common.dataArrayList.get(i)[7],
-                                common.dataArrayList.get(i)[8],
-                                common.dataArrayList.get(i)[9],
-                                common.dataArrayList.get(i)[10],
-                                common.dataArrayList.get(i)[13]
-                        );
-                        //By default
-                        billingAddress.ID=customerAddress.ID;
-                        billingAddress.CustomerID=customerAddress.CustomerID;
-                        billingAddress.Prefix=customerAddress.Prefix;
-                        billingAddress.FirstName=customerAddress.FirstName;
-                        billingAddress.MidName=customerAddress.MidName;
-                        billingAddress.LastName=customerAddress.LastName;
-                        billingAddress.Address=customerAddress.Address;
-                        billingAddress.LocationID=customerAddress.LocationID;
-                        billingAddress.City=customerAddress.City;
-                        billingAddress.CountryCode=customerAddress.CountryCode;
-                        billingAddress.StateProvince=customerAddress.StateProvince;
-                        billingAddress.ContactNo=customerAddress.ContactNo;
-
-                        locationID=customerAddress.LocationID;
-
-                        (findViewById(R.id.change_address)).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                final Common common1=new Common();
+            public void onClick(View v) {
+                Intent addressIntent=new Intent(Cart.this,ManageAddresses.class);
+                addressIntent.putExtra("from","cart");
+                startActivity(addressIntent);
+                               /* final Common common1=new Common();
                                 //Threading--------------------------------------------------
                                 String webService="api/customer/GetCustomerAddress";
                                 String postData =  "{\"CustomerID\":\""+customerID+"\"}";
@@ -485,19 +453,16 @@ public class Cart extends AppCompatActivity {
                                         null,
                                         dataColumns,
                                         postThread,
-                                        postFailThread);
-                            }
-                        });
-                        break;
-                    }
-                }
-                findViewById(R.id.customer_address).setVisibility(View.VISIBLE);
-                //Billing address---------------
-                findViewById(R.id.billing_address).setVisibility(View.VISIBLE);
-                (findViewById(R.id.change_billing_address)).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        final Common common2=new Common();
+                                        postFailThread);*/
+            }
+        });
+        (findViewById(R.id.change_billing_address)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addressIntent=new Intent(Cart.this,ManageAddresses.class);
+                addressIntent.putExtra("from","cart");
+                startActivity(addressIntent);
+                        /*final Common common2=new Common();
                         //Threading--------------------------------------------------
                         String webService="api/customer/GetCustomerAddress";
                         String postData =  "{\"CustomerID\":\""+customerID+"\"}";
@@ -585,10 +550,61 @@ public class Cart extends AppCompatActivity {
                                 null,
                                 dataColumns,
                                 postThread,
-                                postFailThread);
-                    }
-                });
+                                postFailThread);*/
+            }
+        });
 
+
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                int i;
+                for (i=0;i<common.dataArrayList.size();i++){
+                    if(common.dataArrayList.get(i)[12].equals("true")){
+                        setAddressDisplayAndObject(addressView,
+                                customerAddress,
+                                common.dataArrayList.get(i)[0],
+                                common.dataArrayList.get(i)[1],
+                                common.dataArrayList.get(i)[2],
+                                common.dataArrayList.get(i)[3],
+                                common.dataArrayList.get(i)[4],
+                                common.dataArrayList.get(i)[5],
+                                common.dataArrayList.get(i)[6],
+                                common.dataArrayList.get(i)[7],
+                                common.dataArrayList.get(i)[8],
+                                common.dataArrayList.get(i)[9],
+                                common.dataArrayList.get(i)[10],
+                                common.dataArrayList.get(i)[13]
+                        );
+                        //By default
+                        billingAddress.ID=customerAddress.ID;
+                        billingAddress.CustomerID=customerAddress.CustomerID;
+                        billingAddress.Prefix=customerAddress.Prefix;
+                        billingAddress.FirstName=customerAddress.FirstName;
+                        billingAddress.MidName=customerAddress.MidName;
+                        billingAddress.LastName=customerAddress.LastName;
+                        billingAddress.Address=customerAddress.Address;
+                        billingAddress.LocationID=customerAddress.LocationID;
+                        billingAddress.City=customerAddress.City;
+                        billingAddress.CountryCode=customerAddress.CountryCode;
+                        billingAddress.StateProvince=customerAddress.StateProvince;
+                        billingAddress.ContactNo=customerAddress.ContactNo;
+
+                        locationID=customerAddress.LocationID;
+
+                        break;
+                    }
+                }
+                if(i==common.dataArrayList.size()){//Error case: no default address
+                    addressView.setVisibility(GONE);
+                    findViewById(R.id.no_address_label).setVisibility(View.VISIBLE);
+                }
+                else {
+                    findViewById(R.id.no_address_label).setVisibility(GONE);
+                }
+                findViewById(R.id.customer_address).setVisibility(View.VISIBLE);
+                //Billing address---------------
+                findViewById(R.id.billing_address).setVisibility(View.VISIBLE);
             }
         };
         Runnable postFailThread=new Runnable() {
@@ -601,16 +617,8 @@ public class Cart extends AppCompatActivity {
                 String message=jsonObject.optString("Message");
                     if(message.equals("No items")) {
                         //No address for this customer
-                        (findViewById(R.id.customer_address)).setVisibility(View.VISIBLE);
                         addressView.setVisibility(GONE);
-                        ((TextView)findViewById(R.id.change_address)).setText(R.string.add_address);
-                        (findViewById(R.id.change_address)).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                ((TextView)findViewById(R.id.change_address)).setText(R.string.add_or_change_address);
-                                inputNewAddress(addressView, customerAddress);
-                            }
-                        });
+                        (findViewById(R.id.customer_address)).setVisibility(View.VISIBLE);
                     }
                     else {
                         (findViewById(R.id.customer_address)).setVisibility(View.GONE);
