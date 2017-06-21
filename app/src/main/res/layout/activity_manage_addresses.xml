@@ -30,6 +30,17 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/add_an_address_request"
+        android:textColor="@color/secondary_text"
+        android:textSize="14sp"
+        android:id="@+id/no_address_label"
+        android:visibility="gone"
+        android:layout_below="@+id/app_bar"
+        android:gravity="center"/>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

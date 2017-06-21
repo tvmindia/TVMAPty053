@@ -99,6 +99,8 @@ public class ManageAddresses extends AppCompatActivity {
                     customAdapter=new CustomAdapter(ManageAddresses.this,common.dataArrayList,"AddressSelection");
                 }
                 addressList.setAdapter(customAdapter);
+                (findViewById(R.id.no_address_label)).setVisibility(View.GONE);
+                addressList.setVisibility(View.VISIBLE);
                 for (int i=0;i<common.dataArrayList.size();i++){
                     CustomerAddress customerAddress=new CustomerAddress();
                     customerAddress.ID=(common.dataArrayList.get(i)[0].equals("null")?"":common.dataArrayList.get(i)[0]);
@@ -138,13 +140,33 @@ public class ManageAddresses extends AppCompatActivity {
                 }*/
             }
         };
+        Runnable postFailThread=new Runnable() {
+            @Override
+            public void run() {
+                JSONObject jsonObject= null;
+                try {
+                    jsonObject = new JSONObject(common.json);
+                    String message=jsonObject.optString("Message");
+                    if(message.equals("No items")) {
+                        //No address for this customer
+                        (findViewById(R.id.no_address_label)).setVisibility(View.VISIBLE);
+                        addressList.setVisibility(View.GONE);
+                    }
+                    else {
+                        Toast.makeText(ManageAddresses.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
         common.AsynchronousThread(ManageAddresses.this,
                 webService,
                 postData,
                 loadingIndicatorView,
                 dataColumns,
                 postThread,
-                null);
+                postFailThread);
 
     }
     public void setDefault(View view){

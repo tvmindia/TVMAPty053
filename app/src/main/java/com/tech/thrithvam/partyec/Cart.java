@@ -355,6 +355,9 @@ public class Cart extends AppCompatActivity {
         String webService="api/customer/GetCustomerAddress";
         String postData =  "{\"CustomerID\":\""+customerID+"\"}";
         AVLoadingIndicatorView loadingIndicator =(AVLoadingIndicatorView) findViewById(R.id.loading_indicator2);
+        final ProgressDialog progressDialog=new ProgressDialog(Cart.this);
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+        progressDialog.setCancelable(false);progressDialog.show();
         String[] dataColumns={"ID",//0
                 "Prefix",//1
                 "FirstName",//2
@@ -589,6 +592,11 @@ public class Cart extends AppCompatActivity {
                                     common.dataArrayList.get(i)[10],
                                     common.dataArrayList.get(i)[13]
                             );
+                            //Refresh Cart----------------------
+                            locationID=customerAddress.LocationID;
+                            totalShipping=0.0;totalPrice=0.0;
+                            loadCart();
+                            //Billing address
                             if(BILLING_ADDRESS_ID.equals("")) {//By default
                                 billingAddress.ID = customerAddress.ID;
                                 billingAddress.CustomerID = customerAddress.CustomerID;
@@ -678,6 +686,8 @@ public class Cart extends AppCompatActivity {
                 findViewById(R.id.customer_address).setVisibility(View.VISIBLE);
                 //Billing address---------------
                 findViewById(R.id.billing_address).setVisibility(View.VISIBLE);
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
             }
         };
         Runnable postFailThread=new Runnable() {
@@ -692,6 +702,7 @@ public class Cart extends AppCompatActivity {
                         //No address for this customer
                         addressView.setVisibility(GONE);
                         (findViewById(R.id.customer_address)).setVisibility(View.VISIBLE);
+                        (findViewById(R.id.billing_address)).setVisibility(View.GONE);
                     }
                     else {
                         (findViewById(R.id.customer_address)).setVisibility(View.GONE);
@@ -700,6 +711,8 @@ public class Cart extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
             }
         };
         common.AsynchronousThread(Cart.this,
@@ -710,7 +723,7 @@ public class Cart extends AppCompatActivity {
                 postThread,
                 postFailThread);
     }
-    void inputNewAddress(final View targetView, final CustomerAddress targetAddress){
+    /*void inputNewAddress(final View targetView, final CustomerAddress targetAddress){
         final Common common1=new Common();
         final Common common2=new Common();
         final ArrayList<String> locations=new ArrayList<>();
@@ -900,7 +913,7 @@ public class Cart extends AppCompatActivity {
                 dataColumns,
                 postThread,
                 postFailThread);
-    }
+    }*/
     void setAddressDisplayAndObject(View addressView, CustomerAddress addressObject, String ID, String Prefix, String FirstName, String MidName, String LastName, String Address, String Location, String City, String StateProvince, String countryJson, String ContactNo, String LocationID){
         String name=(Prefix.equals("null")?"":Prefix)           +   " "
                 +   (FirstName.equals("null")?"":FirstName)     +   " "
