@@ -589,22 +589,45 @@ public class Cart extends AppCompatActivity {
                                     common.dataArrayList.get(i)[10],
                                     common.dataArrayList.get(i)[13]
                             );
-                            //By default
-                            billingAddress.ID = customerAddress.ID;
-                            billingAddress.CustomerID = customerAddress.CustomerID;
-                            billingAddress.Prefix = customerAddress.Prefix;
-                            billingAddress.FirstName = customerAddress.FirstName;
-                            billingAddress.MidName = customerAddress.MidName;
-                            billingAddress.LastName = customerAddress.LastName;
-                            billingAddress.Address = customerAddress.Address;
-                            billingAddress.LocationID = customerAddress.LocationID;
-                            billingAddress.City = customerAddress.City;
-                            billingAddress.CountryCode = customerAddress.CountryCode;
-                            billingAddress.StateProvince = customerAddress.StateProvince;
-                            billingAddress.ContactNo = customerAddress.ContactNo;
-
+                            if(BILLING_ADDRESS_ID.equals("")) {//By default
+                                billingAddress.ID = customerAddress.ID;
+                                billingAddress.CustomerID = customerAddress.CustomerID;
+                                billingAddress.Prefix = customerAddress.Prefix;
+                                billingAddress.FirstName = customerAddress.FirstName;
+                                billingAddress.MidName = customerAddress.MidName;
+                                billingAddress.LastName = customerAddress.LastName;
+                                billingAddress.Address = customerAddress.Address;
+                                billingAddress.LocationID = customerAddress.LocationID;
+                                billingAddress.City = customerAddress.City;
+                                billingAddress.CountryCode = customerAddress.CountryCode;
+                                billingAddress.StateProvince = customerAddress.StateProvince;
+                                billingAddress.ContactNo = customerAddress.ContactNo;
+                            }
+                            else {//have billing address
+                                for (int j=0;j<common.dataArrayList.size();j++) {
+                                    if (common.dataArrayList.get(j)[0].equals(BILLING_ADDRESS_ID)) {
+                                        setAddressDisplayAndObject(billingAddressView,
+                                                billingAddress,
+                                                common.dataArrayList.get(j)[0],
+                                                common.dataArrayList.get(j)[1],
+                                                common.dataArrayList.get(j)[2],
+                                                common.dataArrayList.get(j)[3],
+                                                common.dataArrayList.get(j)[4],
+                                                common.dataArrayList.get(j)[5],
+                                                common.dataArrayList.get(j)[6],
+                                                common.dataArrayList.get(j)[7],
+                                                common.dataArrayList.get(j)[8],
+                                                common.dataArrayList.get(j)[9],
+                                                common.dataArrayList.get(j)[10],
+                                                common.dataArrayList.get(j)[13]
+                                        );
+                                        (findViewById(R.id.same_address_label)).setVisibility(GONE);
+                                        ((LinearLayout)findViewById(R.id.billing_address_linear)).addView(billingAddressView);
+                                        break;
+                                    }
+                                }
+                            }
                             locationID = customerAddress.LocationID;
-
                             break;
                         }
                     }
@@ -645,7 +668,7 @@ public class Cart extends AppCompatActivity {
                         }
                     }
                 }
-                if(i==common.dataArrayList.size()){//Error case: no default address
+                if(i==common.dataArrayList.size()){//Error case: no default address or passed address to be selected
                     addressView.setVisibility(GONE);
                     findViewById(R.id.no_address_label).setVisibility(View.VISIBLE);
                 }

@@ -353,7 +353,7 @@ class CustomAdapter extends BaseAdapter{
                     holder.country=(TextView) convertView.findViewById(R.id.country);
                     holder.contactNo=(TextView) convertView.findViewById(R.id.contact_no);
                     holder.select=(TextView) convertView.findViewById(R.id.select_address);
-                    holder.edit=(TextView)convertView.findViewById(R.id.edit);
+                    holder.edit=(TextView)convertView.findViewById(R.id.edit2);
                     holder.unwantedControls=(LinearLayout)convertView.findViewById(R.id.address_edit_controls);
                     convertView.setTag(holder);
                 } else {

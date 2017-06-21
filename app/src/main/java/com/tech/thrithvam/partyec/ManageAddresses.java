@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.StateListDrawable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -441,6 +440,7 @@ public class ManageAddresses extends AppCompatActivity {
         Intent cartIntent=new Intent(ManageAddresses.this,Cart.class);
         cartIntent.putExtra("shipping_address_id",SHIPPING_ADDRESS_ID);
         cartIntent.putExtra("billing_address_id",BILLING_ADDRESS_ID);
+        cartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(cartIntent);
     }
     private class CustomerAddress{

@@ -133,8 +133,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:padding="5dp"
             android:textColor="@color/colorAccent"
             android:id="@+id/select_default"
             android:text="@string/select_default"
@@ -142,8 +141,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:padding="5dp"
             android:textColor="@color/colorAccent"
             android:id="@+id/remove"
             android:text="@string/remove"
@@ -151,8 +149,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:padding="5dp"
             android:textColor="@color/colorAccent"
             android:id="@+id/edit"
             android:text="@string/edit"
@@ -168,8 +165,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
+                    android:padding="5dp"
                     android:textColor="@color/colorAccent"
                     android:id="@+id/select_address"
                     android:text="@string/select_this_address"
@@ -177,8 +173,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
+                    android:padding="5dp"
                     android:textColor="@color/colorAccent"
                     android:id="@+id/edit2"
                     android:text="@string/edit"
