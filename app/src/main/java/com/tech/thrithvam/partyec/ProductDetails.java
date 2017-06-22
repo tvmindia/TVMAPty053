@@ -1,5 +1,6 @@
 package com.tech.thrithvam.partyec;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,6 +40,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Locale;
+
+import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 import static android.view.View.GONE;
 
@@ -633,15 +636,76 @@ public class ProductDetails extends AppCompatActivity
         ratingsDialogue.setTitle(R.string.rate_it);
         LayoutInflater inflater= (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View ratingsAndReviewsView=inflater.inflate(R.layout.item_ratings_and_reviews_input, null);
+        final ArrayList<MaterialRatingBar> ratingBars=new ArrayList<>();
         for (int i=0;i<ratingAttributesArrayList.size();i++){
             View ratingBarWithTitle=inflater.inflate(R.layout.item_rating_input,null);
             ((TextView)ratingBarWithTitle.findViewById(R.id.rating_label)).setText(ratingAttributesArrayList.get(i).Caption);
-            LayerDrawable stars = (LayerDrawable) ((RatingBar)ratingBarWithTitle.findViewById(R.id.rating_input_stars)).getProgressDrawable();
-            stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);
+            ratingBars.add((MaterialRatingBar)ratingBarWithTitle.findViewById(R.id.rating_input_stars));
+       /*     LayerDrawable stars = (LayerDrawable) ((RatingBar)ratingBarWithTitle.findViewById(R.id.rating_input_stars)).getProgressDrawable();
+            stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);*/
             ((LinearLayout)ratingsAndReviewsView.findViewById(R.id.ratings_linear)).addView(ratingBarWithTitle);
         }
         ratingsDialogue.setView(ratingsAndReviewsView);
-        ratingsDialogue.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        ratingsDialogue.setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //----------------------JSON Making---------------------------
+                String attributeValuesJSON = "\"ProductRatingAttributes\":[";
+
+                //Rating attributes------------
+                for (int i = 0; i < ratingAttributesArrayList.size(); i++) {
+                    String attributeJsonObject = "{" +
+                            "\"Name\":\"" + ratingAttributesArrayList.get(i).Name + "\"," +
+                            "\"Caption\":\"" + ratingAttributesArrayList.get(i).Caption + "\"," +
+                            "\"Value\":\"" + ratingBars.get(i).getProgress() + "\"," +
+                            "\"DataType\":\"" + ratingAttributesArrayList.get(i).DataType + "\"," +
+                            "\"Isconfigurable\":\"false\"" +
+                            "}";
+                    attributeValuesJSON += attributeJsonObject + ",";
+                }
+                if (attributeValuesJSON.lastIndexOf(",") > 0) {
+                    attributeValuesJSON = attributeValuesJSON.substring(0, attributeValuesJSON.lastIndexOf(","));
+                }
+                attributeValuesJSON += "]";
+
+                //Threading--------------------------------------------------
+                String webService = "api/product/InsertRating";
+                String postData = "{\"ProductID\":\"" + productID
+                        + "\",\"CustomerID\":\"" + customerID
+                        + "\"," + attributeValuesJSON
+                        + "}";
+                AVLoadingIndicatorView loadingIndicator = (AVLoadingIndicatorView) findViewById(R.id.loading_indicator_proceed);
+                String[] dataColumns = {};
+                final ProgressDialog progressDialog=new ProgressDialog(ProductDetails.this);
+                progressDialog.setMessage(getResources().getString(R.string.please_wait));
+                progressDialog.setCancelable(false);progressDialog.show();
+                Runnable postThread = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (progressDialog.isShowing())
+                            progressDialog.dismiss();
+                    }
+                };
+                Runnable postFailThread = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (progressDialog.isShowing())
+                            progressDialog.dismiss();
+                        Toast.makeText(ProductDetails.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+
+                    }
+                };
+                common.AsynchronousThread(ProductDetails.this,
+                        webService,
+                        postData,
+                        loadingIndicator,
+                        dataColumns,
+                        postThread,
+                        postFailThread);
+                dialog.dismiss();
+            }
+        });
+        ratingsDialogue.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

@@ -16,7 +16,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:id="@+id/ratings_linear"
-                android:animateLayoutChanges="true"/>
+                android:animateLayoutChanges="true"
+                android:padding="5dp"/>
             <TextView
                 android:id="@+id/rating_reviews_label"
                 android:layout_width="match_parent"
