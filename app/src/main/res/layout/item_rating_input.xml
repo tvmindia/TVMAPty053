@@ -22,5 +22,6 @@
       app:mrb_progressTint="#FFF9DB01"
       app:mrb_progressBackgroundTint="#FFF9DB01"
       android:stepSize="1"
-      android:numStars="5"/>
+      android:numStars="5"
+      />
 </LinearLayout>

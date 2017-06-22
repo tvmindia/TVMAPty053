@@ -26,6 +26,7 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterViewFlipper;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -47,7 +48,6 @@ import static android.view.View.GONE;
 
 public class ProductDetails extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    Common common=new Common();
     DatabaseHandler db;
     TextView actualPrice;
     String productID;
@@ -60,6 +60,7 @@ public class ProductDetails extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
+        Common common=new Common();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         productID=getIntent().getExtras().getString("productID");
@@ -80,6 +81,7 @@ public class ProductDetails extends AppCompatActivity
         common.NavigationBarHeaderClick(ProductDetails.this,navigationView);
     }
     void loadProductDetails(){
+        final Common common=new Common();
         (findViewById(R.id.product_details_scroll_view)).setVisibility(GONE);
         //Threading--------------------------------------------------
         String webService="api/product/GetProductDetails";
@@ -311,6 +313,7 @@ public class ProductDetails extends AppCompatActivity
                 postFailThread);
     }
     void loadProductRatings(){
+        final Common common=new Common();
         final LinearLayout productRatingLinear=(LinearLayout)findViewById(R.id.ratings_linear);
         final LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //Threading--------------------------------------------------
@@ -321,11 +324,10 @@ public class ProductDetails extends AppCompatActivity
             @Override
             public void run() {
                 JSONObject jsonRootObject;
-                JSONArray firstJSONArray;
                 try {
-                    firstJSONArray= new JSONArray(common.json);
-                    jsonRootObject = firstJSONArray.getJSONObject(0);
-                    JSONArray ratings=jsonRootObject.optJSONArray("ProductRatingAttributes");
+                    jsonRootObject= new JSONObject(common.json);
+                    JSONArray productRatings = jsonRootObject.optJSONArray("ProductRatings");
+                    JSONArray ratings=productRatings.getJSONObject(0).optJSONArray("ProductRatingAttributes");
                     float sum=0;int ratables=0;
                     for (int i=0;i<ratings.length();i++){
                         JSONObject jsonObject = ratings.getJSONObject(i);
@@ -402,6 +404,7 @@ public class ProductDetails extends AppCompatActivity
         String DataType;
     }
     void loadProductReviews(){
+        final Common common=new Common();
         final LinearLayout productReviewsLinear=(LinearLayout)findViewById(R.id.reviews_linear);
         final LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //divider
@@ -484,6 +487,7 @@ public class ProductDetails extends AppCompatActivity
                 postFailThread);
     }
     void loadRelatedProducts(){
+        final Common common=new Common();
         final LinearLayout relatedLinear=(LinearLayout)findViewById(R.id.related_products_horizontal);
         //Threading--------------------------------------------------
         String webService="api/product/GetRelatedProducts";
@@ -630,6 +634,8 @@ public class ProductDetails extends AppCompatActivity
     public void rateProduct(View view){
         if(ratingAttributesArrayList==null)
             return;
+
+        final Common common=new Common();
         //Ratings alert dialogue box---------------------------------
         AlertDialog.Builder ratingsDialogue = new AlertDialog.Builder(ProductDetails.this);
 //        ratingsDialogue.setIcon(R.drawable.wishlist);
@@ -637,6 +643,7 @@ public class ProductDetails extends AppCompatActivity
         LayoutInflater inflater= (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View ratingsAndReviewsView=inflater.inflate(R.layout.item_ratings_and_reviews_input, null);
         final ArrayList<MaterialRatingBar> ratingBars=new ArrayList<>();
+        final EditText review=(EditText) ratingsAndReviewsView.findViewById(R.id.review_input);
         for (int i=0;i<ratingAttributesArrayList.size();i++){
             View ratingBarWithTitle=inflater.inflate(R.layout.item_rating_input,null);
             ((TextView)ratingBarWithTitle.findViewById(R.id.rating_label)).setText(ratingAttributesArrayList.get(i).Caption);
@@ -646,72 +653,98 @@ public class ProductDetails extends AppCompatActivity
             ((LinearLayout)ratingsAndReviewsView.findViewById(R.id.ratings_linear)).addView(ratingBarWithTitle);
         }
         ratingsDialogue.setView(ratingsAndReviewsView);
-        ratingsDialogue.setPositiveButton(R.string.submit, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //----------------------JSON Making---------------------------
-                String attributeValuesJSON = "\"ProductRatingAttributes\":[";
-
-                //Rating attributes------------
-                for (int i = 0; i < ratingAttributesArrayList.size(); i++) {
-                    String attributeJsonObject = "{" +
-                            "\"Name\":\"" + ratingAttributesArrayList.get(i).Name + "\"," +
-                            "\"Caption\":\"" + ratingAttributesArrayList.get(i).Caption + "\"," +
-                            "\"Value\":\"" + ratingBars.get(i).getProgress() + "\"," +
-                            "\"DataType\":\"" + ratingAttributesArrayList.get(i).DataType + "\"," +
-                            "\"Isconfigurable\":\"false\"" +
-                            "}";
-                    attributeValuesJSON += attributeJsonObject + ",";
-                }
-                if (attributeValuesJSON.lastIndexOf(",") > 0) {
-                    attributeValuesJSON = attributeValuesJSON.substring(0, attributeValuesJSON.lastIndexOf(","));
-                }
-                attributeValuesJSON += "]";
-
-                //Threading--------------------------------------------------
-                String webService = "api/product/InsertRating";
-                String postData = "{\"ProductID\":\"" + productID
-                        + "\",\"CustomerID\":\"" + customerID
-                        + "\"," + attributeValuesJSON
-                        + "}";
-                AVLoadingIndicatorView loadingIndicator = (AVLoadingIndicatorView) findViewById(R.id.loading_indicator_proceed);
-                String[] dataColumns = {};
-                final ProgressDialog progressDialog=new ProgressDialog(ProductDetails.this);
-                progressDialog.setMessage(getResources().getString(R.string.please_wait));
-                progressDialog.setCancelable(false);progressDialog.show();
-                Runnable postThread = new Runnable() {
-                    @Override
-                    public void run() {
-                        if (progressDialog.isShowing())
-                            progressDialog.dismiss();
-                    }
-                };
-                Runnable postFailThread = new Runnable() {
-                    @Override
-                    public void run() {
-                        if (progressDialog.isShowing())
-                            progressDialog.dismiss();
-                        Toast.makeText(ProductDetails.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
-
-                    }
-                };
-                common.AsynchronousThread(ProductDetails.this,
-                        webService,
-                        postData,
-                        loadingIndicator,
-                        dataColumns,
-                        postThread,
-                        postFailThread);
-                dialog.dismiss();
-            }
-        });
+        ratingsDialogue.setPositiveButton(R.string.submit, null);//
         ratingsDialogue.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-        ratingsDialogue.show();
+        AlertDialog popup=ratingsDialogue.create();
+        popup.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Checking all rating bars are marked
+                        Boolean flag=true;
+                        for(int i=0;i<ratingBars.size();i++){
+                            if(ratingBars.get(i).getProgress()==0)
+                            {
+                                flag=false;
+                                break;
+                            }
+                        }
+                        if(!flag) return;
+                        //----------------------JSON Making---------------------------
+                        String attributeValuesJSON = "\"ProductRatingAttributes\":[";
+                        //Rating attributes------------
+                        for (int i = 0; i < ratingAttributesArrayList.size(); i++) {
+                            String attributeJsonObject = "{" +
+                                    "\"Name\":\"" + ratingAttributesArrayList.get(i).Name + "\"," +
+                                    "\"Caption\":\"" + ratingAttributesArrayList.get(i).Caption + "\"," +
+                                    "\"Value\":\"" + ratingBars.get(i).getProgress() + "\"," +
+                                    "\"DataType\":\"" + ratingAttributesArrayList.get(i).DataType + "\"," +
+                                    "\"Isconfigurable\":\"false\"" +
+                                    "}";
+                            attributeValuesJSON += attributeJsonObject + ",";
+                        }
+                        if (attributeValuesJSON.lastIndexOf(",") > 0) {
+                            attributeValuesJSON = attributeValuesJSON.substring(0, attributeValuesJSON.lastIndexOf(","));
+                        }
+                        attributeValuesJSON += "]";
+                        //Threading--------------------------------------------------
+                        String webService = "api/product/InsertRating";
+                        String postData;
+                        if (review.getText().toString().equals("")) {
+                            postData = "{\"ProductID\":\"" + productID
+                                    + "\",\"CustomerID\":\"" + customerID
+                                    + "\"," + attributeValuesJSON
+                                    + "}";
+                        } else {
+                            postData = "{\"ProductID\":\"" + productID
+                                    + "\",\"CustomerID\":\"" + customerID
+                                    + "\",\"Review\":\"" + review.getText().toString()
+                                    + "\"," + attributeValuesJSON
+                                    + "}";
+                        }
+                        AVLoadingIndicatorView loadingIndicator = (AVLoadingIndicatorView) findViewById(R.id.loading_indicator_proceed);
+                        String[] dataColumns = {};
+                        final ProgressDialog progressDialog = new ProgressDialog(ProductDetails.this);
+                        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
+                        Runnable postThread = new Runnable() {
+                            @Override
+                            public void run() {
+                                if (progressDialog.isShowing())
+                                    progressDialog.dismiss();
+                            }
+                        };
+                        Runnable postFailThread = new Runnable() {
+                            @Override
+                            public void run() {
+                                if (progressDialog.isShowing())
+                                    progressDialog.dismiss();
+                                Toast.makeText(ProductDetails.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+
+                            }
+                        };
+                        common.AsynchronousThread(ProductDetails.this,
+                                webService,
+                                postData,
+                                loadingIndicator,
+                                dataColumns,
+                                postThread,
+                                postFailThread);
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+        popup.show();
     }
     @Override
     public void onBackPressed() {
@@ -726,6 +759,7 @@ public class ProductDetails extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        Common common=new Common();
         common.NavigationBarItemClick(this,item);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
