@@ -1,6 +1,7 @@
 package com.tech.thrithvam.partyec;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -12,6 +13,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -340,6 +342,8 @@ public class ProductDetails extends AppCompatActivity
                         stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);
                         findViewById(R.id.avg_rating_bar).setVisibility(View.VISIBLE);
                     }
+                    //Rating attributes saving
+                    saveRatingAttributes(common.json);
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
@@ -351,7 +355,8 @@ public class ProductDetails extends AppCompatActivity
         Runnable postFailThread=new Runnable() {
             @Override
             public void run() {
-                //do nothing
+                //Rating attributes saving
+                saveRatingAttributes(common.json);
                 //Load reviews
                 loadProductReviews();
             }
@@ -363,6 +368,35 @@ public class ProductDetails extends AppCompatActivity
                 dataColumns,
                 postThread,
                 postFailThread);
+    }
+    ArrayList<Attributes> ratingAttributesArrayList;
+    void saveRatingAttributes(String json){
+        JSONObject jsonObject= null;
+        try {
+            jsonObject = new JSONObject(json);
+            JSONArray ratingAttributes=jsonObject.optJSONArray("RatingAttributes");
+            ratingAttributesArrayList=new ArrayList<>();
+            if(ratingAttributes!=null){
+                for (int i = 0; i < ratingAttributes.length(); i++) {
+                    JSONObject jsonObj = ratingAttributes.getJSONObject(i);
+                    Attributes attributeObj = new Attributes();
+                    attributeObj.Name = jsonObj.optString("Name");
+                    attributeObj.Caption = jsonObj.optString("Caption");
+                    attributeObj.Value = jsonObj.optString("Value");
+                    attributeObj.DataType = jsonObj.optString("DataType");
+                    ratingAttributesArrayList.add(attributeObj);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    private class Attributes
+    {
+        String Name;
+        String Caption;
+        String Value;
+        String DataType;
     }
     void loadProductReviews(){
         final LinearLayout productReviewsLinear=(LinearLayout)findViewById(R.id.reviews_linear);
@@ -589,6 +623,31 @@ public class ProductDetails extends AppCompatActivity
             startActivity(loginIntent);
             finish();
         }
+    }
+    public void rateProduct(View view){
+        if(ratingAttributesArrayList==null)
+            return;
+        //Ratings alert dialogue box---------------------------------
+        AlertDialog.Builder ratingsDialogue = new AlertDialog.Builder(ProductDetails.this);
+//        ratingsDialogue.setIcon(R.drawable.wishlist);
+        ratingsDialogue.setTitle(R.string.rate_it);
+        LayoutInflater inflater= (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View ratingsAndReviewsView=inflater.inflate(R.layout.item_ratings_and_reviews_input, null);
+        for (int i=0;i<ratingAttributesArrayList.size();i++){
+            View ratingBarWithTitle=inflater.inflate(R.layout.item_rating_input,null);
+            ((TextView)ratingBarWithTitle.findViewById(R.id.rating_label)).setText(ratingAttributesArrayList.get(i).Caption);
+            LayerDrawable stars = (LayerDrawable) ((RatingBar)ratingBarWithTitle.findViewById(R.id.rating_input_stars)).getProgressDrawable();
+            stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);
+            ((LinearLayout)ratingsAndReviewsView.findViewById(R.id.ratings_linear)).addView(ratingBarWithTitle);
+        }
+        ratingsDialogue.setView(ratingsAndReviewsView);
+        ratingsDialogue.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        ratingsDialogue.show();
     }
     @Override
     public void onBackPressed() {
