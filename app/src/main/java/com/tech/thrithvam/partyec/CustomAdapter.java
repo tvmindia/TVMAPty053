@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import me.zhanghai.android.materialratingbar.MaterialRatingBar;
+
 class CustomAdapter extends BaseAdapter{
     private Context adapterContext;
     private static LayoutInflater inflater=null;
@@ -77,7 +79,7 @@ class CustomAdapter extends BaseAdapter{
         ImageView productImage,stickerImage;
         //Product Reviews-------------------
         TextView customerName, reviewDate, review;
-        RatingBar ratingReview;
+        MaterialRatingBar ratingReview;
         ImageView customerImage;
         //Address-------------------------
         TextView address, location, city, state, country, contactNo, setDefault, select,remove, edit;
@@ -186,7 +188,7 @@ class CustomAdapter extends BaseAdapter{
                     holder.customerImage=(ImageView) convertView.findViewById(R.id.customer_image);
                     holder.reviewDate = (TextView) convertView.findViewById(R.id.date);
                     holder.review = (TextView) convertView.findViewById(R.id.review);
-                    holder.ratingReview = (RatingBar) convertView.findViewById(R.id.avg_rating_bar);
+                    holder.ratingReview = (MaterialRatingBar) convertView.findViewById(R.id.avg_rating_bar);
                     convertView.setTag(holder);
                 } else {
                     holder = (Holder) convertView.getTag();
@@ -200,8 +202,6 @@ class CustomAdapter extends BaseAdapter{
                 holder.reviewDate.setText(filteredObjects.get(position)[4]);
                 holder.review.setText(filteredObjects.get(position)[5]);
                 holder.ratingReview.setRating(Float.parseFloat(filteredObjects.get(position)[3]));
-                LayerDrawable stars = (LayerDrawable) holder.ratingReview.getProgressDrawable();
-                stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);
                 break;
             //--------------------------for related products list items------------------
             case "RelatedItemsList":

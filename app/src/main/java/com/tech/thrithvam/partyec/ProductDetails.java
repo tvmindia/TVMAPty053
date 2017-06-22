@@ -333,18 +333,14 @@ public class ProductDetails extends AppCompatActivity
                         JSONObject jsonObject = ratings.getJSONObject(i);
                         View ratingBar=inflater.inflate(R.layout.item_rating_bar, null);
                         ((TextView)ratingBar.findViewById(R.id.rating_label)).setText(jsonObject.optString("Caption"));
-                        ((RatingBar)ratingBar.findViewById(R.id.rating_bar)).setRating(Float.parseFloat(jsonObject.optString("Value")));
+                        ((MaterialRatingBar)ratingBar.findViewById(R.id.rating_bar)).setRating(Float.parseFloat(jsonObject.optString("Value")));
                         sum+=Float.parseFloat(jsonObject.optString("Value"));
                         ratables++;
-                        LayerDrawable stars = (LayerDrawable) ((RatingBar)ratingBar.findViewById(R.id.rating_bar)).getProgressDrawable();
-                        stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);
                         productRatingLinear.addView(ratingBar);
                     }
                     if(ratables>0) {
                         float avg = sum / ratables;
-                        ((RatingBar)findViewById(R.id.avg_rating_bar)).setRating(avg);
-                        LayerDrawable stars = (LayerDrawable) ((RatingBar)findViewById(R.id.avg_rating_bar)).getProgressDrawable();
-                        stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);
+                        ((MaterialRatingBar)findViewById(R.id.avg_rating_bar)).setRating(avg);
                         findViewById(R.id.avg_rating_bar).setVisibility(View.VISIBLE);
                     }
                     //Rating attributes saving

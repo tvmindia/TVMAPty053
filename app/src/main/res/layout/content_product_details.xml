@@ -38,11 +38,10 @@
     android:padding="5dp"
     android:textSize="12sp"
     android:id="@+id/supplier_name"/>
-            <android.support.v7.widget.AppCompatRatingBar
+           <!-- <android.support.v7.widget.AppCompatRatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 style="?android:attr/ratingBarStyleSmall"
-                android:id="@+id/avg_rating_bar"
                 android:numStars="5"
                 android:stepSize="0.1"
                 android:isIndicator="true"
@@ -50,7 +49,24 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginRight="5dp"
                 android:layout_marginEnd="5dp"
-                android:visibility="gone"/>
+                android:visibility="gone"/>-->
+    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+        android:layout_width="100dp"
+        android:id="@+id/avg_rating_bar"
+        android:layout_height="20dp"
+        android:isIndicator="true"
+        android:stepSize="0.1"
+        style="@style/Widget.MaterialRatingBar.RatingBar"
+        app:mrb_progressTint="#FFF9DB01"
+        app:mrb_progressBackgroundTint="#FFF9DB01"
+        app:mrb_secondaryProgressTint="#FFF9DB01"
+        android:numStars="5"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:visibility="gone"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

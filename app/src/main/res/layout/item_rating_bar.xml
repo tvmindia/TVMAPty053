@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,12 +14,19 @@
       android:textSize="13sp"
       android:id="@+id/rating_label"
       android:textColor="@color/primary_text"/>
-    <android.support.v7.widget.AppCompatRatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        style="?android:attr/ratingBarStyleSmall"
-        android:id="@+id/rating_bar"
-        android:numStars="5"
-        android:stepSize="0.1"
-        android:isIndicator="true"/>
+
+  <me.zhanghai.android.materialratingbar.MaterialRatingBar
+      android:layout_width="wrap_content"
+      android:layout_height="20dp"
+      android:id="@+id/rating_bar"
+      android:numStars="5"
+      android:stepSize="0.1"
+      android:isIndicator="true"
+      style="@style/Widget.MaterialRatingBar.RatingBar"
+      app:mrb_progressTint="#FFF9DB01"
+      app:mrb_progressBackgroundTint="#FFF9DB01"
+      app:mrb_secondaryProgressTint="#FFF9DB01"
+      android:layout_marginRight="5dp"
+      android:layout_marginEnd="5dp"
+      />
 </LinearLayout>
