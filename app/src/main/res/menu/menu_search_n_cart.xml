@@ -6,4 +6,8 @@
         android:title="@string/search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always"/>
+    <item android:id="@+id/menu_cart"
+        android:icon="@drawable/cart"
+        android:title="@string/cart"
+        app:showAsAction="ifRoom"/>
 </menu>

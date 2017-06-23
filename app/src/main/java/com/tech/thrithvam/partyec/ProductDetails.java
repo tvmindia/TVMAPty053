@@ -842,7 +842,6 @@ public class ProductDetails extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        //Filter menu------------------------
         if (id == R.id.menu_cart) {
             Intent intent=new Intent(this,Cart.class);
             startActivity(intent);

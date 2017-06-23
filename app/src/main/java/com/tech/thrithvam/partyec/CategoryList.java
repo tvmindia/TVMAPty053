@@ -211,7 +211,7 @@ public class CategoryList extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_actionbar, menu);
+        getMenuInflater().inflate(R.menu.menu_search_n_cart, menu);
         //Searching-------------------
         searchView=(SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -239,7 +239,15 @@ public class CategoryList extends AppCompatActivity
         });
         return true;
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menu_cart) {
+            Intent intent=new Intent(this,Cart.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

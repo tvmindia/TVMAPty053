@@ -3,6 +3,7 @@ package com.tech.thrithvam.partyec;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.view.Menu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -515,7 +516,20 @@ public class ListViewsActivity extends AppCompatActivity
         }
     }
 
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menu_cart) {
+            Intent intent=new Intent(this,Cart.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
