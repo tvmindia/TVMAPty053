@@ -17,8 +17,10 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.format.Formatter;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -59,6 +61,9 @@ public class ProductOrdering extends AppCompatActivity {
     //Order attributes
     ArrayList<Attributes> orderAttributesArrayList=new ArrayList<>();
     ArrayList<View> orderAttributesUserInputs=new ArrayList<>();
+
+    //Product other attributes
+    ArrayList<Attributes> productOtherAttributesArrayList=new ArrayList<>();
 
     boolean showPrice=false;
     Double baseSellingPrice=0.0;
@@ -200,6 +205,21 @@ public class ProductOrdering extends AppCompatActivity {
                     }
                     else {
                         (findViewById(R.id.select_options)).setVisibility(View.VISIBLE);
+                    }
+
+
+                    //Product Other Attributes
+                    JSONArray productOrderAttributesJson=jsonRootObject.optJSONArray("ProductOtherAttributes");
+                    if(productOrderAttributesJson!=null){
+                        for (int i = 0; i < productOrderAttributesJson.length(); i++) {
+                            JSONObject jsonObj = productOrderAttributesJson.getJSONObject(i);
+                            Attributes attributeObj = new Attributes();
+                            attributeObj.Name = jsonObj.optString("Name");
+                            attributeObj.Caption = jsonObj.optString("Caption");
+                            attributeObj.Value = jsonObj.optString("Value");
+                            attributeObj.DataType = jsonObj.optString("DataType");
+                            productOtherAttributesArrayList.add(attributeObj);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -353,6 +373,25 @@ public class ProductOrdering extends AppCompatActivity {
                         break;
                 }
             }
+        }
+
+        //Product other attributes----------
+        for(int i=0;i<productOtherAttributesArrayList.size();i++){
+            if(productOtherAttributesArrayList.get(i).Value.equals("null"))
+                continue;
+            String productAttribute=productOtherAttributesArrayList.get(i).Caption+" : "+productOtherAttributesArrayList.get(i).Value;
+            TextView attributeText=new TextView(ProductOrdering.this);
+            attributeText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            attributeText.setText(productAttribute);
+            attributeText.setGravity(Gravity.CENTER);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                attributeText.setTextColor(getColor(R.color.primary_text));
+            }
+            else {
+                attributeText.setTextColor(getResources().getColor(R.color.primary_text));
+            }
+            attributeText.setTextSize(14);
+            attributesLinear.addView(attributeText);
         }
     }
     void setAttributePopups(int setAttributeIndex,Boolean isFirstTime){
@@ -959,6 +998,17 @@ public class ProductOrdering extends AppCompatActivity {
                         "\"Caption\":\"" + orderAttributesArrayList.get(i).Caption + "\"," +
                         "\"Value\":\"" + ((orderAttributesArrayList.get(i).DataType.equals("C")) ? (((Spinner) orderAttributesUserInputs.get(i)).getSelectedItem().toString()) : (((EditText) orderAttributesUserInputs.get(i)).getText().toString())) + "\"," +
                         "\"DataType\":\"" + orderAttributesArrayList.get(i).DataType + "\"," +
+                        "\"Isconfigurable\":\"false\"" +
+                        "}";
+                attributeValuesJSON += attributeJsonObject + ",";
+            }
+            //Other Attributes
+            for (int i = 0; i < productOtherAttributesArrayList.size(); i++) {
+                String attributeJsonObject = "{" +
+                        "\"Name\":\"" + productOtherAttributesArrayList.get(i).Name + "\"," +
+                        "\"Caption\":\"" + productOtherAttributesArrayList.get(i).Caption + "\"," +
+                        "\"Value\":\"" + productOtherAttributesArrayList.get(i).Value + "\"," +
+                        "\"DataType\":\"" + productOtherAttributesArrayList.get(i).DataType + "\"," +
                         "\"Isconfigurable\":\"false\"" +
                         "}";
                 attributeValuesJSON += attributeJsonObject + ",";
