@@ -229,6 +229,14 @@ public class CategoryList extends AppCompatActivity
                 return true;
             }
         });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                TextView noItems=(TextView)findViewById(R.id.no_items);
+                noItems.setVisibility(categoryListView.getChildCount()>0?View.INVISIBLE:View.VISIBLE);
+                return false;
+            }
+        });
         return true;
     }
 

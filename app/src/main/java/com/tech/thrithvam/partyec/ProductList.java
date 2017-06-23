@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.SearchView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -58,6 +59,7 @@ public class ProductList extends AppCompatActivity
     GridView allProductsGrid;
     CardView filterMenu;
     Toolbar toolbar;
+    CustomAdapter adapterAllProducts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -234,7 +236,7 @@ public class ProductList extends AppCompatActivity
                                     }
                                     if(allProducts.size()==0) (findViewById(R.id.no_items)).setVisibility(View.VISIBLE);
                                     else (findViewById(R.id.no_items)).setVisibility(GONE);
-                                    CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts",0);
+                                    adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts",0);
                                     allProductsGrid.setAdapter(adapterAllProducts);
                                     productsAndNavigationRelativeView.setVisibility(GONE);
                                     allProductsRelativeView.setVisibility(View.VISIBLE);
@@ -415,11 +417,37 @@ public class ProductList extends AppCompatActivity
     }
     //------------------------------------------Action bar menu---------------------------------------
     Menu menu;
+    SearchView searchView;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.filter_category, menu);
         this.menu=menu;
         menu.setGroupVisible(R.id.search_n_filter,false);
+        //Searching-------------------
+        searchView=(SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(adapterAllProducts!=null){
+                    adapterAllProducts.getFilter(1).filter(searchView.getQuery().toString().trim());
+                    TextView noItems=(TextView)findViewById(R.id.no_items);
+                    noItems.setVisibility(allProductsGrid.getChildCount()>0?View.INVISIBLE:View.VISIBLE);
+                }
+                return true;
+            }
+        });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                TextView noItems=(TextView)findViewById(R.id.no_items);
+                noItems.setVisibility(allProductsGrid.getChildCount()>0?View.INVISIBLE:View.VISIBLE);
+                return false;
+            }
+        });
         return true;
     }
 
