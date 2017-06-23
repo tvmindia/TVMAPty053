@@ -196,6 +196,7 @@ public class ProductOrdering extends AppCompatActivity {
                             attributeObj.Caption = jsonObj.optString("Caption");
                             attributeObj.Value = jsonObj.optString("Value");
                             attributeObj.DataType = jsonObj.optString("DataType");
+                            attributeObj.isMandatory = jsonObj.optBoolean("MandatoryYN");
                             orderAttributesArrayList.add(attributeObj);
                         }
                     }
@@ -966,6 +967,7 @@ public class ProductOrdering extends AppCompatActivity {
     String Caption;
     String Value;
     String DataType;
+    Boolean isMandatory=false;
     }
     private class CustomerAddress{
         String ID="";
@@ -993,6 +995,13 @@ public class ProductOrdering extends AppCompatActivity {
             attributeValuesJSON+=productDetailAttributeJson;
             //OrderAttributes
             for (int i = 0; i < orderAttributesArrayList.size(); i++) {
+                if(orderAttributesArrayList.get(i).isMandatory
+                        && !(orderAttributesArrayList.get(i).DataType.equals("C"))
+                        && ((((EditText) orderAttributesUserInputs.get(i)).getText().toString().equals("")))){
+                    Toast.makeText(ProductOrdering.this,getString(R.string.request_to_provide_input,orderAttributesArrayList.get(i).Caption),Toast.LENGTH_LONG).show();
+                    view.setVisibility(View.VISIBLE);
+                    return;
+                }
                 String attributeJsonObject = "{" +
                         "\"Name\":\"" + orderAttributesArrayList.get(i).Name + "\"," +
                         "\"Caption\":\"" + orderAttributesArrayList.get(i).Caption + "\"," +
