@@ -630,7 +630,72 @@ public class ProductDetails extends AppCompatActivity
     public void rateProduct(View view){
         if(ratingAttributesArrayList==null)
             return;
+        if(db.GetCustomerDetails("CustomerID")==null) {
+            Intent loginIntent = new Intent(this, Login.class);
+            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            startActivity(loginIntent);
+            finish();
+            return;
+        }
+        //Get User's old ratings---------------------------------------------------------------------
+        final ArrayList<Attributes> customerRatings=new ArrayList<>();
+        final Common common=new Common();
+        //Threading--------------------------------------------------
+        String webService="api/product/GetCustomerProductRating";
+        String postData =  "{\"ProductID\":\""+productID+"\",\"CustomerID\":\""+customerID+"\",\"AttributeSetID\":\""+attributeSetID+"\"}";
+        String[] dataColumns={};
+        final ProgressDialog progressDialog = new ProgressDialog(ProductDetails.this);
+        progressDialog.setMessage(getResources().getString(R.string.please_wait));
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                JSONArray jsonObject= null;
+                try {
+                    jsonObject = new JSONArray(common.json);
+                    JSONObject firstArray=jsonObject.getJSONObject(0);
+                    JSONArray ratingArray=firstArray.optJSONArray("ProductRatingAttributes");
+                    if(ratingArray!=null){
+                        for (int i = 0; i < ratingArray.length(); i++) {
+                            JSONObject jsonObj = ratingArray.getJSONObject(i);
+                            Attributes attributeObj = new Attributes();
+                            attributeObj.Name = jsonObj.optString("Name");
+                            attributeObj.Caption = jsonObj.optString("Caption");
+                            attributeObj.Value = jsonObj.optString("Value");
+                            attributeObj.DataType = jsonObj.optString("DataType");
+                            customerRatings.add(attributeObj);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
+                getRatingFromCustomer(customerRatings);
+            }
+        };
+        Runnable postFailThread=new Runnable() {
+            @Override
+            public void run() {
+               //do nothing
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
+                getRatingFromCustomer(customerRatings);
+            }
+        };
+        common.AsynchronousThread(ProductDetails.this,
+                webService,
+                postData,
+                null,
+                dataColumns,
+                postThread,
+                postFailThread);
 
+
+    }
+    void getRatingFromCustomer(ArrayList<Attributes> oldRatings){
+        //Input ratings from user--------------------------------------------------------------------
         final Common common=new Common();
         //Ratings alert dialogue box---------------------------------
         AlertDialog.Builder ratingsDialogue = new AlertDialog.Builder(ProductDetails.this);
@@ -643,6 +708,12 @@ public class ProductDetails extends AppCompatActivity
         for (int i=0;i<ratingAttributesArrayList.size();i++){
             View ratingBarWithTitle=inflater.inflate(R.layout.item_rating_input,null);
             ((TextView)ratingBarWithTitle.findViewById(R.id.rating_label)).setText(ratingAttributesArrayList.get(i).Caption);
+            try {
+                ((MaterialRatingBar)ratingBarWithTitle.findViewById(R.id.rating_input_stars)).setRating(Float.parseFloat(oldRatings.get(i).Value));
+            }
+            catch (Exception e){
+
+            }
             ratingBars.add((MaterialRatingBar)ratingBarWithTitle.findViewById(R.id.rating_input_stars));
        /*     LayerDrawable stars = (LayerDrawable) ((RatingBar)ratingBarWithTitle.findViewById(R.id.rating_input_stars)).getProgressDrawable();
             stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);*/
