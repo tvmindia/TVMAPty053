@@ -37,6 +37,14 @@
                 android:background="@drawable/boarder"
                 android:padding="7dp"
                 android:layout_margin="3dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Previous Reviews"
+                android:textColor="@color/colorAccent"
+                android:layout_gravity="end"
+                android:padding="5dp"
+                android:id="@+id/previous_reviews"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

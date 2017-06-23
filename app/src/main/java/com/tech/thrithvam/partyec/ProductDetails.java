@@ -715,10 +715,21 @@ public class ProductDetails extends AppCompatActivity
 
             }
             ratingBars.add((MaterialRatingBar)ratingBarWithTitle.findViewById(R.id.rating_input_stars));
+
        /*     LayerDrawable stars = (LayerDrawable) ((RatingBar)ratingBarWithTitle.findViewById(R.id.rating_input_stars)).getProgressDrawable();
             stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);*/
             ((LinearLayout)ratingsAndReviewsView.findViewById(R.id.ratings_linear)).addView(ratingBarWithTitle);
         }
+        (ratingsAndReviewsView.findViewById(R.id.previous_reviews)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent (ProductDetails.this,ListViewsActivity.class);
+                intent.putExtra("list","customer_reviews");
+                intent.putExtra("productID",productID);
+                intent.putExtra("productName",productName);
+                startActivity(intent);
+            }
+        });
         ratingsDialogue.setView(ratingsAndReviewsView);
         ratingsDialogue.setPositiveButton(R.string.submit, null);//
         ratingsDialogue.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

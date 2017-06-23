@@ -175,4 +175,6 @@
     <string name="select_this_address">Select this address</string>
     <string name="add_an_address_request">Please add an address</string>
     <string name="rate_it">Rate it!</string>
+    <string name="approved">Approved</string>
+    <string name="approval_pending">Approval pending</string>
 </resources>

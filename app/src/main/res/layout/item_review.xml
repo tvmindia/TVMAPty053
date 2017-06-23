@@ -90,5 +90,14 @@
             android:layout_toEndOf="@+id/customer_image"
             android:layout_below="@id/avg_rating_bar"
             android:layout_marginBottom="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Approval pending"
+            android:textColor="@color/secondary_text"
+            android:textSize="10sp"
+            android:id="@+id/is_approved"
+            android:layout_below="@id/review"
+            android:layout_margin="5dp"/>
     </RelativeLayout>
 </LinearLayout>

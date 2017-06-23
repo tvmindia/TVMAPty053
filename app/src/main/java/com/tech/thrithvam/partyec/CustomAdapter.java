@@ -78,7 +78,7 @@ class CustomAdapter extends BaseAdapter{
         TextView productName,actualPrice;
         ImageView productImage,stickerImage;
         //Product Reviews-------------------
-        TextView customerName, reviewDate, review;
+        TextView customerName, reviewDate, review,isApproved;
         MaterialRatingBar ratingReview;
         ImageView customerImage;
         //Address-------------------------
@@ -189,11 +189,13 @@ class CustomAdapter extends BaseAdapter{
                     holder.reviewDate = (TextView) convertView.findViewById(R.id.date);
                     holder.review = (TextView) convertView.findViewById(R.id.review);
                     holder.ratingReview = (MaterialRatingBar) convertView.findViewById(R.id.avg_rating_bar);
+                    holder.isApproved=(TextView)convertView.findViewById(R.id.is_approved);
                     convertView.setTag(holder);
                 } else {
                     holder = (Holder) convertView.getTag();
                 }
                 //Label loading--------------------
+                holder.isApproved.setVisibility(View.GONE);
                 holder.customerName.setText(filteredObjects.get(position)[1]);
                 common.LoadImage(adapterContext,
                         holder.customerImage,
@@ -567,6 +569,35 @@ class CustomAdapter extends BaseAdapter{
                                     + Double.parseDouble(filteredObjects.get(position)[15].equals("null")?"0.0":filteredObjects.get(position)[15])
                                     - Double.parseDouble(filteredObjects.get(position)[16].equals("null")?"0.0":filteredObjects.get(position)[16]));
                 holder.totalAmount.setText(adapterContext.getResources().getString(R.string.total_amount,totalAmountValue));
+                break;
+            //--------------------------for reviews list items------------------
+            case "CustomerReviewList"://{"ID","Review","ReviewCreatedDate","IsApproved"};
+                if (convertView == null) {
+                    holder = new Holder();
+                    convertView = inflater.inflate(R.layout.item_review, null);
+                    holder.customerName = (TextView) convertView.findViewById(R.id.customer_name);
+                    holder.customerImage=(ImageView) convertView.findViewById(R.id.customer_image);
+                    holder.reviewDate = (TextView) convertView.findViewById(R.id.date);
+                    holder.review = (TextView) convertView.findViewById(R.id.review);
+                    holder.ratingReview = (MaterialRatingBar) convertView.findViewById(R.id.avg_rating_bar);
+                    holder.isApproved=(TextView)convertView.findViewById(R.id.is_approved);
+                    convertView.setTag(holder);
+                } else {
+                    holder = (Holder) convertView.getTag();
+                }
+                //Label loading--------------------
+                holder.customerName.setVisibility(View.GONE);
+                holder.customerImage.setVisibility(View.GONE);
+                holder.reviewDate.setText(filteredObjects.get(position)[2]);
+                holder.review.setText(filteredObjects.get(position)[1]);
+                holder.ratingReview.setVisibility(View.GONE);
+                if(Boolean.parseBoolean(filteredObjects.get(position)[3]))
+                {
+                    holder.isApproved.setText(adapterContext.getResources().getString(R.string.approved));
+                }
+                else {
+                    holder.isApproved.setText(adapterContext.getResources().getString(R.string.approval_pending));
+                }
                 break;
             default:
                 break;

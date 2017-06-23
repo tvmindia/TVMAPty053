@@ -71,6 +71,9 @@ public class ListViewsActivity extends AppCompatActivity
             case "event_requests":
                 loadEventRequests();
                 break;
+            case "customer_reviews":
+                loadCustomerProductReviews();
+                break;
             default:
                 finish();
         }
@@ -471,6 +474,32 @@ public class ListViewsActivity extends AppCompatActivity
                 webService,
                 postData,
                 loadingIndicator,
+                dataColumns,
+                postThread,
+                null);
+    }
+    void loadCustomerProductReviews(){
+        if(customerID==null){
+            finish();return;
+        }
+        getSupportActionBar().setTitle("Reviews: "+getIntent().getExtras().getString("productName"));
+        listView.setSelector(android.R.color.transparent);
+        //Threading-------------------------------------------------------------------------
+        String webService="api/product/GetCustomerProductReview";
+        String postData =  "{\"ProductID\":\""+getIntent().getExtras().getString("productID")+"\",\"CustomerID\":\""+customerID+"\"}";
+        String[] dataColumns={"ID","Review","ReviewCreatedDate","IsApproved"};
+        AVLoadingIndicatorView loadingIndicatorView=(AVLoadingIndicatorView)findViewById(R.id.loading_indicator);
+        Runnable postThread=new Runnable() {
+            @Override
+            public void run() {
+                CustomAdapter adapter=new CustomAdapter(ListViewsActivity.this, common.dataArrayList,"CustomerReviewList");
+                listView.setAdapter(adapter);
+            }
+        };
+        common.AsynchronousThread(ListViewsActivity.this,
+                webService,
+                postData,
+                loadingIndicatorView,
                 dataColumns,
                 postThread,
                 null);
