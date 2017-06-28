@@ -30,8 +30,6 @@ Common common=new Common();
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        Common.toastMessage(this, "something");
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         Common.NavigationBarHeaderClick(this,navigationView);
