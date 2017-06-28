@@ -15,16 +15,13 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +34,6 @@ import org.json.JSONObject;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Locale;
 
@@ -97,7 +93,6 @@ public class Cart extends AppCompatActivity {
     }
     void loadCart(){
         final Common common=new Common();
-        final ListView cartListView=(ListView) findViewById(R.id.listview);
         (findViewById(R.id.cart_scrollview)).setVisibility(View.GONE);
         //Threading-------------------------------------------------------------------------
         String webService="api/Order/GetCustomerCart";

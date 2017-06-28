@@ -1,10 +1,7 @@
 package com.tech.thrithvam.partyec;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -33,7 +29,6 @@ class CustomAdapter extends BaseAdapter{
     private String calledFrom;
     private SimpleDateFormat formatted;
     private Calendar cal;
-    private Common common;
     private int viewType;
     CustomAdapter(Context context, ArrayList<String[]> objects, String calledFrom) {
         // super(context, textViewResourceId, objects);
@@ -51,7 +46,6 @@ class CustomAdapter extends BaseAdapter{
         this.calledFrom=calledFrom;
         formatted = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
         cal= Calendar.getInstance();
-        common=new Common();
     }
     @Override
     public int getCount() {

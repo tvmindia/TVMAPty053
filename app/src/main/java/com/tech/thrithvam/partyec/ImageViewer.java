@@ -11,7 +11,6 @@ public class ImageViewer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_viewer);
-        Common common=new Common();
         Common.LoadImage(ImageViewer.this,
                 (PhotoView)findViewById(R.id.image),
                 getIntent().getExtras().getString("imageUrl"),
