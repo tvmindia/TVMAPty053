@@ -81,7 +81,7 @@ public class ListViewsActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        common.NavigationBarHeaderClick(ListViewsActivity.this,navigationView);
+        Common.NavigationBarHeaderClick(ListViewsActivity.this,navigationView);
     }
     void loadProductReviews(){
         getSupportActionBar().setTitle("Reviews: "+getIntent().getExtras().getString("productName"));
@@ -533,7 +533,7 @@ public class ListViewsActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        common.NavigationBarItemClick(this,item);
+        Common.NavigationBarItemClick(this,item);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

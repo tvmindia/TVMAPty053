@@ -91,7 +91,7 @@ public class ProductList extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        common.NavigationBarHeaderClick(this,navigationView);
+        Common.NavigationBarHeaderClick(this,navigationView);
     }
 
     void getTopProductsFromServer(){
@@ -141,12 +141,12 @@ public class ProductList extends AppCompatActivity
         params.setMargins(5,5,5,5);
         productItem.setLayoutParams(params);
         ((TextView)(productItem.findViewById(R.id.product_name))).setText(initialProducts.get(i)[0]);
-        common.LoadImage(ProductList.this,
+        Common.LoadImage(ProductList.this,
                 (ImageView)(productItem.findViewById(R.id.product_image)),
                 getResources().getString(R.string.url)+initialProducts.get(i)[1],
                 R.drawable.dim_icon);
         (productItem.findViewById(R.id.dim_icon)).setVisibility(GONE);
-        common.LoadImage(ProductList.this,
+        Common.LoadImage(ProductList.this,
                 (ImageView)(productItem.findViewById(R.id.sticker)),
                 getResources().getString(R.string.url)+initialProducts.get(i)[3],
                 0);
@@ -534,7 +534,7 @@ public class ProductList extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        common.NavigationBarItemClick(this,item);
+        Common.NavigationBarItemClick(this,item);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

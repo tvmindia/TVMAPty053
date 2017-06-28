@@ -30,9 +30,11 @@ Common common=new Common();
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        Common.toastMessage(this, "something");
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        common.NavigationBarHeaderClick(this,navigationView);
+        Common.NavigationBarHeaderClick(this,navigationView);
     }
     public void registerEvent(View view){
         Intent intent=new Intent(this,RegisterEvent.class);
@@ -102,7 +104,7 @@ Common common=new Common();
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         Common common=new Common();
-        common.NavigationBarItemClick(this,item);
+        Common.NavigationBarItemClick(this,item);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

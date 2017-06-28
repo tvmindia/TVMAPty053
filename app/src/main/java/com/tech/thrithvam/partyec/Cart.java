@@ -178,7 +178,7 @@ public class Cart extends AppCompatActivity {
                     //Label loading--------------------
                     closeIcon.setTag(common.dataArrayList.get(i)[0]);
                     productName.setText(common.dataArrayList.get(i)[2]);
-                    common.LoadImage(Cart.this,
+                    Common.LoadImage(Cart.this,
                             productImage,
                             getResources().getString(R.string.url)+common.dataArrayList.get(i)[3],
                             R.drawable.dim_icon);

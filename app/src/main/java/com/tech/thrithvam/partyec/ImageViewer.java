@@ -12,7 +12,7 @@ public class ImageViewer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_viewer);
         Common common=new Common();
-        common.LoadImage(ImageViewer.this,
+        Common.LoadImage(ImageViewer.this,
                 (PhotoView)findViewById(R.id.image),
                 getIntent().getExtras().getString("imageUrl"),
                 R.drawable.dim_icon);

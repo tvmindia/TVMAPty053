@@ -134,7 +134,7 @@ public class MyProfile extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        common.NavigationBarItemClick(this,item);
+        Common.NavigationBarItemClick(this,item);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

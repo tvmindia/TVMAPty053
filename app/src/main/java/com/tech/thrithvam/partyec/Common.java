@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.util.Base64;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -27,13 +31,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 class Common {
-    DatabaseHandler db;
+
     //Constants-----------------------
     String MobileNumberRegularExpression = "^[0-9]*$";
     String UserNameRegularExpression="^[a-zA-Z\\. ]+$";                 //^[a-z0-9_-]{3,15}$
 
     //To load navigation panel menu items and their clicks--------------------------
-    void NavigationBarItemClick(Context context, MenuItem item){
+    static void NavigationBarItemClick(Context context, MenuItem item){
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
@@ -99,8 +103,8 @@ class Common {
             context.startActivity(intent);
         }
     }
-    void NavigationBarHeaderClick(final Context context, NavigationView navigationView){
-        db=DatabaseHandler.getInstance(context);
+    static void NavigationBarHeaderClick(final Context context, NavigationView navigationView){
+        DatabaseHandler db=DatabaseHandler.getInstance(context);
         if(db.GetCustomerDetails("CustomerID")!=null){
             ((TextView)navigationView.getHeaderView(0).findViewById(R.id.user_name)).setText(db.GetCustomerDetails("Name"));
             ((TextView)navigationView.getHeaderView(0).findViewById(R.id.user_email)).setText(db.GetCustomerDetails("Email"));
@@ -117,7 +121,7 @@ class Common {
     }
 
     //To load image from a url------------------------------------------------------
-    void LoadImage(Context context,ImageView imageView, String imageURL, int failImage){
+    static void LoadImage(Context context,ImageView imageView, String imageURL, int failImage){
         try {
             if (!imageURL.equals("null")) {
                 Glide.with(context)
@@ -136,6 +140,34 @@ class Common {
         catch (Exception e){//to avoid exception when user press back before loading an image(target activity not found exception))
             }
     }
+
+    //Toast customizations-----------------------------------------------------------
+    static void toastMessage(Context context,String message){
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
+        View toastView = toast.getView();
+        TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
+        toastMessage.setTextSize(15);
+        toastMessage.setShadowLayer(0,0,0,0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            toastMessage.setTextColor(context.getResources().getColor(R.color.colorAccent,null));
+        }
+        else {
+            toastMessage.setTextColor(context.getResources().getColor(R.color.colorAccent));
+        }
+        toastMessage.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_launcher, 0, 0, 0);
+        toastMessage.setGravity(Gravity.CENTER);
+        toastMessage.setCompoundDrawablePadding(7);
+        toastMessage.setPadding(5,5,5,5);
+        toastView.setPadding(10,10,10,10);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            toastView.setBackground(ContextCompat.getDrawable(context, R.drawable.boarder_accent));
+        }
+        else {
+            toastView.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.boarder_accent));
+        }
+        toast.show();
+    }
+
 
     //Threading: to load data from a server----------------------------------------
     ArrayList<String[]> dataArrayList=new ArrayList<>();

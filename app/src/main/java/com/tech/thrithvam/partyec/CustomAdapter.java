@@ -115,7 +115,7 @@ class CustomAdapter extends BaseAdapter{
                 }
                 //Label loading--------------------
                 holder.categoryName.setText(filteredObjects.get(position)[1]);
-                common.LoadImage(adapterContext,
+                Common.LoadImage(adapterContext,
                                     holder.categoryImage,
                                     adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[0],
                                     R.drawable.dim_icon);
@@ -156,11 +156,11 @@ class CustomAdapter extends BaseAdapter{
                 }
                 //Label loading--------------------
                 holder.productName.setText(filteredObjects.get(position)[0]);
-                common.LoadImage(adapterContext,
+                Common.LoadImage(adapterContext,
                         holder.productImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[1],
                         R.drawable.dim_icon);
-                common.LoadImage(adapterContext,
+                Common.LoadImage(adapterContext,
                         holder.stickerImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[3],
                         0);
@@ -197,7 +197,7 @@ class CustomAdapter extends BaseAdapter{
                 //Label loading--------------------
                 holder.isApproved.setVisibility(View.GONE);
                 holder.customerName.setText(filteredObjects.get(position)[1]);
-                common.LoadImage(adapterContext,
+                Common.LoadImage(adapterContext,
                         holder.customerImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[2],
                         R.drawable.user);
@@ -219,11 +219,11 @@ class CustomAdapter extends BaseAdapter{
                 }
                 //Label loading--------------------
                 holder.productName.setText(filteredObjects.get(position)[1]);
-                common.LoadImage(adapterContext,
+                Common.LoadImage(adapterContext,
                         holder.productImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[2],
                         R.drawable.dim_icon);
-                common.LoadImage(adapterContext,
+                Common.LoadImage(adapterContext,
                         holder.stickerImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[3],
                         0);
@@ -239,7 +239,7 @@ class CustomAdapter extends BaseAdapter{
                     holder = (Holder) convertView.getTag();
                 }
                 //Label loading--------------------
-                common.LoadImage(adapterContext,
+                Common.LoadImage(adapterContext,
                         holder.productImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[1],
                         R.drawable.dim_icon);
@@ -399,12 +399,12 @@ class CustomAdapter extends BaseAdapter{
                     holder = (Holder) convertView.getTag();
                 }
                 //Label loading--------------------
-                common.LoadImage(adapterContext,
+                Common.LoadImage(adapterContext,
                         holder.productImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[2],
                         R.drawable.dim_icon);
                 holder.productName.setText(filteredObjects.get(position)[1].equals("null")?"":filteredObjects.get(position)[1]);
-                common.LoadImage(adapterContext,
+                Common.LoadImage(adapterContext,
                         holder.stickerImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[5],
                         0);
@@ -427,7 +427,7 @@ class CustomAdapter extends BaseAdapter{
                     holder = (Holder) convertView.getTag();
                 }
                 //Label loading--------------------
-                common.LoadImage(adapterContext,
+                Common.LoadImage(adapterContext,
                         holder.productImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[6],
                         R.drawable.dim_icon);
@@ -453,7 +453,7 @@ class CustomAdapter extends BaseAdapter{
                     holder = (Holder) convertView.getTag();
                 }
                 //Label loading--------------------
-                common.LoadImage(adapterContext,
+                Common.LoadImage(adapterContext,
                         holder.productImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[6],
                         R.drawable.dim_icon);
@@ -508,7 +508,7 @@ class CustomAdapter extends BaseAdapter{
                 holder.shipping.setText(adapterContext.getResources().getString(R.string.shipping_charge,filteredObjects.get(position)[5].equals("null")?"-":filteredObjects.get(position)[5]));
                 holder.taxAmount.setText(adapterContext.getResources().getString(R.string.tax_amount,filteredObjects.get(position)[6].equals("null")?"-":filteredObjects.get(position)[6]));
                 holder.totalAmount.setText(filteredObjects.get(position)[7].equals("null")?"":adapterContext.getResources().getString(R.string.item_total,filteredObjects.get(position)[7]));
-                common.LoadImage(adapterContext,
+                Common.LoadImage(adapterContext,
                         holder.productImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[8],
                         R.drawable.dim_icon);

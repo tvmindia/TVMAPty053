@@ -39,7 +39,7 @@ public class ContactUs extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        common.NavigationBarHeaderClick(this,navigationView);
+        Common.NavigationBarHeaderClick(this,navigationView);
     }
     public void submitRequest(View view){
         if(name.getText().toString().length()==0 || !name.getText().toString().matches(common.UserNameRegularExpression)){
@@ -111,7 +111,7 @@ public class ContactUs extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        common.NavigationBarItemClick(this,item);
+        Common.NavigationBarItemClick(this,item);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

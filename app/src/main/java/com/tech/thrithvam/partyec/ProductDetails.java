@@ -79,7 +79,7 @@ public class ProductDetails extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        common.NavigationBarHeaderClick(ProductDetails.this,navigationView);
+        Common.NavigationBarHeaderClick(ProductDetails.this,navigationView);
     }
     void loadProductDetails(){
         final Common common=new Common();
@@ -187,7 +187,7 @@ public class ProductDetails extends AppCompatActivity
                         }
                     }
 
-                    common.LoadImage(ProductDetails.this,
+                    Common.LoadImage(ProductDetails.this,
                             ((ImageView)findViewById(R.id.sticker)),
                             getResources().getString(R.string.url)+jsonRootObject.getString("StickerURL"),
                             0);
@@ -428,7 +428,7 @@ public class ProductDetails extends AppCompatActivity
                         ((RatingBar)review.findViewById(R.id.avg_rating_bar)).setRating(Float.parseFloat(common.dataArrayList.get(i)[3]));
                         LayerDrawable stars = (LayerDrawable) ((RatingBar)review.findViewById(R.id.avg_rating_bar)).getProgressDrawable();
                         stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);
-                        common.LoadImage(ProductDetails.this,
+                        Common.LoadImage(ProductDetails.this,
                                 ((ImageView)review.findViewById(R.id.customer_image)),
                                 common.dataArrayList.get(i)[2],
                                 R.drawable.user);
@@ -507,8 +507,8 @@ public class ProductDetails extends AppCompatActivity
                     ImageView relatedProductImage=(ImageView) productItem.findViewById(R.id.product_image);
                     relatedProductImage.getLayoutParams().height = 120;
                     ((ImageView)(productItem.findViewById(R.id.sticker))).getLayoutParams().height=50;
-                    common.LoadImage(ProductDetails.this, relatedProductImage ,getResources().getString(R.string.url)+common.dataArrayList.get(i)[2], R.drawable.dim_icon);
-                    common.LoadImage(ProductDetails.this, (ImageView)(productItem.findViewById(R.id.sticker)),getResources().getString(R.string.url)+common.dataArrayList.get(i)[3],0);
+                    Common.LoadImage(ProductDetails.this, relatedProductImage ,getResources().getString(R.string.url)+common.dataArrayList.get(i)[2], R.drawable.dim_icon);
+                    Common.LoadImage(ProductDetails.this, (ImageView)(productItem.findViewById(R.id.sticker)),getResources().getString(R.string.url)+common.dataArrayList.get(i)[3],0);
                     (productItem.findViewById(R.id.dim_icon)).setVisibility(GONE);
                     final int Fi=i;
                     productItem.setOnClickListener(new View.OnClickListener() {
@@ -852,7 +852,7 @@ public class ProductDetails extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         Common common=new Common();
-        common.NavigationBarItemClick(this,item);
+        Common.NavigationBarItemClick(this,item);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
