@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
@@ -142,8 +143,15 @@ class Common {
     }
 
     //Toast customizations-----------------------------------------------------------
-    static void toastMessage(Context context,String message){
+    static void toastMessage(Context context,String message){//To receive string
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
+        displayToast(toast,context);
+    }
+    static void toastMessage(Context context, @StringRes int stringID){//To receive string as resource
+        Toast toast = Toast.makeText(context, stringID, Toast.LENGTH_LONG);
+        displayToast(toast,context);
+    }
+    static void displayToast(Toast toast,Context context){
         View toastView = toast.getView();
         TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
         toastMessage.setTextSize(15);
