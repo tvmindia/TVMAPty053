@@ -233,6 +233,8 @@ public class ProductOrdering extends AppCompatActivity {
             @Override
             public void run() {
                 (findViewById(R.id.select_options)).setVisibility(GONE);
+                Toast.makeText(ProductOrdering.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                finish();
             }
         };
         common.AsynchronousThread(ProductOrdering.this,
