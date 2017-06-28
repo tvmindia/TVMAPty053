@@ -61,7 +61,7 @@ public class Cart extends AppCompatActivity {
         db=DatabaseHandler.getInstance(Cart.this);
         if(db.GetCustomerDetails("CustomerID")==null) {
             Intent loginIntent=new Intent(this,Login.class);
-            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            Common.toastMessage(this,R.string.please_login);
             startActivity(loginIntent);
             finish();
             return;
@@ -254,7 +254,7 @@ public class Cart extends AppCompatActivity {
                             public void run() {
                                 if (progressDialog.isShowing())
                                     progressDialog.dismiss();
-                                Toast.makeText(Cart.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                                Common.toastMessage(Cart.this,R.string.some_error_at_server);
                             }
                         };
                         common.AsynchronousThread(Cart.this,
@@ -308,7 +308,7 @@ public class Cart extends AppCompatActivity {
                         }
                         int statusCode=jsonObject.optInt("StatusCode");
                         if(statusCode==0){
-                            Toast.makeText(Cart.this, R.string.stock_not_available, Toast.LENGTH_SHORT).show();
+                            Common.toastMessage(Cart.this,R.string.stock_not_available);
                         }
                         else {
                             //Refresh Cart----------------------
@@ -323,7 +323,7 @@ public class Cart extends AppCompatActivity {
                     public void run() {
                         if (progressDialog.isShowing())
                             progressDialog.dismiss();
-                        Toast.makeText(Cart.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                        Common.toastMessage(Cart.this,R.string.some_error_at_server);
                     }
                 };
                 common.AsynchronousThread(Cart.this,
@@ -701,7 +701,7 @@ public class Cart extends AppCompatActivity {
                     }
                     else {
                         (findViewById(R.id.customer_address)).setVisibility(View.GONE);
-                        Toast.makeText(Cart.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                        Common.toastMessage(Cart.this,R.string.some_error_at_server);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -963,11 +963,11 @@ public class Cart extends AppCompatActivity {
     }
     public void proceedClick(final View view) {
         if(locationID.equals("")||locationID.equals("0")){
-            Toast.makeText(this, "Please select shipping address having location", Toast.LENGTH_SHORT).show();
+            Common.toastMessage(this,R.string.please_select_location);
             return;
         }
         if(totalAmount==0){
-            Toast.makeText(this, R.string.no_items_available, Toast.LENGTH_SHORT).show();
+            Common.toastMessage(this,R.string.no_items_available);
             return;
         }
         final Common common=new Common();
@@ -1062,7 +1062,7 @@ public class Cart extends AppCompatActivity {
         Runnable postFailThread = new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(Cart.this, R.string.failed, Toast.LENGTH_SHORT).show();
+                Common.toastMessage(Cart.this,R.string.failed);
                 view.setVisibility(View.VISIBLE);
                 if (progressDialog.isShowing())
                     progressDialog.dismiss();

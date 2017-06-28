@@ -46,7 +46,7 @@ String orderID;
                         ((TextView)findViewById(R.id.order_status_text)).setText("Payment Success\nReference No : "+reference);
                     }
                     else {
-                        Toast.makeText(PaymentGateway.this, "Payment is not success", Toast.LENGTH_SHORT).show();
+                        Common.toastMessage(PaymentGateway.this,"Payment is not success");
                     }
                     final Common common2 = new Common();
                     //Threading payment status--------------------------------------------------
@@ -74,7 +74,7 @@ String orderID;
                     Runnable postFailThread = new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(PaymentGateway.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                            Common.toastMessage(PaymentGateway.this,R.string.some_error_at_server);
                         }
                     };
                     common2.AsynchronousThread(PaymentGateway.this,
@@ -85,14 +85,14 @@ String orderID;
                             postThread,
                             postFailThread);
                 } catch (JSONException e) {
-                    Toast.makeText(PaymentGateway.this, "Payment is not success", Toast.LENGTH_SHORT).show();
+                    Common.toastMessage(PaymentGateway.this,"Payment is not success");
                 }
             }
         };
         Runnable postFailThread = new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(PaymentGateway.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                Common.toastMessage(PaymentGateway.this,R.string.some_error_at_server);
             }
         };
         common.AsynchronousThread(PaymentGateway.this,

@@ -88,7 +88,7 @@ public class RegisterEvent extends AppCompatActivity
             eventName.requestFocus();
         }
         else if(!(eventTypeSpinner.getSelectedItemPosition()>0)){
-            Toast.makeText(this, R.string.select_event_type, Toast.LENGTH_SHORT).show();
+            Common.toastMessage(this,R.string.select_event_type);
             eventTypeSpinner.requestFocus();
         }
         else if(dateTime.getText().toString().length()==0){
@@ -164,14 +164,14 @@ public class RegisterEvent extends AppCompatActivity
             Runnable postThread=new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(RegisterEvent.this,R.string.event_request_success,Toast.LENGTH_LONG).show();
+                    Common.toastMessage(RegisterEvent.this,R.string.event_request_success);
                     finish();
                 }
             };
             Runnable postFailThread=new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(RegisterEvent.this, R.string.failed, Toast.LENGTH_SHORT).show();
+                    Common.toastMessage(RegisterEvent.this,R.string.failed);
                 }
             };
             common.AsynchronousThread(RegisterEvent.this,
@@ -241,7 +241,7 @@ public class RegisterEvent extends AppCompatActivity
         Runnable postFailThread=new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(RegisterEvent.this, R.string.retrying, Toast.LENGTH_SHORT).show();
+                Common.toastMessage(RegisterEvent.this,R.string.retrying);
                 retry++;
                 if(retry<5)
                     setEventTypeSpinner();
@@ -277,7 +277,7 @@ public class RegisterEvent extends AppCompatActivity
 
                 //Validation--------------
                 if(eventDateTime.before(today)){
-                    Toast.makeText(RegisterEvent.this, R.string.give_valid, Toast.LENGTH_SHORT).show();
+                    Common.toastMessage(RegisterEvent.this,R.string.give_valid);
                     return;
                 }
 

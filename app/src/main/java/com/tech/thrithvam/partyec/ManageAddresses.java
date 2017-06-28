@@ -46,7 +46,7 @@ public class ManageAddresses extends AppCompatActivity {
         db=DatabaseHandler.getInstance(this);
         if(db.GetCustomerDetails("CustomerID")==null) {
             Intent loginIntent=new Intent(this,Login.class);
-            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            Common.toastMessage(ManageAddresses.this,R.string.please_login);
             startActivity(loginIntent);
             finish();
             return;
@@ -153,7 +153,7 @@ public class ManageAddresses extends AppCompatActivity {
                         addressList.setVisibility(View.GONE);
                     }
                     else {
-                        Toast.makeText(ManageAddresses.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                        Common.toastMessage(ManageAddresses.this,R.string.some_error_at_server);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -192,7 +192,7 @@ public class ManageAddresses extends AppCompatActivity {
         Runnable postFailThread=new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(ManageAddresses.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                Common.toastMessage(ManageAddresses.this,R.string.some_error_at_server);
                 if (progressDialog.isShowing())
                     progressDialog.dismiss();
             }
@@ -230,7 +230,7 @@ public class ManageAddresses extends AppCompatActivity {
                                 Runnable postFailThread=new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(ManageAddresses.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                                        Common.toastMessage(ManageAddresses.this,R.string.some_error_at_server);
                                         if (progressDialog.isShowing())
                                             progressDialog.dismiss();
                                     }
@@ -396,7 +396,7 @@ public class ManageAddresses extends AppCompatActivity {
                                             Runnable postFailThread = new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    Toast.makeText(ManageAddresses.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                                                    Common.toastMessage(ManageAddresses.this,R.string.some_error_at_server);
                                                     if (progressDialog.isShowing())
                                                         progressDialog.dismiss();
                                                 }
@@ -423,7 +423,7 @@ public class ManageAddresses extends AppCompatActivity {
                     public void run() {
                         if (progressDialog.isShowing())
                             progressDialog.dismiss();
-                        Toast.makeText(ManageAddresses.this,R.string.some_error_at_server,Toast.LENGTH_SHORT).show();
+                        Common.toastMessage(ManageAddresses.this,R.string.some_error_at_server);
                     }
                 };
                 common2.AsynchronousThread(ManageAddresses.this,
@@ -441,7 +441,7 @@ public class ManageAddresses extends AppCompatActivity {
             public void run() {
                 if (progressDialog.isShowing())
                     progressDialog.dismiss();
-                Toast.makeText(ManageAddresses.this,R.string.some_error_at_server,Toast.LENGTH_SHORT).show();
+                Common.toastMessage(ManageAddresses.this,R.string.some_error_at_server);
             }
         };
         common1.AsynchronousThread(ManageAddresses.this,
@@ -605,7 +605,7 @@ public class ManageAddresses extends AppCompatActivity {
                                             Runnable postFailThread = new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    Toast.makeText(ManageAddresses.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                                                    Common.toastMessage(ManageAddresses.this,R.string.some_error_at_server);
                                                     if (progressDialog.isShowing())
                                                         progressDialog.dismiss();
                                                 }
@@ -632,7 +632,7 @@ public class ManageAddresses extends AppCompatActivity {
                     public void run() {
                         if (progressDialog.isShowing())
                             progressDialog.dismiss();
-                        Toast.makeText(ManageAddresses.this,R.string.some_error_at_server,Toast.LENGTH_SHORT).show();
+                        Common.toastMessage(ManageAddresses.this,R.string.some_error_at_server);
                     }
                 };
                 common2.AsynchronousThread(ManageAddresses.this,
@@ -650,7 +650,7 @@ public class ManageAddresses extends AppCompatActivity {
             public void run() {
                 if (progressDialog.isShowing())
                     progressDialog.dismiss();
-                Toast.makeText(ManageAddresses.this,R.string.some_error_at_server,Toast.LENGTH_SHORT).show();
+                Common.toastMessage(ManageAddresses.this,R.string.some_error_at_server);
             }
         };
         common1.AsynchronousThread(ManageAddresses.this,

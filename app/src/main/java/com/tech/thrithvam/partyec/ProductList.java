@@ -474,7 +474,7 @@ public class ProductList extends AppCompatActivity
                 }
             }
             else {
-                Toast.makeText(ProductList.this, R.string.no_filters_available, Toast.LENGTH_SHORT).show();
+                Common.toastMessage(ProductList.this,R.string.no_filters_available);
             }
             return true;
         }

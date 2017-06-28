@@ -84,7 +84,7 @@ public class ProductOrdering extends AppCompatActivity {
         db=DatabaseHandler.getInstance(ProductOrdering.this);
         if(db.GetCustomerDetails("CustomerID")==null) {
             Intent loginIntent=new Intent(this,Login.class);
-            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            Common.toastMessage(ProductOrdering.this,R.string.please_login);
             startActivity(loginIntent);
             finish();
             return;
@@ -114,7 +114,7 @@ public class ProductOrdering extends AppCompatActivity {
                                 selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                                 //Validation--------------
                                 if(selectedDate.before(today)){
-                                    Toast.makeText(ProductOrdering.this, R.string.give_valid, Toast.LENGTH_SHORT).show();
+                                    Common.toastMessage(ProductOrdering.this,R.string.give_valid);
                                     return;
                                 }
                                 //Setting display text-------
@@ -233,7 +233,7 @@ public class ProductOrdering extends AppCompatActivity {
             @Override
             public void run() {
                 (findViewById(R.id.select_options)).setVisibility(GONE);
-                Toast.makeText(ProductOrdering.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                Common.toastMessage(ProductOrdering.this,R.string.some_error_at_server);
                 finish();
             }
         };
@@ -359,7 +359,7 @@ public class ProductOrdering extends AppCompatActivity {
                                         selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                                         //Validation--------------
                                         if(selectedDate.before(today)){
-                                            Toast.makeText(ProductOrdering.this, R.string.give_valid, Toast.LENGTH_SHORT).show();
+                                            Common.toastMessage(ProductOrdering.this,R.string.give_valid);
                                             return;
                                         }
                                         //Setting display text-------
@@ -676,7 +676,7 @@ public class ProductOrdering extends AppCompatActivity {
                                 Runnable postFailThread=new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(ProductOrdering.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                                        Common.toastMessage(ProductOrdering.this,R.string.some_error_at_server);
                                         if (progressDialog.isShowing())
                                             progressDialog.dismiss();
                                     }
@@ -838,14 +838,14 @@ public class ProductOrdering extends AppCompatActivity {
                                                     if (progressDialog.isShowing())
                                                         progressDialog.dismiss();
                                                     } catch (JSONException e) {
-                                                        Toast.makeText(ProductOrdering.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                                                        Common.toastMessage(ProductOrdering.this,R.string.some_error_at_server);
                                                     }
                                                 }
                                             };
                                             Runnable postFailThread = new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    Toast.makeText(ProductOrdering.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                                                    Common.toastMessage(ProductOrdering.this,R.string.some_error_at_server);
                                                     if (progressDialog.isShowing())
                                                         progressDialog.dismiss();
                                                 }
@@ -872,7 +872,7 @@ public class ProductOrdering extends AppCompatActivity {
                     public void run() {
                         if (progressDialog.isShowing())
                             progressDialog.dismiss();
-                        Toast.makeText(ProductOrdering.this,R.string.some_error_at_server,Toast.LENGTH_SHORT).show();
+                        Common.toastMessage(ProductOrdering.this,R.string.some_error_at_server);
                     }
                 };
                 common2.AsynchronousThread(ProductOrdering.this,
@@ -890,7 +890,7 @@ public class ProductOrdering extends AppCompatActivity {
             public void run() {
                 if (progressDialog.isShowing())
                     progressDialog.dismiss();
-                Toast.makeText(ProductOrdering.this,R.string.some_error_at_server,Toast.LENGTH_SHORT).show();
+                Common.toastMessage(ProductOrdering.this,R.string.some_error_at_server);
             }
         };
         common1.AsynchronousThread(ProductOrdering.this,
@@ -1000,7 +1000,7 @@ public class ProductOrdering extends AppCompatActivity {
                 if(orderAttributesArrayList.get(i).isMandatory
                         && !(orderAttributesArrayList.get(i).DataType.equals("C"))
                         && ((((EditText) orderAttributesUserInputs.get(i)).getText().toString().equals("")))){
-                    Toast.makeText(ProductOrdering.this,getString(R.string.request_to_provide_input,orderAttributesArrayList.get(i).Caption),Toast.LENGTH_LONG).show();
+                    Common.toastMessage(ProductOrdering.this,getString(R.string.request_to_provide_input,orderAttributesArrayList.get(i).Caption));
                     view.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -1045,7 +1045,7 @@ public class ProductOrdering extends AppCompatActivity {
                 @Override
                 public void run() {
                     if(getIntent().getExtras().getString("cartORbuy").equals("cart")){
-                        Toast.makeText(ProductOrdering.this, R.string.success, Toast.LENGTH_SHORT).show();
+                        Common.toastMessage(ProductOrdering.this,R.string.success);
                         finish();return;
                     }
                     Intent clearIntent=new Intent(ProductOrdering.this,Cart.class);
@@ -1057,7 +1057,7 @@ public class ProductOrdering extends AppCompatActivity {
             Runnable postFailThread = new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(ProductOrdering.this, R.string.failed, Toast.LENGTH_SHORT).show();
+                    Common.toastMessage(ProductOrdering.this,R.string.failed);
                     view.setVisibility(View.VISIBLE);
                 }
             };
@@ -1133,17 +1133,18 @@ public class ProductOrdering extends AppCompatActivity {
             Runnable postThread = new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(ProductOrdering.this, R.string.success, Toast.LENGTH_SHORT).show();//TODO navigate to bookings
-                    Intent clearIntent=new Intent(ProductOrdering.this,Home.class);
-                    clearIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(clearIntent);
+                    Common.toastMessage(ProductOrdering.this,R.string.success);
+                    Intent intent=new Intent (ProductOrdering.this,ListViewsActivity.class);
+                    intent.putExtra("list","bookings");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                     finish();
                 }
             };
             Runnable postFailThread = new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(ProductOrdering.this, R.string.failed, Toast.LENGTH_SHORT).show();
+                    Common.toastMessage(ProductOrdering.this,R.string.failed);
                     view.setVisibility(View.VISIBLE);
                 }
             };
@@ -1202,17 +1203,18 @@ public class ProductOrdering extends AppCompatActivity {
             Runnable postThread = new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(ProductOrdering.this, R.string.success, Toast.LENGTH_SHORT).show();//TODO navigate to quotations
-                    Intent clearIntent=new Intent(ProductOrdering.this,Home.class);
-                    clearIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(clearIntent);
+                    Common.toastMessage(ProductOrdering.this,R.string.success);
+                    Intent intent=new Intent (ProductOrdering.this,ListViewsActivity.class);
+                    intent.putExtra("list","quotations");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                     finish();
                 }
             };
             Runnable postFailThread = new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(ProductOrdering.this, R.string.failed, Toast.LENGTH_SHORT).show();
+                    Common.toastMessage(ProductOrdering.this,R.string.failed);
                     view.setVisibility(View.VISIBLE);
                 }
             };

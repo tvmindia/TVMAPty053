@@ -560,7 +560,7 @@ public class ProductDetails extends AppCompatActivity
         }
         else {
             Intent loginIntent=new Intent(this,Login.class);
-            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            Common.toastMessage(ProductDetails.this,R.string.please_login);
             startActivity(loginIntent);
             finish();
         }
@@ -576,7 +576,7 @@ public class ProductDetails extends AppCompatActivity
         }
         else {
             Intent loginIntent = new Intent(this, Login.class);
-            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            Common.toastMessage(ProductDetails.this,R.string.please_login);
             startActivity(loginIntent);
             finish();
         }
@@ -599,16 +599,16 @@ public class ProductDetails extends AppCompatActivity
                 @Override
                 public void run() {
                     if (isFav) {
-                        Toast.makeText(ProductDetails.this, R.string.added_to_wishlist, Toast.LENGTH_SHORT).show();
+                        Common.toastMessage(ProductDetails.this,R.string.added_to_wishlist);
                     } else {
-                        Toast.makeText(ProductDetails.this, R.string.removed_from_wishlist, Toast.LENGTH_SHORT).show();
+                        Common.toastMessage(ProductDetails.this,R.string.removed_from_wishlist);
                     }
                 }
             };
             Runnable postFailThread = new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(ProductDetails.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                    Common.toastMessage(ProductDetails.this,R.string.some_error_at_server);
                 }
             };
             common.AsynchronousThread(ProductDetails.this,
@@ -621,7 +621,7 @@ public class ProductDetails extends AppCompatActivity
         }
         else {
             Intent loginIntent = new Intent(this, Login.class);
-            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            Common.toastMessage(ProductDetails.this,R.string.please_login);
             startActivity(loginIntent);
             finish();
         }
@@ -631,7 +631,7 @@ public class ProductDetails extends AppCompatActivity
             return;
         if(db.GetCustomerDetails("CustomerID")==null) {
             Intent loginIntent = new Intent(this, Login.class);
-            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            Common.toastMessage(ProductDetails.this,R.string.please_login);
             startActivity(loginIntent);
             finish();
             return;
@@ -805,7 +805,7 @@ public class ProductDetails extends AppCompatActivity
                             public void run() {
                                 if (progressDialog.isShowing())
                                     progressDialog.dismiss();
-                                Toast.makeText(ProductDetails.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                                Common.toastMessage(ProductDetails.this,R.string.some_error_at_server);
 
                             }
                         };

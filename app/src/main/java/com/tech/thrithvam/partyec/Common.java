@@ -151,7 +151,7 @@ class Common {
         Toast toast = Toast.makeText(context, stringID, Toast.LENGTH_LONG);
         displayToast(toast,context);
     }
-    static void displayToast(Toast toast,Context context){
+    static private void displayToast(Toast toast,Context context){
         View toastView = toast.getView();
         TextView toastMessage = (TextView) toastView.findViewById(android.R.id.message);
         toastMessage.setTextSize(15);

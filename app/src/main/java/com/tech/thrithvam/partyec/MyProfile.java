@@ -36,7 +36,7 @@ public class MyProfile extends AppCompatActivity
         db=DatabaseHandler.getInstance(this);
         if(db.GetCustomerDetails("CustomerID")==null){
             Intent loginIntent=new Intent(this,Login.class);
-            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            Common.toastMessage(MyProfile.this,R.string.please_login);
             startActivity(loginIntent);
             finish();
             return;
@@ -65,7 +65,7 @@ public class MyProfile extends AppCompatActivity
         final EditText name=(EditText)findViewById(R.id.name_edit);
         final EditText mob=(EditText)findViewById(R.id.mob_no_edit);
         if(name.getText().length()==0||mob.getText().length()==0){
-            Toast.makeText(this, R.string.give_valid, Toast.LENGTH_SHORT).show();
+            Common.toastMessage(MyProfile.this,R.string.give_valid);
             return;
         }
         //Threading------------------------------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ public class MyProfile extends AppCompatActivity
         Runnable postThreadFailed=new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(MyProfile.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                Common.toastMessage(MyProfile.this,R.string.some_error_at_server);
                 view.setVisibility(View.VISIBLE);
             }
         };

@@ -78,14 +78,13 @@ public class ContactUs extends AppCompatActivity
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
-
-                    Toast.makeText(ContactUs.this, R.string.contact_us_email, Toast.LENGTH_SHORT).show();
+                Common.toastMessage(ContactUs.this,R.string.contact_us_email);
             }
         };
         Runnable postFailThread=new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(ContactUs.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                Common.toastMessage(ContactUs.this,R.string.some_error_at_server);
                 (findViewById(R.id.btn_send)).setVisibility(View.VISIBLE);
             }
         };

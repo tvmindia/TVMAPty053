@@ -95,7 +95,7 @@ public class Login extends AppCompatActivity
         Runnable postThreadFailed=new Runnable() {
             @Override
             public void run() {
-                    Toast.makeText(Login.this, R.string.failed_try_again, Toast.LENGTH_SHORT).show();
+                    Common.toastMessage(Login.this,R.string.failed_try_again);
                     emailInput.setEnabled(true);
                     emailInput.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                     view.setVisibility(View.VISIBLE);
@@ -128,7 +128,6 @@ public class Login extends AppCompatActivity
         }
     }
     public void UserVerification(final String otp, final Boolean isUser){
-        Toast.makeText(Login.this,otp,Toast.LENGTH_LONG).show();
         final AlertDialog.Builder alert = new AlertDialog.Builder(Login.this);
         alert.setTitle(R.string.enter_otp);
         final EditText otpInput=new EditText(Login.this);
@@ -166,7 +165,7 @@ public class Login extends AppCompatActivity
                     }
                 }
                 else {
-                    Toast.makeText(Login.this,R.string.otp_incorrect,Toast.LENGTH_LONG).show();
+                    Common.toastMessage(Login.this,R.string.otp_incorrect);
                     UserVerification(otp,isUser);
                 }
             }
@@ -291,7 +290,7 @@ public class Login extends AppCompatActivity
                         name.setEnabled(true);name.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
                         mob.setEnabled(true);mob.setInputType(InputType.TYPE_CLASS_PHONE);
                         (findViewById(R.id.signup_button)).setVisibility(View.VISIBLE);
-                        Toast.makeText(Login.this,R.string.some_error_at_server,Toast.LENGTH_SHORT).show();
+                        Common.toastMessage(Login.this,R.string.some_error_at_server);
                     }
                 };
                 common2.AsynchronousThread(Login.this,
@@ -312,7 +311,7 @@ public class Login extends AppCompatActivity
                 name.setEnabled(true);name.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
                 mob.setEnabled(true);mob.setInputType(InputType.TYPE_CLASS_PHONE);
                 (findViewById(R.id.signup_button)).setVisibility(View.VISIBLE);
-                Toast.makeText(Login.this,R.string.some_error_at_server,Toast.LENGTH_SHORT).show();
+                Common.toastMessage(Login.this,R.string.some_error_at_server);
             }
         };
         common1.AsynchronousThread(Login.this,
@@ -356,14 +355,14 @@ public class Login extends AppCompatActivity
                     if (progressDialog.isShowing())
                         progressDialog.dismiss();
                 } catch (JSONException e) {
-                    Toast.makeText(Login.this, R.string.some_error_at_server, Toast.LENGTH_SHORT).show();
+                    Common.toastMessage(Login.this,R.string.some_error_at_server);
                 }
             }
         };
         Runnable postFailThread = new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(Login.this, R.string.failed_try_again, Toast.LENGTH_SHORT).show();
+                Common.toastMessage(Login.this,R.string.failed_try_again);
                 name.setEnabled(true);name.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
                 mob.setEnabled(true);mob.setInputType(InputType.TYPE_CLASS_PHONE);
                 (findViewById(R.id.signup_button)).setVisibility(View.VISIBLE);

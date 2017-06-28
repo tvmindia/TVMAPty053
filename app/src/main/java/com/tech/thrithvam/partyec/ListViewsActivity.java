@@ -141,7 +141,7 @@ public class ListViewsActivity extends AppCompatActivity
     void loadWishlistProducts(){
         if(customerID==null) {
             Intent loginIntent=new Intent(this,Login.class);
-            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            Common.toastMessage(this,R.string.please_login);
             startActivity(loginIntent);
             finish();
             return;
@@ -179,7 +179,7 @@ public class ListViewsActivity extends AppCompatActivity
     void loadBookings(){
         if(customerID==null) {
             Intent loginIntent=new Intent(this,Login.class);
-            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            Common.toastMessage(this,R.string.please_login);
             startActivity(loginIntent);
             finish();
             return;
@@ -217,7 +217,7 @@ public class ListViewsActivity extends AppCompatActivity
     void loadQuotations(){
         if(customerID==null) {
             Intent loginIntent=new Intent(this,Login.class);
-            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            Common.toastMessage(this,R.string.please_login);
             startActivity(loginIntent);
             finish();
             return;
@@ -255,7 +255,7 @@ public class ListViewsActivity extends AppCompatActivity
     void loadOrder(){
         if(customerID==null) {
             Intent loginIntent=new Intent(this,Login.class);
-            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            Common.toastMessage(this,R.string.please_login);
             startActivity(loginIntent);
             finish();
             return;
@@ -378,7 +378,7 @@ public class ListViewsActivity extends AppCompatActivity
     void loadOrderHistory(){
         if(customerID==null) {
             Intent loginIntent=new Intent(this,Login.class);
-            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            Common.toastMessage(this,R.string.please_login);
             startActivity(loginIntent);
             finish();
             return;
@@ -434,7 +434,7 @@ public class ListViewsActivity extends AppCompatActivity
     void loadEventRequests(){
         if(customerID==null) {
             Intent loginIntent=new Intent(this,Login.class);
-            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            Common.toastMessage(this,R.string.please_login);
             startActivity(loginIntent);
             finish();
             return;
