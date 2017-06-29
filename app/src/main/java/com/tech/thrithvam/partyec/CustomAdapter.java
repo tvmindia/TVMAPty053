@@ -385,7 +385,7 @@ class CustomAdapter extends BaseAdapter{
                     convertView = inflater.inflate(R.layout.item_wishlist, null);
                     holder.productImage=(ImageView) convertView.findViewById(R.id.product_image);
                     holder.productName=(TextView)convertView.findViewById(R.id.product_name);
-                    holder.daysCount =(TextView)convertView.findViewById(R.id.days_Count);
+                    holder.daysCount =(TextView)convertView.findViewById(R.id.days_count);
                     holder.price =(TextView)convertView.findViewById(R.id.price);
                     holder.stickerImage=(ImageView)convertView.findViewById(R.id.sticker);
                     convertView.setTag(holder);
@@ -585,6 +585,7 @@ class CustomAdapter extends BaseAdapter{
                 holder.reviewDate.setText(filteredObjects.get(position)[2]);
                 holder.review.setText(filteredObjects.get(position)[1]);
                 holder.ratingReview.setVisibility(View.GONE);
+                holder.isApproved.setVisibility(View.VISIBLE);
                 if(Boolean.parseBoolean(filteredObjects.get(position)[3]))
                 {
                     holder.isApproved.setText(adapterContext.getResources().getString(R.string.approved));

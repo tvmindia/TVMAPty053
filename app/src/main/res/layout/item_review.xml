@@ -98,6 +98,7 @@
             android:textSize="10sp"
             android:id="@+id/is_approved"
             android:layout_below="@id/review"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            android:visibility="gone"/>
     </RelativeLayout>
 </LinearLayout>

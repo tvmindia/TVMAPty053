@@ -6,6 +6,5 @@
     <color name="primary_text">#D9000000</color>
     <color name="secondary_text">#8C000000</color>
     <color name="partyec">#e01d73</color>
-    <color name="partyeclight">#f17aaf</color>
     <color name="gray">#ffe0e0e0</color>
 </resources>
