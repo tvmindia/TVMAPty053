@@ -697,7 +697,7 @@ public class ProductDetails extends AppCompatActivity
         //Input ratings from user--------------------------------------------------------------------
         final Common common=new Common();
         //Ratings alert dialogue box---------------------------------
-        AlertDialog.Builder ratingsDialogue = new AlertDialog.Builder(ProductDetails.this);
+        final AlertDialog.Builder ratingsDialogue = new AlertDialog.Builder(ProductDetails.this);
 //        ratingsDialogue.setIcon(R.drawable.wishlist);
         ratingsDialogue.setTitle(R.string.rate_it);
         LayoutInflater inflater= (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -719,16 +719,7 @@ public class ProductDetails extends AppCompatActivity
             stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);*/
             ((LinearLayout)ratingsAndReviewsView.findViewById(R.id.ratings_linear)).addView(ratingBarWithTitle);
         }
-        (ratingsAndReviewsView.findViewById(R.id.previous_reviews)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent (ProductDetails.this,ListViewsActivity.class);
-                intent.putExtra("list","customer_reviews");
-                intent.putExtra("productID",productID);
-                intent.putExtra("productName",productName);
-                startActivity(intent);
-            }
-        });
+
         ratingsDialogue.setView(ratingsAndReviewsView);
         ratingsDialogue.setPositiveButton(R.string.submit, null);//
         ratingsDialogue.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -737,7 +728,18 @@ public class ProductDetails extends AppCompatActivity
                 dialog.dismiss();
             }
         });
-        AlertDialog popup=ratingsDialogue.create();
+        final AlertDialog popup=ratingsDialogue.create();
+        (ratingsAndReviewsView.findViewById(R.id.previous_reviews)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent (ProductDetails.this,ListViewsActivity.class);
+                intent.putExtra("list","customer_reviews");
+                intent.putExtra("productID",productID);
+                intent.putExtra("productName",productName);
+                startActivity(intent);
+                popup.dismiss();
+            }
+        });
         popup.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {

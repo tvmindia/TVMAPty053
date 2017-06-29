@@ -305,9 +305,11 @@
                 android:padding="5dp"
                 android:layout_marginLeft="7dp"
                 android:layout_marginRight="7dp"/>
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rating_reviews_label">
             <TextView
-                android:id="@+id/rating_reviews_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -318,6 +320,17 @@
                 android:textColor="@color/primary_text"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rate_it"
+                android:textColor="@color/colorAccent"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:padding="5dp"
+                android:textSize="13sp"
+                android:onClick="rateProduct"/>
+ </RelativeLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
