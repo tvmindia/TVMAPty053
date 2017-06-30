@@ -10,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -58,14 +57,13 @@ public class ContactUs extends AppCompatActivity
             AVLoadingIndicatorView loadingIndicatorView=(AVLoadingIndicatorView)findViewById(R.id.loading_indicator);
             loadingIndicatorView.setVisibility(View.VISIBLE);
             view.setVisibility(View.GONE);
-            loadQuotations();
+            sendContactUs();
 
         }
     }
 
 
-    void loadQuotations(){
-
+    void sendContactUs(){
         Name= name.getText().toString();
         Email= email.getText().toString();
         Phone= phone.getText().toString();

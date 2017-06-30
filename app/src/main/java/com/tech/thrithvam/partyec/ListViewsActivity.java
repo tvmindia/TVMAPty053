@@ -1,6 +1,7 @@
 package com.tech.thrithvam.partyec;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.Menu;
@@ -23,12 +24,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class ListViewsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Common common=new Common();
     DatabaseHandler db;
     String customerID;
     ListView listView;
+    ArrayList<AsyncTask> asyncTasks=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +109,7 @@ public class ListViewsActivity extends AppCompatActivity
                 dataColumns,
                 postThread,
                 null);
+        asyncTasks.add(common.asyncTask);
     }
     void loadRelatedProducts(){
         getSupportActionBar().setTitle("Related Items: "+getIntent().getExtras().getString("productName"));
@@ -137,6 +142,7 @@ public class ListViewsActivity extends AppCompatActivity
                 dataColumns,
                 postThread,
                 null);
+        asyncTasks.add(common.asyncTask);
     }
     void loadWishlistProducts(){
         if(customerID==null) {
@@ -175,6 +181,7 @@ public class ListViewsActivity extends AppCompatActivity
                 dataColumns,
                 postThread,
                 null);
+        asyncTasks.add(common.asyncTask);
     }
     void loadBookings(){
         if(customerID==null) {
@@ -213,6 +220,7 @@ public class ListViewsActivity extends AppCompatActivity
                 dataColumns,
                 postThread,
                 null);
+        asyncTasks.add(common.asyncTask);
     }
     void loadQuotations(){
         if(customerID==null) {
@@ -251,6 +259,7 @@ public class ListViewsActivity extends AppCompatActivity
                 dataColumns,
                 postThread,
                 null);
+        asyncTasks.add(common.asyncTask);
     }
     void loadOrder(){
         if(customerID==null) {
@@ -307,6 +316,7 @@ public class ListViewsActivity extends AppCompatActivity
                 dataColumns,
                 postThread,
                 null);
+        asyncTasks.add(common.asyncTask);
     }
     void loadOrderDetails(String ID ){
         getSupportActionBar().setTitle("Order Details");
@@ -374,6 +384,7 @@ public class ListViewsActivity extends AppCompatActivity
                 dataColumns,
                 postThread,
                 null);
+        asyncTasks.add(common.asyncTask);
     }
     void loadOrderHistory(){
         if(customerID==null) {
@@ -430,6 +441,7 @@ public class ListViewsActivity extends AppCompatActivity
                 dataColumns,
                 postThread,
                 null);
+        asyncTasks.add(common.asyncTask);
     }
     void loadEventRequests(){
         if(customerID==null) {
@@ -478,6 +490,7 @@ public class ListViewsActivity extends AppCompatActivity
                 dataColumns,
                 postThread,
                 null);
+        asyncTasks.add(common.asyncTask);
     }
     void loadCustomerProductReviews(){
         if(customerID==null){
@@ -504,6 +517,7 @@ public class ListViewsActivity extends AppCompatActivity
                 dataColumns,
                 postThread,
                 null);
+        asyncTasks.add(common.asyncTask);
     }
 
     @Override
@@ -512,6 +526,9 @@ public class ListViewsActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            for(int i=0;i<asyncTasks.size();i++){
+                asyncTasks.get(i).cancel(true);
+            }
             super.onBackPressed();
         }
     }

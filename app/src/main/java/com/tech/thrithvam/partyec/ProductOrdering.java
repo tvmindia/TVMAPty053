@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -73,6 +74,9 @@ public class ProductOrdering extends AppCompatActivity {
     CustomerAddress customerAddress;
     String customerID;
     String actionType;
+
+    ArrayList<AsyncTask> asyncTasks=new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -244,6 +248,7 @@ public class ProductOrdering extends AppCompatActivity {
                 dataColumns,
                 postThread,
                 postFailThread);
+        asyncTasks.add(common.asyncTask);
     }
     void setupUserControls(){
         //Attributes
@@ -1240,5 +1245,12 @@ public class ProductOrdering extends AppCompatActivity {
             json += attributeJsonObject + ",";
         }
         return json;
+    }
+    @Override
+    public void onBackPressed() {
+        for(int i=0;i<asyncTasks.size();i++){
+            asyncTasks.get(i).cancel(true);
+        }
+        super.onBackPressed();
     }
 }

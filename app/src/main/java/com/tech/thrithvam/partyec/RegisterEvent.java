@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.Menu;
@@ -47,6 +48,7 @@ public class RegisterEvent extends AppCompatActivity
     Calendar eventDateTime=Calendar.getInstance();
     ArrayList<String> lookingForItemsAvailable=new ArrayList<>();
     boolean[] lookingForItemsSelectedIndex;
+    ArrayList<AsyncTask> asyncTasks=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -254,6 +256,7 @@ public class RegisterEvent extends AppCompatActivity
                 dataColumns,
                 postThread,
                 postFailThread);
+        asyncTasks.add(common.asyncTask);
     }
     void setAvailableLookingForItems(ArrayList<String> lookingForItemsUnderCurrentType){
         lookingForItemsAvailable.clear();
@@ -353,6 +356,9 @@ public class RegisterEvent extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            for(int i=0;i<asyncTasks.size();i++){
+                asyncTasks.get(i).cancel(true);
+            }
             super.onBackPressed();
         }
     }

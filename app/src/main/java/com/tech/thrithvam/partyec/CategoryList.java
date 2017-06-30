@@ -1,6 +1,7 @@
 package com.tech.thrithvam.partyec;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -30,6 +32,7 @@ public class CategoryList extends AppCompatActivity
     SearchView searchView;
     ListView categoryListView;
     CustomAdapter adapter;
+    ArrayList<AsyncTask> asyncTasks=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +104,7 @@ public class CategoryList extends AppCompatActivity
                 dataColumns,
                 postThread,
                 null);
+        asyncTasks.add(common.asyncTask);
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     }
     void shopByOccasion(){
@@ -149,6 +153,7 @@ public class CategoryList extends AppCompatActivity
                 dataColumns,
                 postThread,
                 null);
+        asyncTasks.add(common.asyncTask);
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     }
     void offers(){
@@ -197,6 +202,7 @@ public class CategoryList extends AppCompatActivity
                 dataColumns,
                 postThread,
                 null);
+        asyncTasks.add(common.asyncTask);
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     }
     @Override
@@ -205,6 +211,9 @@ public class CategoryList extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            for(int i=0;i<asyncTasks.size();i++){
+            asyncTasks.get(i).cancel(true);
+            }
             super.onBackPressed();
         }
     }

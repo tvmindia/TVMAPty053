@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -56,6 +57,7 @@ public class ProductDetails extends AppCompatActivity
     Boolean isFav=false;
     String actionType;
     String customerID;
+    ArrayList<AsyncTask> asyncTasks=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -230,6 +232,7 @@ public class ProductDetails extends AppCompatActivity
                 dataColumns,
                 postThread,
                 null);
+        asyncTasks.add(common.asyncTask);
     }
     void loadProductImages(){
         final Common common=new Common();
@@ -310,6 +313,7 @@ public class ProductDetails extends AppCompatActivity
                 dataColumns,
                 postThread,
                 postFailThread);
+        asyncTasks.add(common.asyncTask);
     }
     void loadProductRatings(){
         final Common common=new Common();
@@ -368,6 +372,7 @@ public class ProductDetails extends AppCompatActivity
                 dataColumns,
                 postThread,
                 postFailThread);
+        asyncTasks.add(common.asyncTask);
     }
     ArrayList<Attributes> ratingAttributesArrayList;
     void saveRatingAttributes(String json){
@@ -480,6 +485,7 @@ public class ProductDetails extends AppCompatActivity
                 dataColumns,
                 postThread,
                 postFailThread);
+        asyncTasks.add(common.asyncTask);
     }
     void loadRelatedProducts(){
         final Common common=new Common();
@@ -548,6 +554,7 @@ public class ProductDetails extends AppCompatActivity
                 dataColumns,
                 postThread,
                 postFailThread);
+        asyncTasks.add(common.asyncTask);
     }
     public void buyProduct(View view){
         if(db.GetCustomerDetails("CustomerID")!=null) {
@@ -690,8 +697,7 @@ public class ProductDetails extends AppCompatActivity
                 dataColumns,
                 postThread,
                 postFailThread);
-
-
+        asyncTasks.add(common.asyncTask);
     }
     void getRatingFromCustomer(ArrayList<Attributes> oldRatings){
         //Input ratings from user--------------------------------------------------------------------
@@ -831,6 +837,9 @@ public class ProductDetails extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            for(int i=0;i<asyncTasks.size();i++){
+                asyncTasks.get(i).cancel(true);
+            }
             super.onBackPressed();
         }
     }

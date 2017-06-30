@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.StateListDrawable;
+import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ public class ManageAddresses extends AppCompatActivity {
     String SHIPPING_ADDRESS_ID="";
     String BILLING_ADDRESS_ID="";
     ListView addressList;
+    ArrayList<AsyncTask> asyncTasks=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,7 +169,7 @@ public class ManageAddresses extends AppCompatActivity {
                 dataColumns,
                 postThread,
                 postFailThread);
-
+        asyncTasks.add(common.asyncTask);
     }
     public void setDefault(View view){
         if(((TextView)view).getText().toString().equals(getResources().getString(R.string.default_address))){
@@ -660,5 +662,12 @@ public class ManageAddresses extends AppCompatActivity {
                 dataColumns,
                 postThread,
                 postFailThread);
+    }
+    @Override
+    public void onBackPressed() {
+        for(int i=0;i<asyncTasks.size();i++){
+            asyncTasks.get(i).cancel(true);
+        }
+        super.onBackPressed();
     }
 }

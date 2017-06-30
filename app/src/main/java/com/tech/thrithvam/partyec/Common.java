@@ -180,6 +180,7 @@ class Common {
     //Threading: to load data from a server----------------------------------------
     ArrayList<String[]> dataArrayList=new ArrayList<>();
     String json;
+    AsyncTask asyncTask;
     void AsynchronousThread(final Context context,
                             final String webService,
                             final String postData,
@@ -304,6 +305,6 @@ class Common {
                 }
             }
         }
-        new GetDataFromServer().execute();
+        asyncTask=new GetDataFromServer().execute();
     }
 }

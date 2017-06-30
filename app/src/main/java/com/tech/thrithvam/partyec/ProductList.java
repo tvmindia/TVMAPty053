@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -60,6 +61,7 @@ public class ProductList extends AppCompatActivity
     CardView filterMenu;
     Toolbar toolbar;
     CustomAdapter adapterAllProducts;
+    ArrayList<AsyncTask> asyncTasks=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,6 +135,7 @@ public class ProductList extends AppCompatActivity
                 dataColumns,
                 postThread,
                 null);
+        asyncTasks.add(common.asyncTask);
     }
     void initialProductsHorizontal(int i){
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -259,6 +262,7 @@ public class ProductList extends AppCompatActivity
                                     dataColumns,
                                     postThread,
                                     null);
+                            asyncTasks.add(common.asyncTask);
                         }
                     });
     }
@@ -405,6 +409,7 @@ public class ProductList extends AppCompatActivity
                 dataColumns,
                 postThread,
                 postFailThread);
+        asyncTasks.add(common.asyncTask);
     }
     @Override
     public void onBackPressed() {
@@ -412,6 +417,9 @@ public class ProductList extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            for(int i=0;i<asyncTasks.size();i++){
+                asyncTasks.get(i).cancel(true);
+            }
             super.onBackPressed();
         }
     }
