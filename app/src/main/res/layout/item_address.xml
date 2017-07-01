@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2dp"
-            android:text="LocationName"
+            android:text="-"
             android:textColor="@color/primary_text"
             android:id="@+id/location"/>
     </LinearLayout>
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2dp"
-            android:text="CityName"
+            android:text="-"
             android:textColor="@color/primary_text"
             android:id="@+id/city"/>
     </LinearLayout>
@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2dp"
-            android:text="StateProvince"
+            android:text="-"
             android:textColor="@color/primary_text"
             android:id="@+id/stateprovince"/>
     </LinearLayout>
@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2dp"
-            android:text="CountryName"
+            android:text="-"
             android:textColor="@color/primary_text"
             android:id="@+id/country"/>
     </LinearLayout>
@@ -105,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2dp"
-            android:text="ContactNo"
+            android:text="-"
             android:textColor="@color/primary_text"
             android:id="@+id/contact_no"/>
     </LinearLayout>

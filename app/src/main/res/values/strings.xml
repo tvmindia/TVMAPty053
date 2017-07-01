@@ -174,6 +174,7 @@
     <string name="add_or_change">Add/Change</string>
     <string name="select_this_address">Select this address</string>
     <string name="add_an_address_request">Please add an address</string>
+    <string name="add_an_address_to_your_account_request">Please add an address to your account</string>
     <string name="rate_it">Rate it!</string>
     <string name="approved">Approved</string>
     <string name="approval_pending">Approval pending</string>

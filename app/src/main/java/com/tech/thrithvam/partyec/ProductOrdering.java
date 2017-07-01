@@ -667,12 +667,6 @@ public class ProductOrdering extends AppCompatActivity {
                                                 );
                                             }
                                         });
-                                        selectAddressAlert.setPositiveButton(R.string.new_address,  new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                inputNewAddress();
-                                            }
-                                        });
                                         selectAddressAlert.show();
                                         if (progressDialog.isShowing())
                                             progressDialog.dismiss();
@@ -712,196 +706,6 @@ public class ProductOrdering extends AppCompatActivity {
                 webService,
                 postData,
                 loadingIndicator,
-                dataColumns,
-                postThread,
-                postFailThread);
-    }
-    void inputNewAddress(){
-        final Common common1=new Common();
-        final Common common2=new Common();
-        final ArrayList<String> locations=new ArrayList<>();
-        final ArrayList<String> countries=new ArrayList<>();
-        //Threading for locations--------------------------------------------------
-        String webService="api/customer/GetShippingLocations";
-        String postData =  "";
-        final ProgressDialog progressDialog=new ProgressDialog(ProductOrdering.this);
-        progressDialog.setMessage(getResources().getString(R.string.please_wait));
-        progressDialog.setCancelable(false);progressDialog.show();
-        String[] dataColumns={"ID","Name"};
-        Runnable postThread=new Runnable() {
-            @Override
-            public void run() {
-                String[] notSelect={"",getResources().getString(R.string.not_selecting)};
-                common1.dataArrayList.add(notSelect);
-                for(int i=0;i<common1.dataArrayList.size();i++){
-                    locations.add(common1.dataArrayList.get(i)[1]);
-                }
-                //Threading for countries--------------------------------------------------
-                String webService="api/customer/GetCountries";
-                String postData =  "";
-                String[] dataColumns={"Code","Name"};
-                Runnable postThread=new Runnable() {
-                    @Override
-                    public void run() {
-                        for(int i=0;i<common2.dataArrayList.size();i++){
-                            countries.add(common2.dataArrayList.get(i)[1]);
-                        }
-
-                        //New address alert dialogue box---------------------------------
-                        AlertDialog.Builder newAddressDialogue = new AlertDialog.Builder(ProductOrdering.this);
-                        newAddressDialogue.setIcon(R.drawable.user);
-                        newAddressDialogue.setTitle(R.string.new_address);
-                        final View newAddressView=inflater.inflate(R.layout.item_address_input, null);
-                        ArrayAdapter locationAdapter = new ArrayAdapter<String>(ProductOrdering.this, android.R.layout.simple_spinner_item, locations);
-                        ArrayAdapter countryAdapter = new ArrayAdapter<String>(ProductOrdering.this, android.R.layout.simple_spinner_item, countries);
-                        Spinner locationSpinner=(Spinner) newAddressView.findViewById(R.id.location);
-                        Spinner countrySpinner=(Spinner) newAddressView.findViewById(R.id.country);
-                        locationSpinner.setAdapter(locationAdapter);
-                        countrySpinner.setAdapter(countryAdapter);
-                        newAddressDialogue.setView(newAddressView);
-
-                        newAddressDialogue.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-
-                        newAddressDialogue.setPositiveButton(R.string.ok_button, null);
-                        AlertDialog getAddress=newAddressDialogue.create();
-                        getAddress.setOnShowListener(new DialogInterface.OnShowListener() {
-
-                            @Override
-                            public void onShow(final DialogInterface dialog) {
-                                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                                button.setOnClickListener(new View.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(View view) {
-                                        //New address--
-                                        if(((EditText)newAddressView.findViewById(R.id.first_name)).getText().toString().length()==0){
-                                            ((EditText)newAddressView.findViewById(R.id.first_name)).setError(getResources().getString(R.string.give_valid));
-                                        }
-                                        else if(((EditText)newAddressView.findViewById(R.id.address)).getText().toString().length()==0){
-                                            ((EditText)newAddressView.findViewById(R.id.address)).setError(getResources().getString(R.string.give_valid));
-                                        }
-                                        else if(((EditText)newAddressView.findViewById(R.id.city)).getText().toString().length()==0){
-                                            ((EditText)newAddressView.findViewById(R.id.city)).setError(getResources().getString(R.string.give_valid));
-                                        }
-                                        else if(((EditText)newAddressView.findViewById(R.id.stateprovince)).getText().toString().length()==0){
-                                            ((EditText)newAddressView.findViewById(R.id.stateprovince)).setError(getResources().getString(R.string.give_valid));
-                                        }
-                                        else if(((EditText)newAddressView.findViewById(R.id.contact_no)).getText().toString().length()==0){
-                                            ((EditText)newAddressView.findViewById(R.id.contact_no)).setError(getResources().getString(R.string.give_valid));
-                                        }
-                                        else {
-                                            final Common common3=new Common();
-                                            //Threading--------------------------------------------------
-                                            String webService = "api/Customer/InsertUpdateCustomerAddress";
-                                            String customerAddressJSON = "\"customerAddress\":{";
-                                            customerAddressJSON+="\"ID\":\"" + 0 + "\"," + //0 for new address insertion in repository function
-                                                    "\"CustomerID\":\"" + customerAddress.CustomerID + "\"," +
-                                                    "\"Prefix\":\"" + ((EditText)newAddressView.findViewById(R.id.prefix)).getText().toString() + "\"," +
-                                                    "\"FirstName\":\"" + ((EditText)newAddressView.findViewById(R.id.first_name)).getText().toString() + "\"," +
-                                                    "\"MidName\":\"" + ((EditText)newAddressView.findViewById(R.id.mid_name)).getText().toString() + "\"," +
-                                                    "\"LastName\":\"" + ((EditText)newAddressView.findViewById(R.id.last_name)).getText().toString() + "\"," +
-                                                    "\"Address\":\"" + ((EditText)newAddressView.findViewById(R.id.address)).getText().toString() + "\"," +
-                                                    "\"LocationID\":\"" + common1.dataArrayList.get(((Spinner)newAddressView.findViewById(R.id.location)).getSelectedItemPosition())[0] + "\"," +
-                                                    "\"City\":\"" + ((EditText)newAddressView.findViewById(R.id.city)).getText().toString() + "\"," +
-                                                    "\"CountryCode\":\"" + common2.dataArrayList.get(((Spinner)newAddressView.findViewById(R.id.country)).getSelectedItemPosition())[0] + "\"," +
-                                                    "\"StateProvince\":\"" + ((EditText)newAddressView.findViewById(R.id.stateprovince)).getText().toString() + "\"," +
-                                                    "\"ContactNo\":\"" + ((EditText)newAddressView.findViewById(R.id.contact_no)).getText().toString() + "\"}" ;
-                                            String postData = "{\"ID\":\"" + customerID
-                                                    + "\"," + customerAddressJSON
-                                                    + "}";
-                                            progressDialog.show();
-                                            String[] dataColumns = {"ReturnValues"};
-                                            Runnable postThread = new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    //Displaying
-                                                    try {
-                                                        JSONObject jsonObject=new JSONObject(common3.json);
-                                                        String addressID=jsonObject.optString("ReturnValues");
-
-                                                    setAddressDisplayAndObject(addressView,
-                                                            addressID,
-                                                            ((EditText)newAddressView.findViewById(R.id.prefix)).getText().toString(),
-                                                            ((EditText)newAddressView.findViewById(R.id.first_name)).getText().toString(),
-                                                            ((EditText)newAddressView.findViewById(R.id.mid_name)).getText().toString(),
-                                                            ((EditText)newAddressView.findViewById(R.id.last_name)).getText().toString(),
-                                                            ((EditText)newAddressView.findViewById(R.id.address)).getText().toString(),
-                                                            ((Spinner)newAddressView.findViewById(R.id.location)).getSelectedItem().toString(),
-                                                            ((EditText)newAddressView.findViewById(R.id.city)).getText().toString(),
-                                                            ((EditText)newAddressView.findViewById(R.id.stateprovince)).getText().toString(),
-                                                            "{\"Code\":\""+common2.dataArrayList.get(((Spinner)newAddressView.findViewById(R.id.country)).getSelectedItemPosition())[0]+"\",\"Name\":\""+common2.dataArrayList.get(((Spinner)newAddressView.findViewById(R.id.country)).getSelectedItemPosition())[1]+"\"}",
-                                                            ((EditText)newAddressView.findViewById(R.id.contact_no)).getText().toString(),
-                                                            common1.dataArrayList.get(((Spinner)newAddressView.findViewById(R.id.location)).getSelectedItemPosition())[0]
-                                                    );
-                                                    //Adding to address arraylist;
-                                                    dialog.dismiss();
-                                                    if (progressDialog.isShowing())
-                                                        progressDialog.dismiss();
-                                                    } catch (JSONException e) {
-                                                        Common.toastMessage(ProductOrdering.this,R.string.some_error_at_server);
-                                                    }
-                                                }
-                                            };
-                                            Runnable postFailThread = new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    Common.toastMessage(ProductOrdering.this,R.string.some_error_at_server);
-                                                    if (progressDialog.isShowing())
-                                                        progressDialog.dismiss();
-                                                }
-                                            };
-                                            common3.AsynchronousThread(ProductOrdering.this,
-                                                    webService,
-                                                    postData,
-                                                    null,
-                                                    dataColumns,
-                                                    postThread,
-                                                    postFailThread);
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                        getAddress.show();
-                        if (progressDialog.isShowing())
-                            progressDialog.dismiss();
-                    }
-                };
-                Runnable postFailThread=new Runnable() {
-                    @Override
-                    public void run() {
-                        if (progressDialog.isShowing())
-                            progressDialog.dismiss();
-                        Common.toastMessage(ProductOrdering.this,R.string.some_error_at_server);
-                    }
-                };
-                common2.AsynchronousThread(ProductOrdering.this,
-                        webService,
-                        postData,
-                        null,
-                        dataColumns,
-                        postThread,
-                        postFailThread);
-
-            }
-        };
-        Runnable postFailThread=new Runnable() {
-            @Override
-            public void run() {
-                if (progressDialog.isShowing())
-                    progressDialog.dismiss();
-                Common.toastMessage(ProductOrdering.this,R.string.some_error_at_server);
-            }
-        };
-        common1.AsynchronousThread(ProductOrdering.this,
-                webService,
-                postData,
-                null,
                 dataColumns,
                 postThread,
                 postFailThread);
@@ -1082,7 +886,10 @@ public class ProductOrdering extends AppCompatActivity {
                 requiredDate.requestFocus();
                 return;
             }
-
+            if (customerAddress.ID==null || customerAddress.ID.equals("")){
+                Common.toastMessage(ProductOrdering.this,R.string.add_an_address_to_your_account_request);
+                return;
+            }
             view.setVisibility(GONE);
             //----------------------JSON Making---------------------------
             String attributeValuesJSON = "\"AttributeValues\":[";
