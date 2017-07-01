@@ -734,7 +734,7 @@ public class ProductDetails extends AppCompatActivity
                 dialog.dismiss();
             }
         });
-        final AlertDialog popup=ratingsDialogue.create();
+        AlertDialog popup=ratingsDialogue.create();
         (ratingsAndReviewsView.findViewById(R.id.previous_reviews)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -743,7 +743,6 @@ public class ProductDetails extends AppCompatActivity
                 intent.putExtra("productID",productID);
                 intent.putExtra("productName",productName);
                 startActivity(intent);
-                popup.dismiss();
             }
         });
         popup.setOnShowListener(new DialogInterface.OnShowListener() {
