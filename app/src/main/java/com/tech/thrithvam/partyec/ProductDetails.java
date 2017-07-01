@@ -705,7 +705,7 @@ public class ProductDetails extends AppCompatActivity
         //Ratings alert dialogue box---------------------------------
         final AlertDialog.Builder ratingsDialogue = new AlertDialog.Builder(ProductDetails.this);
 //        ratingsDialogue.setIcon(R.drawable.wishlist);
-        ratingsDialogue.setTitle(R.string.rate_it);
+     //   ratingsDialogue.setTitle(R.string.rate_it);
         LayoutInflater inflater= (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View ratingsAndReviewsView=inflater.inflate(R.layout.item_ratings_and_reviews_input, null);
         final ArrayList<MaterialRatingBar> ratingBars=new ArrayList<>();

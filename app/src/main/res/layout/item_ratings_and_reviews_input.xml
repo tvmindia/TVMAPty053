@@ -3,6 +3,20 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true">
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="4dp"
+        android:background="@color/colorAccent"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/rate_it"
+        android:textSize="19sp"
+        android:textColor="@color/primary_text"
+        android:layout_margin="5dp"
+        android:paddingLeft="5dp"
+        android:paddingStart="5dp"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -10,7 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="5dp"
+            android:layout_margin="5dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
