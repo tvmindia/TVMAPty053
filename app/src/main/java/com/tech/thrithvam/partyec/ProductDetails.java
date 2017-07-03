@@ -734,14 +734,8 @@ public class ProductDetails extends AppCompatActivity
         }
 
         ratingsDialogue.setView(ratingsAndReviewsView);
-        ratingsDialogue.setPositiveButton(R.string.submit, null);//
-        ratingsDialogue.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog popup=ratingsDialogue.create();
+        ratingsDialogue.setPositiveButton(R.string.submit, null);
+        final AlertDialog popup=ratingsDialogue.create();
         (ratingsAndReviewsView.findViewById(R.id.previous_reviews)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -750,6 +744,12 @@ public class ProductDetails extends AppCompatActivity
                 intent.putExtra("productID",productID);
                 intent.putExtra("productName",productName);
                 startActivity(intent);
+            }
+        });
+        (ratingsAndReviewsView.findViewById(R.id.close_icon)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popup.dismiss();
             }
         });
         popup.setOnShowListener(new DialogInterface.OnShowListener() {
