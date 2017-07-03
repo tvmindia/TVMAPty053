@@ -73,8 +73,6 @@ public class Cart extends AppCompatActivity {
         customerID=db.GetCustomerDetails("CustomerID");
         //Load customer's shopping cart-------------------------
         loadCart();
-        //Load customer address-----------------------------------
-        getCustomerAddress();
         //Payment method-----------
         ((RadioGroup)findViewById(R.id.payment_method)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -123,6 +121,9 @@ public class Cart extends AppCompatActivity {
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
+                //Load customer address-----------------------------------
+                getCustomerAddress();
+
                 //Attributes parsing
                 for (int i=0;i<common.dataArrayList.size();i++){
                     String attributesString="";
