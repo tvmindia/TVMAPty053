@@ -25,61 +25,17 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:animateLayoutChanges="true">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
-    android:onClick="rateProduct">
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Supplier Name"
-    android:textColor="@color/primary_text"
-    android:padding="5dp"
-    android:textSize="12sp"
-    android:id="@+id/supplier_name"/>
-           <!-- <android.support.v7.widget.AppCompatRatingBar
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                style="?android:attr/ratingBarStyleSmall"
-                android:numStars="5"
-                android:stepSize="0.1"
-                android:isIndicator="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="3dp"
+                android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginEnd="5dp"
-                android:visibility="gone"/>-->
-    <me.zhanghai.android.materialratingbar.MaterialRatingBar
-        android:layout_width="100dp"
-        android:id="@+id/avg_rating_bar"
-        android:layout_height="20dp"
-        android:isIndicator="true"
-        android:stepSize="0.1"
-        style="@style/Widget.MaterialRatingBar.RatingBar"
-        app:mrb_progressTint="#FFF9DB01"
-        app:mrb_progressBackgroundTint="#FFF9DB01"
-        app:mrb_secondaryProgressTint="#FFF9DB01"
-        android:numStars="5"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="5dp"
-        android:layout_marginEnd="5dp"
-        android:visibility="gone"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/rate_it"
-        android:textColor="@color/colorAccent"
-        android:layout_below="@id/avg_rating_bar"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:paddingRight="5dp"
-        android:paddingEnd="5dp"
-        android:textSize="13sp"
-        android:onClick="rateProduct"/>
-</RelativeLayout>
+                android:src="@drawable/wishlist"
+                android:tint="@color/colorAccent"
+                android:onClick="toggleWishlist"
+                android:id="@+id/is_fav_image"
+                android:layout_gravity="end"/>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -141,10 +97,56 @@
                 android:layout_height="wrap_content"
                 android:text="Product Name"
                 android:textColor="@color/primary_text"
-                android:padding="5dp"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:textSize="12sp"
                 android:id="@+id/product_name"
                 android:gravity="center"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:onClick="rateProduct">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Supplier Name"
+                    android:textColor="@color/primary_text"
+                    android:textSize="12sp"
+                    android:id="@+id/supplier_name"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"/>
+                <me.zhanghai.android.materialratingbar.MaterialRatingBar
+                    android:layout_width="100dp"
+                    android:id="@+id/avg_rating_bar"
+                    android:layout_height="20dp"
+                    android:isIndicator="true"
+                    android:stepSize="0.1"
+                    style="@style/Widget.MaterialRatingBar.RatingBar"
+                    app:mrb_progressTint="#FFF9DB01"
+                    app:mrb_progressBackgroundTint="#FFF9DB01"
+                    app:mrb_secondaryProgressTint="#FFF9DB01"
+                    android:numStars="5"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:visibility="gone"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rate_it"
+                    android:textColor="@color/colorAccent"
+                    android:layout_below="@id/avg_rating_bar"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:paddingRight="5dp"
+                    android:paddingEnd="5dp"
+                    android:textSize="13sp"
+                    android:onClick="rateProduct"/>
+            </RelativeLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -217,28 +219,14 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-<ImageView
-    android:layout_width="40dp"
-    android:layout_height="40dp"
-    android:padding="3dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:src="@drawable/wishlist"
-    android:tint="@color/colorAccent"
-    android:onClick="toggleWishlist"
-    android:id="@+id/is_fav_image"
-    android:layout_centerVertical="true"
-    android:layout_alignParentStart="true"
-    android:layout_alignParentLeft="true"/>
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="end"
     android:animateLayoutChanges="true"
-    android:padding="5dp"
-    android:layout_toRightOf="@+id/is_fav_image"
-    android:layout_toEndOf="@+id/is_fav_image">
+    android:padding="5dp">
 
                 <Button
                     android:layout_width="wrap_content"
