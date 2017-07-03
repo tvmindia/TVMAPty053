@@ -315,7 +315,7 @@ public class ProductDetails extends AppCompatActivity
                 postFailThread);
         asyncTasks.add(common.asyncTask);
     }
-    void loadProductRatings(final Boolean isRefresh){
+    void loadProductRatings(final Boolean isRefresh){//No need to call further functions like load reviews if it is a call for refresh ratings
         final Common common=new Common();
         final LinearLayout productRatingLinear=(LinearLayout)findViewById(R.id.ratings_linear);
         productRatingLinear.removeAllViews();
