@@ -320,6 +320,10 @@ public class RegisterEvent extends AppCompatActivity
     }
     public void getLookingForItemsFromUser(View view)
     {
+        if(!(lookingForItemsAvailable.size()>0)){
+            Common.toastMessage(RegisterEvent.this,R.string.select_event_type);
+            return;
+        }
         lookingFor.setError(null);
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.looking_for)
