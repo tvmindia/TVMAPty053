@@ -222,7 +222,7 @@ public class ProductDetails extends AppCompatActivity
                 //Product Images Loading------------------
                 loadProductImages();
                 //Product rating loading--------------------
-                loadProductRatings();
+                loadProductRatings(false);
             }
         };
         common.AsynchronousThread(ProductDetails.this,
@@ -315,9 +315,10 @@ public class ProductDetails extends AppCompatActivity
                 postFailThread);
         asyncTasks.add(common.asyncTask);
     }
-    void loadProductRatings(){
+    void loadProductRatings(final Boolean isRefresh){
         final Common common=new Common();
         final LinearLayout productRatingLinear=(LinearLayout)findViewById(R.id.ratings_linear);
+        productRatingLinear.removeAllViews();
         final LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //Threading--------------------------------------------------
         String webService="api/product/GetProductRatings";
@@ -347,22 +348,28 @@ public class ProductDetails extends AppCompatActivity
                         findViewById(R.id.avg_rating_bar).setVisibility(View.VISIBLE);
                     }
                     //Rating attributes saving
-                    saveRatingAttributes(common.json);
+                    if(!isRefresh) {
+                        saveRatingAttributes(common.json);
+                    }
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
                 }
                 //Reviews
-                loadProductReviews();
+                if(!isRefresh) {
+                    loadProductReviews();
+                }
             }
         };
         Runnable postFailThread=new Runnable() {
             @Override
             public void run() {
-                //Rating attributes saving
-                saveRatingAttributes(common.json);
-                //Load reviews
-                loadProductReviews();
+                if(!isRefresh) {
+                    //Rating attributes saving
+                    saveRatingAttributes(common.json);
+                    //Load reviews
+                    loadProductReviews();
+                }
             }
         };
         common.AsynchronousThread(ProductDetails.this,
@@ -805,6 +812,7 @@ public class ProductDetails extends AppCompatActivity
                             public void run() {
                                 if (progressDialog.isShowing())
                                     progressDialog.dismiss();
+                                loadProductRatings(true);
                             }
                         };
                         Runnable postFailThread = new Runnable() {
