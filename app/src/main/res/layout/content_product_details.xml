@@ -169,10 +169,23 @@
         android:text="Stock availability"
         android:textColor="@color/secondary_text"
         android:padding="5dp"
-        android:layout_above="@+id/actual_price"
+        android:layout_alignBottom="@+id/price"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:id="@+id/stock_availability"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="product details"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingLeft="5dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/product_detail_specs"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="12sp"
+                    />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -180,12 +193,13 @@
         android:textColor="@color/primary_text"
         android:textSize="20sp"
         android:paddingRight="5dp"
-        android:paddingTop="5dp"
         android:paddingLeft="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:id="@+id/price"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/product_detail_specs"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

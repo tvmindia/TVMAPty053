@@ -156,12 +156,41 @@ public class ProductDetails extends AppCompatActivity
                         } else {
                             (findViewById(R.id.price)).setVisibility(GONE);
                             (findViewById(R.id.actual_price)).setVisibility(GONE);
+                            (findViewById(R.id.product_detail_specs)).setVisibility(GONE);
                         }
 
                         if (jsonRootObject.optBoolean("FreeDelivery"))
                             findViewById(R.id.free_delivery).setVisibility(View.VISIBLE);
                         else
                             findViewById(R.id.free_delivery).setVisibility(GONE);
+
+                        //product detail specs
+                        String prodDetailSpecs="";
+                        JSONArray prodDetails=jsonRootObject.optJSONArray("ProductDetails");
+                        if(prodDetails!=null && prodDetails.length()!=0){
+                            for(int i=0;i<prodDetails.length();i++){
+                                JSONObject jsonObject = prodDetails.getJSONObject(i);
+                                if(jsonObject.optBoolean("DefaultOption")){
+                                    JSONArray productAttributes=jsonObject.optJSONArray("ProductAttributes");
+                                    if(productAttributes!=null && productAttributes.length()!=0) {
+                                        for (int j = 0; j < productAttributes.length(); j++) {
+                                            JSONObject attribute = productAttributes.getJSONObject(j);
+                                            prodDetailSpecs+=attribute.optString("Caption")
+                                                                + " : "
+                                                                    + attribute.optString("Value")
+                                                                        +", ";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (prodDetailSpecs.lastIndexOf(",") > 0) {
+                            prodDetailSpecs = prodDetailSpecs.substring(0, prodDetailSpecs.lastIndexOf(","));
+                        }
+                        if(prodDetailSpecs.length()!=0)
+                            ((TextView)findViewById(R.id.product_detail_specs)).setText(prodDetailSpecs);
+                        else
+                            (findViewById(R.id.product_detail_specs)).setVisibility(GONE);
                     }
                     else {
                         (findViewById(R.id.price_n_stock)).setVisibility(GONE);
