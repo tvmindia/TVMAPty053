@@ -158,19 +158,20 @@ class CustomAdapter extends BaseAdapter{
                         holder.stickerImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[3],
                         0);
-                holder.totalPrice.setVisibility(View.VISIBLE);
-                holder.actualPrice.setVisibility(View.VISIBLE);
-                holder.totalPrice.setText(adapterContext.getResources().getString(R.string.price_display, (filteredObjects.get(position)[4]).equals("null")|| (filteredObjects.get(position)[4].equals("0.0")) ? "" : filteredObjects.get(position)[4]));
-                if(!(filteredObjects.get(position)[5].equals("null"))   &&  !(Double.parseDouble(filteredObjects.get(position)[5])==0)) {
-                    holder.actualPrice.setPaintFlags(holder.actualPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                    String actualPriceString = String.format(Locale.US, "%.2f",
-                            ((filteredObjects.get(position)[4]).equals("null") ? 0.0 : Double.parseDouble(filteredObjects.get(position)[4]))
-                                    +
-                                    ((filteredObjects.get(position)[5]).equals("null") ? 0.0 : Double.parseDouble(filteredObjects.get(position)[5])));
-                    holder.actualPrice.setText(adapterContext.getResources().getString(R.string.price_display, actualPriceString));
-                }
-                else {
-                    holder.actualPrice.setText("");
+                if(!(filteredObjects.get(position)[5].equals("null")) && Double.parseDouble(filteredObjects.get(position)[4])!=0) {
+                    holder.totalPrice.setVisibility(View.VISIBLE);
+                    holder.actualPrice.setVisibility(View.VISIBLE);
+                    holder.totalPrice.setText(adapterContext.getResources().getString(R.string.price_display, (filteredObjects.get(position)[4]).equals("null") || (filteredObjects.get(position)[4].equals("0.0")) ? "" : filteredObjects.get(position)[4]));
+                    if (!(filteredObjects.get(position)[5].equals("null")) && !(Double.parseDouble(filteredObjects.get(position)[5]) == 0)) {
+                        holder.actualPrice.setPaintFlags(holder.actualPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                        String actualPriceString = String.format(Locale.US, "%.2f",
+                                ((filteredObjects.get(position)[4]).equals("null") ? 0.0 : Double.parseDouble(filteredObjects.get(position)[4]))
+                                        +
+                                        ((filteredObjects.get(position)[5]).equals("null") ? 0.0 : Double.parseDouble(filteredObjects.get(position)[5])));
+                        holder.actualPrice.setText(adapterContext.getResources().getString(R.string.price_display, actualPriceString));
+                    } else {
+                        holder.actualPrice.setText("");
+                    }
                 }
                 break;
             //--------------------------for reviews list items------------------
