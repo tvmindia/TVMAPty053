@@ -520,7 +520,7 @@ public class ProductDetails extends AppCompatActivity
                     ((ImageView)(productItem.findViewById(R.id.sticker))).getLayoutParams().height=50;
                     Common.LoadImage(ProductDetails.this, relatedProductImage ,getResources().getString(R.string.url)+common.dataArrayList.get(i)[2], R.drawable.dim_icon);
                     Common.LoadImage(ProductDetails.this, (ImageView)(productItem.findViewById(R.id.sticker)),getResources().getString(R.string.url)+common.dataArrayList.get(i)[3],0);
-                    (productItem.findViewById(R.id.dim_icon)).setVisibility(GONE);
+
                     final int Fi=i;
                     productItem.setOnClickListener(new View.OnClickListener() {
                         @Override

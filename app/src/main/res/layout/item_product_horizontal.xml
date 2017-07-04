@@ -63,6 +63,16 @@
                 android:textColor="@color/secondary_text"
                 android:visibility="gone"
                 android:textSize="12sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:id="@+id/stock_availability"
+                android:textColor="@color/secondary_text"
+                android:visibility="visible"
+                android:textSize="12sp"/>
         </RelativeLayout>
 </LinearLayout>
     </RelativeLayout>

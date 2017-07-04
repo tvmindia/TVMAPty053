@@ -69,7 +69,7 @@ class CustomAdapter extends BaseAdapter{
         //Navigation Category List----------
         TextView navCatName, itemsCount;
         //All products list-----------------
-        TextView productName,actualPrice;
+        TextView productName,actualPrice,stockAvailability;
         ImageView productImage,stickerImage;
         //Product Reviews-------------------
         TextView customerName, reviewDate, review,isApproved;
@@ -144,6 +144,7 @@ class CustomAdapter extends BaseAdapter{
                     holder.stickerImage=(ImageView) convertView.findViewById(R.id.sticker);
                     holder.totalPrice=(TextView)convertView.findViewById(R.id.total_price);
                     holder.actualPrice=(TextView)convertView.findViewById(R.id.actual_price);
+                    holder.stockAvailability=(TextView)convertView.findViewById(R.id.stock_availability);
                     convertView.setTag(holder);
                 } else {
                     holder = (Holder) convertView.getTag();
@@ -172,6 +173,15 @@ class CustomAdapter extends BaseAdapter{
                     } else {
                         holder.actualPrice.setText("");
                     }
+                }
+                if(!(filteredObjects.get(position)[6].equals("null"))){
+                        if(Boolean.parseBoolean(filteredObjects.get(position)[6])){
+                            holder.stockAvailability.setText(R.string.in_stock);
+                            holder.stockAvailability.setTextColor(adapterContext.getResources().getColor(android.R.color.holo_green_dark));
+                        } else {
+                            holder.stockAvailability.setText(R.string.out_of_stock);
+                            holder.stockAvailability.setTextColor(adapterContext.getResources().getColor(android.R.color.holo_red_light));
+                        }
                 }
                 break;
             //--------------------------for reviews list items------------------

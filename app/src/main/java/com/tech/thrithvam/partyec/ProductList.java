@@ -148,7 +148,6 @@ public class ProductList extends AppCompatActivity
                 (ImageView)(productItem.findViewById(R.id.product_image)),
                 getResources().getString(R.string.url)+initialProducts.get(i)[1],
                 R.drawable.dim_icon);
-        (productItem.findViewById(R.id.dim_icon)).setVisibility(GONE);
         Common.LoadImage(ProductList.this,
                 (ImageView)(productItem.findViewById(R.id.sticker)),
                 getResources().getString(R.string.url)+initialProducts.get(i)[3],
@@ -225,13 +224,14 @@ public class ProductList extends AppCompatActivity
                                         JSONArray jsonArray =jsonRootObject.optJSONArray("Products");
                                         for (int i = 0; i < jsonArray.length(); i++) {
                                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                            String[] data = new String[6];
+                                            String[] data = new String[7];
                                             data[0] = jsonObject.optString("Name");
                                             data[1] = jsonObject.optString("ImageURL");
                                             data[2] = jsonObject.optString("ID");
                                             data[3] = jsonObject.optString("StickerURL");
                                             data[4] = jsonObject.optString("TotalPrice");
                                             data[5] = jsonObject.optString("DiscountAmount");
+                                            data[6] = jsonObject.optString("StockAvailable");
                                             allProducts.add(data);
                                         }
                                     } catch (JSONException e) {
@@ -387,7 +387,7 @@ public class ProductList extends AppCompatActivity
 
 
         String postData =  "{\"filterCriteriaCSV\":\""+filterCategoryCodes+"\"}";
-        String[] dataColumns={"Name","ImageURL","ID","StickerURL","TotalPrice","DiscountAmount"};
+        String[] dataColumns={"Name","ImageURL","ID","StickerURL","TotalPrice","DiscountAmount","StockAvailable"};
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
