@@ -55,6 +55,7 @@ public class ProductList extends AppCompatActivity
     ArrayList<String[]> navigationCategories=new ArrayList<>();
     AVLoadingIndicatorView loadingIndicator;
     ArrayList<String[]> allProducts=new ArrayList<>();
+    ArrayList<String[]> currentProducts;//=new ArrayList<>();
     ArrayList<String[]> filterCategories=new ArrayList<>();
     RelativeLayout productsAndNavigationRelativeView,allProductsRelativeView;
     GridView allProductsGrid;
@@ -240,6 +241,7 @@ public class ProductList extends AppCompatActivity
                                     if(allProducts.size()==0) (findViewById(R.id.no_items)).setVisibility(View.VISIBLE);
                                     else (findViewById(R.id.no_items)).setVisibility(GONE);
                                     adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts",0);
+                                    currentProducts=allProducts;
                                     allProductsGrid.setAdapter(adapterAllProducts);
                                     productsAndNavigationRelativeView.setVisibility(GONE);
                                     allProductsRelativeView.setVisibility(View.VISIBLE);
@@ -377,8 +379,10 @@ public class ProductList extends AppCompatActivity
         TextView filterNames=(TextView)findViewById(R.id.filter_names);
         if(filterCategoryCodes.equals("")){//No filters applied
             CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts",viewState);
+            currentProducts=allProducts;
             allProductsGrid.setAdapter(adapterAllProducts);
             filterNames.setVisibility(GONE);
+            menu.findItem(R.id.filter).getIcon().clearColorFilter();
             return;
         }
         filtersName=filtersName.substring(0,filtersName.lastIndexOf(","));
@@ -392,6 +396,7 @@ public class ProductList extends AppCompatActivity
             @Override
             public void run() {
                 CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, common.dataArrayList,"AllProducts",viewState);
+                currentProducts=common.dataArrayList;
                 allProductsGrid.setAdapter(adapterAllProducts);
             }
         };
@@ -491,21 +496,21 @@ public class ProductList extends AppCompatActivity
             if(viewState==0){
                 item.setIcon(R.drawable.view_single);
                 viewState++;
-                CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts",1);
+                CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, currentProducts,"AllProducts",1);
                 allProductsGrid.setNumColumns(1);
                 allProductsGrid.setAdapter(adapterAllProducts);
             }
             else if(viewState==1){
                 item.setIcon(R.drawable.view_grid);
                 viewState++;
-                CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts",2);
+                CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, currentProducts,"AllProducts",2);
                 allProductsGrid.setNumColumns(1);
                 allProductsGrid.setAdapter(adapterAllProducts);
             }
             else if(viewState==2){
                 item.setIcon(R.drawable.view_horizontal);
                 viewState=0;
-                CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, allProducts,"AllProducts",0);
+                CustomAdapter adapterAllProducts=new CustomAdapter(ProductList.this, currentProducts,"AllProducts",0);
                 allProductsGrid.setNumColumns(2);
                 allProductsGrid.setAdapter(adapterAllProducts);
             }
