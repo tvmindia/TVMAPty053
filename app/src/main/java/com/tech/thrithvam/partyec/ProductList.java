@@ -387,7 +387,7 @@ public class ProductList extends AppCompatActivity
 
 
         String postData =  "{\"filterCriteriaCSV\":\""+filterCategoryCodes+"\"}";
-        String[] dataColumns={"Name","ImageURL","ID"};
+        String[] dataColumns={"Name","ImageURL","ID","StickerURL","TotalPrice","DiscountAmount"};
         Runnable postThread=new Runnable() {
             @Override
             public void run() {
