@@ -294,7 +294,12 @@ public class ProductDetails extends AppCompatActivity
                         @Override
                         public void onClick(View v) {
                             Intent photoViewIntent=new Intent(ProductDetails.this,ImageViewer.class);
-                            photoViewIntent.putExtra("imageUrl",getResources().getString(R.string.url)+productImages.get(imageSlides.getDisplayedChild())[1]);
+                            ArrayList<String> imageURLs=new ArrayList<>();
+                            for(int i=0;i<productImages.size();i++){
+                                imageURLs.add(getString(R.string.url)+productImages.get(i)[1]);
+                            }
+                            photoViewIntent.putExtra("imageURLs",imageURLs);
+                            photoViewIntent.putExtra("position",imageSlides.getDisplayedChild());
                             startActivity(photoViewIntent);
                         }
                     });
