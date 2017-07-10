@@ -225,7 +225,7 @@ public class ProductList extends AppCompatActivity
                                         JSONArray jsonArray =jsonRootObject.optJSONArray("Products");
                                         for (int i = 0; i < jsonArray.length(); i++) {
                                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                            String[] data = new String[7];
+                                            String[] data = new String[8];
                                             data[0] = jsonObject.optString("Name");
                                             data[1] = jsonObject.optString("ImageURL");
                                             data[2] = jsonObject.optString("ID");
@@ -233,6 +233,7 @@ public class ProductList extends AppCompatActivity
                                             data[4] = jsonObject.optString("TotalPrice");
                                             data[5] = jsonObject.optString("DiscountAmount");
                                             data[6] = jsonObject.optString("StockAvailable");
+                                            data[7] = jsonObject.optString("SupplierName");
                                             allProducts.add(data);
                                         }
                                     } catch (JSONException e) {
@@ -303,7 +304,7 @@ public class ProductList extends AppCompatActivity
             filterApplyButton.setBackgroundResource(R.drawable.button);
             filterApplyButton.setTextColor(Color.WHITE);
             filterApplyButton.setGravity(Gravity.CENTER);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(100, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.weight = 1.0f;
             params.setMargins(0,0,0,5);
             params.gravity = Gravity.END;
@@ -391,7 +392,7 @@ public class ProductList extends AppCompatActivity
 
 
         String postData =  "{\"filterCriteriaCSV\":\""+filterCategoryCodes+"\"}";
-        String[] dataColumns={"Name","ImageURL","ID","StickerURL","TotalPrice","DiscountAmount","StockAvailable"};
+        String[] dataColumns={"Name","ImageURL","ID","StickerURL","TotalPrice","DiscountAmount","StockAvailable","SupplierName"};
         Runnable postThread=new Runnable() {
             @Override
             public void run() {

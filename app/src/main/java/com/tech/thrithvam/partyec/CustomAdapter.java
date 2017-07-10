@@ -69,7 +69,7 @@ class CustomAdapter extends BaseAdapter{
         //Navigation Category List----------
         TextView navCatName, itemsCount;
         //All products list-----------------
-        TextView productName,actualPrice,stockAvailability;
+        TextView productName,actualPrice,stockAvailability,supplierName;
         ImageView productImage,stickerImage;
         //Product Reviews-------------------
         TextView customerName, reviewDate, review,isApproved;
@@ -145,6 +145,7 @@ class CustomAdapter extends BaseAdapter{
                     holder.totalPrice=(TextView)convertView.findViewById(R.id.total_price);
                     holder.actualPrice=(TextView)convertView.findViewById(R.id.actual_price);
                     holder.stockAvailability=(TextView)convertView.findViewById(R.id.stock_availability);
+                    holder.supplierName=(TextView)convertView.findViewById(R.id.supplier_name);
                     convertView.setTag(holder);
                 } else {
                     holder = (Holder) convertView.getTag();
@@ -159,7 +160,7 @@ class CustomAdapter extends BaseAdapter{
                         holder.stickerImage,
                         adapterContext.getResources().getString(R.string.url)+filteredObjects.get(position)[3],
                         0);
-                if(!(filteredObjects.get(position)[5].equals("null")) && Double.parseDouble(filteredObjects.get(position)[4])!=0) {
+                if(!(filteredObjects.get(position)[4].equals("null")) && Double.parseDouble(filteredObjects.get(position)[4])!=0) {
                     holder.totalPrice.setVisibility(View.VISIBLE);
                     holder.actualPrice.setVisibility(View.VISIBLE);
                     holder.totalPrice.setText(adapterContext.getResources().getString(R.string.price_display, (filteredObjects.get(position)[4]).equals("null") || (filteredObjects.get(position)[4].equals("0.0")) ? "" : filteredObjects.get(position)[4]));
@@ -183,6 +184,10 @@ class CustomAdapter extends BaseAdapter{
                             holder.stockAvailability.setTextColor(adapterContext.getResources().getColor(android.R.color.holo_red_light));
                         }
                 }
+                else {
+                    holder.stockAvailability.setText("");
+                }
+                holder.supplierName.setText(filteredObjects.get(position)[7].equals("null")?"":filteredObjects.get(position)[7]);
                 break;
             //--------------------------for reviews list items------------------
             case "ReviewList":
