@@ -301,10 +301,11 @@ public class ProductList extends AppCompatActivity
         if(filterCategories.size()>0){
             TextView filterApplyButton= new TextView(ProductList.this);
             filterApplyButton.setText(R.string.apply);
+            filterApplyButton.setTextSize(10);
             filterApplyButton.setBackgroundResource(R.drawable.button);
             filterApplyButton.setTextColor(Color.WHITE);
             filterApplyButton.setGravity(Gravity.CENTER);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(120, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.weight = 1.0f;
             params.setMargins(0,0,0,5);
             params.gravity = Gravity.END;
