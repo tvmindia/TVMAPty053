@@ -226,16 +226,22 @@ public class CategoryList extends AppCompatActivity
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+
+                Intent searchIntent=new Intent(CategoryList.this,Search.class);
+                searchIntent.putExtra("searchkey",searchView.getQuery().toString().trim());
+                startActivity(searchIntent);
+                finish();
+                return true;
+
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(adapter!=null){
+                if(adapter!=null){//for searching in category names
                     adapter.getFilter(1).filter(searchView.getQuery().toString().trim());
                     TextView noItems=(TextView)findViewById(R.id.no_items);
                     noItems.setVisibility(categoryListView.getChildCount()>0?View.INVISIBLE:View.VISIBLE);
                 }
-                return true;
+               return false;
             }
         });
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
