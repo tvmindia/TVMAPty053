@@ -181,4 +181,5 @@
     <string name="request_to_provide_input">Please provide %1$s</string>
     <string name="please_select_location">Please select shipping address having location</string>
     <string name="title_activity_search">Search</string>
+    <string name="enter_to_search">Enter to search in products</string>
 </resources>
