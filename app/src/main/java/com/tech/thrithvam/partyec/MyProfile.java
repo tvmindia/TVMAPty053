@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.wang.avi.AVLoadingIndicatorView;
 
 public class MyProfile extends AppCompatActivity
@@ -45,6 +46,8 @@ public class MyProfile extends AppCompatActivity
             ((TextView)findViewById(R.id.name)).setText(db.GetCustomerDetails("Name"));
             ((TextView)findViewById(R.id.mob_no)).setText(db.GetCustomerDetails("Mobile"));
             ((TextView)findViewById(R.id.email)).setText(db.GetCustomerDetails("Email"));
+
+            FirebaseMessaging.getInstance().subscribeToTopic(db.GetCustomerDetails("CustomerID"));
         }
         //-----------------------------------------------------------------------------
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
