@@ -7,5 +7,48 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.tech.thrithvam.partyec.Search"
     tools:showIn="@layout/app_bar_search">
+    <com.wang.avi.AVLoadingIndicatorView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:indicatorName="BallClipRotateMultipleIndicator"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        app:indicatorColor="@color/colorAccent"
+        android:id="@+id/loading_indicator"
+        />
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="2"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:id="@+id/all_products_grid"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:scrollbars="none"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:clipToPadding="false"
+        android:layout_below="@id/filter_names"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_to_search"
+        android:textColor="@color/secondary_text"
+        android:layout_centerHorizontal="true"
+        android:padding="5dp"
+        android:id="@+id/enter_to_search"
+        android:visibility="invisible"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_items"
+        android:textColor="@color/secondary_text"
+        android:layout_centerHorizontal="true"
+        android:padding="5dp"
+        android:id="@+id/no_items"
+        android:visibility="invisible"/>
 
 </RelativeLayout>
