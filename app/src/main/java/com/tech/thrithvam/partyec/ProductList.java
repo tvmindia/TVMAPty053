@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -140,10 +141,12 @@ public class ProductList extends AppCompatActivity
     }
     void initialProductsHorizontal(int i){
         LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View productItem=inflater.inflate(R.layout.item_product_grid, null);
+        View productItem=inflater.inflate(R.layout.item_initial_product, null);
         LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT,1.0f);
         params.setMargins(5,5,5,5);
         productItem.setLayoutParams(params);
+        ((TextView)(productItem.findViewById(R.id.product_name))).setMaxLines(1);
+        ((TextView)(productItem.findViewById(R.id.product_name))).setEllipsize(TextUtils.TruncateAt.END);
         ((TextView)(productItem.findViewById(R.id.product_name))).setText(initialProducts.get(i)[0]);
         Common.LoadImage(ProductList.this,
                 (ImageView)(productItem.findViewById(R.id.product_image)),

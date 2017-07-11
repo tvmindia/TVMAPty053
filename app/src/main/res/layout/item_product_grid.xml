@@ -6,7 +6,7 @@
     android:layout_margin="5dp">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="260dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,18 +69,22 @@
                 android:textSize="12sp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                />
+                android:layout_toRightOf="@+id/total_price"
+                android:layout_toEndOf="@+id/total_price" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
+                android:gravity="end"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:id="@+id/stock_availability"
                 android:textColor="@color/secondary_text"
                 android:layout_below="@id/supplier_name"
                 android:visibility="visible"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                android:layout_toRightOf="@+id/actual_price"
+                android:layout_toEndOf="@+id/actual_price" />
         </RelativeLayout>
     </RelativeLayout>
         <ImageView
