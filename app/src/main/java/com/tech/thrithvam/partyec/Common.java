@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.IntentCompat;
 import android.util.Base64;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -34,7 +35,7 @@ import java.util.logging.Logger;
 class Common {
 
     //Constants-----------------------
-    String MobileNumberRegularExpression = "^[0-9]*$";
+    //String MobileNumberRegularExpression = "^[0-9]*$";
     String UserNameRegularExpression="^[a-zA-Z\\. ]+$";                 //^[a-z0-9_-]{3,15}$
 
     //To load navigation panel menu items and their clicks--------------------------
@@ -44,9 +45,9 @@ class Common {
         if (id == R.id.nav_home) {
             if(!(context instanceof Home)){
                 Intent intent=new Intent(context,Home.class);
-                /*intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_CLEAR_TOP
-                        | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);*/
+                        | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
             }
         }
