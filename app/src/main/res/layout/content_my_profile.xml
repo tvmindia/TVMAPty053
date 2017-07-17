@@ -29,6 +29,16 @@
         android:layout_marginBottom="5dp"
         android:animateLayoutChanges="true">
 
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:maxWidth="150dp"
+            android:layout_height="170dp"
+            android:id="@+id/user_image"
+            android:src="@drawable/user"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="15dp"
+            android:scaleType="fitCenter"/>
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
@@ -37,14 +47,6 @@
             android:layout_alignParentEnd="true"
             android:src="@drawable/edit"
             android:onClick="editProfile"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="170dp"
-            android:id="@+id/user_image"
-            android:src="@drawable/user"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="15dp"
-            android:scaleType="fitCenter"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
