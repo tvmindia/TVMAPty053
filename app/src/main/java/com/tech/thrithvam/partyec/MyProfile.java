@@ -1,25 +1,55 @@
 package com.tech.thrithvam.partyec;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.wang.avi.AVLoadingIndicatorView;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class MyProfile extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Common common=new Common();
     DatabaseHandler db;
+
+    File imageFile;
+    ImageView customerImage;
+    Boolean isFromCamera=false;
+    final int PHOTO_FROM_CAMERA=555;
+    final int PHOTO_FROM_GALLERY=444;
+    Uri imageUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +77,39 @@ public class MyProfile extends AppCompatActivity
             ((TextView)findViewById(R.id.email)).setText(db.GetCustomerDetails("Email"));
 
             FirebaseMessaging.getInstance().subscribeToTopic(db.GetCustomerDetails("CustomerID"));
+
+            //CustomerImage
+            customerImage=(ImageView)findViewById(R.id.user_image);
+            customerImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {/*
+                    final CharSequence[] items = {getResources().getString(R.string.take_photo), getResources().getString(R.string.choose_from_galley), getResources().getString(R.string.cancel)};
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MyProfile.this);
+//                    builder.setTitle(getResources().getString(R.string.cust));
+                    builder.setItems(items, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int item) {
+                            if (items[item].equals(getResources().getString(R.string.take_photo))) {
+                                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                                File dir = getDir("directory", Context.MODE_PRIVATE);
+                                imageFile = new File(dir,  "Pic.jpg");
+                                intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                                        Uri.fromFile(imageFile));
+                                imageUri = Uri.fromFile(imageFile);
+                                startActivityForResult(intent, PHOTO_FROM_CAMERA);
+                            } else if (items[item].equals(getResources().getString(R.string.choose_from_galley))) {*/
+                                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                intent.setType("image/*");
+                                startActivityForResult(Intent.createChooser(intent, "Select File"), PHOTO_FROM_GALLERY);
+                        /*    } else if (items[item].equals(getResources().getString(R.string.cancel))) {
+                                finish();
+                            }
+                        }
+                    });
+                    builder.setCancelable(false);
+                    builder.show();*/
+                }
+            });
         }
         //-----------------------------------------------------------------------------
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -122,6 +185,89 @@ public class MyProfile extends AppCompatActivity
         Intent intent=new Intent (MyProfile.this,ListViewsActivity.class);
         intent.putExtra("list","history");
         startActivity(intent);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Bitmap bitmap;
+        if (resultCode == RESULT_OK)
+        {
+            if(requestCode == PHOTO_FROM_CAMERA){
+                if (((imageFile.length() / 1024) / 1024) > 5) {
+                    Toast.makeText(MyProfile.this, "Please make the image file smaller size", Toast.LENGTH_LONG).show();
+                    return;
+                } else {
+                    /*bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                    customerImage.setImageBitmap(bitmap);*/
+                    Uri selectedImage = imageUri;
+                    getContentResolver().notifyChange(selectedImage, null);
+                    ContentResolver cr = getContentResolver();
+                    try {
+                        bitmap = android.provider.MediaStore.Images.Media
+                                .getBitmap(cr, selectedImage);
+
+                        customerImage.setImageBitmap(bitmap);
+                        Toast.makeText(this, selectedImage.toString(),
+                                Toast.LENGTH_LONG).show();
+
+                    } catch (Exception e) {
+                        Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT)
+                                .show();
+
+                    }
+                    isFromCamera=true;
+                }
+
+
+            }
+            else if(requestCode == PHOTO_FROM_GALLERY) {
+                if (isOnline()) {
+                    Uri selectedImageUri = data.getData();
+                    String[] projection = {MediaStore.MediaColumns.DATA};
+                    CursorLoader cursorLoader = new CursorLoader(this, selectedImageUri, projection, null, null, null);
+                    Cursor cursor = cursorLoader.loadInBackground();
+                    int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+                    cursor.moveToFirst();
+                    File imageFileTemp = new File(cursor.getString(column_index));
+                    if (((imageFileTemp.length() / 1024) / 1024) > 5) {
+                        Toast.makeText(MyProfile.this, "Please make the image file smaller size", Toast.LENGTH_LONG).show();
+                        return;
+                    } else {
+                        imageFile = imageFileTemp;
+                        String selectedImagePath = cursor.getString(column_index);
+                        bitmap = BitmapFactory.decodeFile(selectedImagePath);
+                        customerImage.setImageBitmap(bitmap);
+                    }
+                    cursor.close();
+                    Upload();
+                }
+                else {
+                    Common.toastMessage(MyProfile.this,R.string.network_off_alert);
+                }
+            }
+        }
+    }
+
+
+    public void Upload() {
+            FileInputStream fStream = null;
+            if (imageFile != null) {
+                try {
+                    fStream = new FileInputStream(imageFile);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+            FileUpload hfu = new FileUpload(MyProfile.this, getResources().getString(R.string.url) + "/api/Customer/UploadProfileImage",
+                                            fStream,
+                                            imageFile.getName(), "");
+
+            hfu.UploadFileFn();
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
     @Override
     public void onBackPressed() {
