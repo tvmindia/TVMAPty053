@@ -6,7 +6,7 @@
     android:layout_margin="5dp">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="260dp">
+        android:layout_height="230dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
         android:padding="5dp"
         android:id="@+id/product_name"
         android:layout_below="@+id/product_image"
-        android:maxLines="2"
+        android:maxLines="1"
         android:ellipsize="end"/>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -70,7 +70,9 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_toRightOf="@+id/total_price"
-                android:layout_toEndOf="@+id/total_price" />
+                android:layout_toEndOf="@+id/total_price"
+                android:maxLines="1"
+                android:ellipsize="end"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,7 +86,9 @@
                 android:visibility="visible"
                 android:textSize="12sp"
                 android:layout_toRightOf="@+id/actual_price"
-                android:layout_toEndOf="@+id/actual_price" />
+                android:layout_toEndOf="@+id/actual_price"
+                android:maxLines="1"
+                android:ellipsize="end"/>
         </RelativeLayout>
     </RelativeLayout>
         <ImageView
