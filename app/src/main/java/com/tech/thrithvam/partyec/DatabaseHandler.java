@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All Static variables
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     // Database Name
     private static final String DATABASE_NAME = "PartyEC.db";
     private SQLiteDatabase db;
@@ -32,14 +32,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //---------------Tables----------------------------------
-        String CREATE_USER_ACCOUNTS_TABLE = "CREATE TABLE IF NOT EXISTS Customer (CustomerID TEXT PRIMARY KEY,Name TEXT,Email TEXT,Mobile TEXT,Gender TEXT);";
+        String CREATE_USER_ACCOUNTS_TABLE = "CREATE TABLE IF NOT EXISTS Customer (CustomerID TEXT PRIMARY KEY,Name TEXT,Email TEXT,Mobile TEXT,Gender TEXT, CustomerImg TEXT);";
         db.execSQL(CREATE_USER_ACCOUNTS_TABLE);
     }
     // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
-                db.execSQL("DROP TABLE IF EXISTS Customer" );
+                db.execSQL("ALTER TABLE Customer ADD CustomerImg TEXT" );
         // Create tables again
         onCreate(db);
     }
@@ -61,9 +61,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db=this.getWritableDatabase();
         db.execSQL("UPDATE Customer SET Name="+DatabaseUtils.sqlEscapeString(Name)+",Mobile='"+Mobile+"';");
     }
+    void UpdateCustomerImg(String ImgURL)
+    {
+        db=this.getWritableDatabase();
+        db.execSQL("UPDATE Customer SET CustomerImg="+DatabaseUtils.sqlEscapeString(ImgURL)+";");
+    }
     String GetCustomerDetails(String detail)
     {db=this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT CustomerID,Name,Email,Mobile,Gender FROM Customer;",null);
+        Cursor cursor = db.rawQuery("SELECT CustomerID,Name,Email,Mobile,Gender,CustomerImg FROM Customer;",null);
         if (cursor.getCount()>0)
         {cursor.moveToFirst();
             String result=cursor.getString(cursor.getColumnIndex(detail));

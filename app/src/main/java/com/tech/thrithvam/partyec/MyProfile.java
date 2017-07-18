@@ -31,6 +31,9 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -50,6 +53,7 @@ public class MyProfile extends AppCompatActivity
     final int PHOTO_FROM_CAMERA=555;
     final int PHOTO_FROM_GALLERY=444;
     Uri imageUri;
+    NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +84,10 @@ public class MyProfile extends AppCompatActivity
 
             //CustomerImage
             customerImage=(ImageView)findViewById(R.id.user_image);
+            Common.LoadImage(MyProfile.this,
+                    customerImage,
+                    getResources().getString(R.string.url)+db.GetCustomerDetails("CustomerImg"),
+                    R.drawable.user);
             customerImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {/*
@@ -112,8 +120,9 @@ public class MyProfile extends AppCompatActivity
             });
         }
         //-----------------------------------------------------------------------------
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        Common.NavigationBarHeaderClick(MyProfile.this,navigationView);
     }
 
     public void editProfile(View view){
@@ -257,12 +266,26 @@ public class MyProfile extends AppCompatActivity
                     e.printStackTrace();
                 }
             }
-            FileUpload hfu = new FileUpload(MyProfile.this, getResources().getString(R.string.url) + "/api/Customer/UploadProfileImage",
+            final FileUpload hfu = new FileUpload(MyProfile.this, getResources().getString(R.string.url) + "/api/Customer/UploadProfileImage",
                                             fStream,
                                             imageFile.getName(),
                                             db.GetCustomerDetails("CustomerID"));
 
-            hfu.UploadFileFn();
+            Runnable postUpload=new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        JSONObject jsonObject=new JSONObject(hfu.responseString);
+                        String msg=jsonObject.optString("Message");
+                        db.UpdateCustomerImg(jsonObject.optString("FilePath"));
+                        Common.toastMessage(MyProfile.this,msg);
+                        Common.NavigationBarHeaderClick(MyProfile.this,navigationView);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            hfu.UploadFileFn(postUpload);
     }
 
     public boolean isOnline() {

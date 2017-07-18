@@ -20,7 +20,7 @@ class FileUpload implements Runnable{
     private URL connectURL;
     Context context;
     private int responseCode;
-    private String responseString;
+    public String responseString;
     private String customerID;
     private String fileName="";
     private FileInputStream fileInputStream = null;
@@ -140,12 +140,16 @@ class FileUpload implements Runnable{
     }
 
 
-    void UploadFileFn(){
-        new UploadFile().execute();
+    void UploadFileFn(final Runnable postThread){
+        new UploadFile(postThread).execute();
     }
 
     public class UploadFile extends AsyncTask<Void , Void, Void> {
         ProgressDialog pDialog=new ProgressDialog(context);
+        Runnable postThread;
+        UploadFile(Runnable postThread){
+            this.postThread=postThread;
+        }
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -175,13 +179,7 @@ class FileUpload implements Runnable{
                             }
                         }
                     }).setCancelable(false).show();*/
-            try {
-                JSONObject jsonObject=new JSONObject(responseString);
-                String msg=jsonObject.optString("Message");
-                Common.toastMessage(context,msg);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            postThread.run();
         }
     }
 }

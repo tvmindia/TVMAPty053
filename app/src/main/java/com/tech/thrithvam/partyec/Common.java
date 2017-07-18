@@ -110,16 +110,22 @@ class Common {
         if(db.GetCustomerDetails("CustomerID")!=null){
             ((TextView)navigationView.getHeaderView(0).findViewById(R.id.user_name)).setText(db.GetCustomerDetails("Name"));
             ((TextView)navigationView.getHeaderView(0).findViewById(R.id.user_email)).setText(db.GetCustomerDetails("Email"));
+            Common.LoadImage(context,
+                    ((ImageView)navigationView.getHeaderView(0).findViewById(R.id.customer_image)),
+                    context.getResources().getString(R.string.url)+db.GetCustomerDetails("CustomerImg"),
+                    R.drawable.user);
         }
         else {
             (navigationView.getHeaderView(0).findViewById(R.id.user_email)).setVisibility(View.INVISIBLE);
         }
-        navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.startActivity(new Intent(context, Login.class));
-            }
-        });
+        if(!(context instanceof MyProfile)) {
+            navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(new Intent(context, Login.class));
+                }
+            });
+        }
     }
 
     //To load image from a url------------------------------------------------------
