@@ -13,6 +13,7 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:maxHeight="50dp"
             android:src="@drawable/dim_icon"
             android:id="@+id/customer_image"
             android:adjustViewBounds="true"

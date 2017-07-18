@@ -31,13 +31,14 @@
         android:paddingBottom="5dp">
         <ImageView
             android:layout_width="wrap_content"
-            android:maxWidth="150dp"
+            android:maxWidth="170dp"
             android:layout_height="170dp"
             android:id="@+id/user_image"
             android:src="@drawable/user"
             android:layout_centerHorizontal="true"
             android:layout_margin="15dp"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"/>
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"

@@ -473,7 +473,7 @@ public class ProductDetails extends AppCompatActivity
                         stars.getDrawable(2).setColorFilter(Color.parseColor("#FFF9DB01"), PorterDuff.Mode.SRC_ATOP);
                         Common.LoadImage(ProductDetails.this,
                                 ((ImageView)review.findViewById(R.id.customer_image)),
-                                common.dataArrayList.get(i)[2],
+                                getResources().getString(R.string.url)+common.dataArrayList.get(i)[2],
                                 R.drawable.user);
                         productReviewsLinear.addView(review);
                         //divider
