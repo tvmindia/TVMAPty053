@@ -259,7 +259,8 @@ public class MyProfile extends AppCompatActivity
             }
             FileUpload hfu = new FileUpload(MyProfile.this, getResources().getString(R.string.url) + "/api/Customer/UploadProfileImage",
                                             fStream,
-                                            imageFile.getName(), "");
+                                            imageFile.getName(),
+                                            db.GetCustomerDetails("CustomerID"));
 
             hfu.UploadFileFn();
     }

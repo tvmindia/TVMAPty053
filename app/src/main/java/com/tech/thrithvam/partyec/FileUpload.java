@@ -73,7 +73,7 @@ class FileUpload implements Runnable{
 
             dos.writeBytes(twoHyphens + boundary + lineEnd);
 
-            dos.writeBytes("Content-Disposition: form-data; name=\"customerID\"" + lineEnd);
+            dos.writeBytes("Content-Disposition: form-data; name=\"CustomerID\"" + lineEnd);
             dos.writeBytes(lineEnd);
             dos.writeBytes(customerID);
             dos.writeBytes(lineEnd);
