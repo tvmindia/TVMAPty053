@@ -69,7 +69,7 @@
     <string name="success">Success</string>
     <string name="failed">Failed</string>
     <string name="apply">Apply</string>
-    <string name="title_activity_product_details">ProductDetails</string>
+    <string name="title_activity_product_details">Product Details</string>
     <string name="add_to_cart">Add to Cart</string>
     <string name="reviews">Reviews</string>
     <string name="in_stock">In Stock</string>
