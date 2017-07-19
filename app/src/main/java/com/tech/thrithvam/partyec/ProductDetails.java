@@ -541,7 +541,7 @@ public class ProductDetails extends AppCompatActivity
 
                 LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 for(int i=0;i<common.dataArrayList.size();i++) {
-                    View productItem = inflater.inflate(R.layout.item_product_grid, null);
+                    View productItem = inflater.inflate(R.layout.item_initial_product, null);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
                     params.setMargins(5, 5, 5, 5);
                     productItem.setLayoutParams(params);
