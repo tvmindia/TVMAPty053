@@ -163,7 +163,22 @@ class CustomAdapter extends BaseAdapter{
                 if(!(filteredObjects.get(position)[4].equals("null")) && Double.parseDouble(filteredObjects.get(position)[4])!=0) {
                     holder.totalPrice.setVisibility(View.VISIBLE);
                     holder.actualPrice.setVisibility(View.VISIBLE);
+                    //price
                     holder.totalPrice.setText(adapterContext.getResources().getString(R.string.price_display, (filteredObjects.get(position)[4]).equals("null") || (filteredObjects.get(position)[4].equals("0.0")) ? "" : filteredObjects.get(position)[4]));
+                    //stock availability
+                    if(!(filteredObjects.get(position)[6].equals("null"))){
+                        if(Boolean.parseBoolean(filteredObjects.get(position)[6])){
+                            holder.stockAvailability.setText(R.string.in_stock);
+                            holder.stockAvailability.setTextColor(adapterContext.getResources().getColor(android.R.color.holo_green_dark));
+                        } else {
+                            holder.stockAvailability.setText(R.string.out_of_stock);
+                            holder.stockAvailability.setTextColor(adapterContext.getResources().getColor(android.R.color.holo_red_light));
+                        }
+                    }
+                    else {
+                        holder.stockAvailability.setText("");
+                    }
+                    //discount
                     if (!(filteredObjects.get(position)[5].equals("null")) && !(Double.parseDouble(filteredObjects.get(position)[5]) == 0)) {
                         holder.actualPrice.setPaintFlags(holder.actualPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                         String actualPriceString = String.format(Locale.US, "%.2f",
@@ -175,16 +190,9 @@ class CustomAdapter extends BaseAdapter{
                         holder.actualPrice.setText("");
                     }
                 }
-                if(!(filteredObjects.get(position)[6].equals("null"))){
-                        if(Boolean.parseBoolean(filteredObjects.get(position)[6])){
-                            holder.stockAvailability.setText(R.string.in_stock);
-                            holder.stockAvailability.setTextColor(adapterContext.getResources().getColor(android.R.color.holo_green_dark));
-                        } else {
-                            holder.stockAvailability.setText(R.string.out_of_stock);
-                            holder.stockAvailability.setTextColor(adapterContext.getResources().getColor(android.R.color.holo_red_light));
-                        }
-                }
                 else {
+                    holder.totalPrice.setVisibility(View.GONE);
+                    holder.actualPrice.setVisibility(View.GONE);
                     holder.stockAvailability.setText("");
                 }
                 holder.supplierName.setText(filteredObjects.get(position)[7].equals("null")?"":filteredObjects.get(position)[7]);
