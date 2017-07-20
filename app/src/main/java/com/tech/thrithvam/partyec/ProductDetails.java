@@ -880,7 +880,16 @@ public class ProductDetails extends AppCompatActivity
             for(int i=0;i<asyncTasks.size();i++){
                 asyncTasks.get(i).cancel(true);
             }
-            super.onBackPressed();
+            if(isTaskRoot()){
+                Intent intent=new Intent(this,Home.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+            else {
+                super.onBackPressed();
+            }
         }
     }
     @Override

@@ -54,54 +54,84 @@ class Common {
         else if (id == R.id.nav_shop_by_category) {
                 Intent intent = new Intent(context, CategoryList.class);
                 intent.putExtra("from", "shopByCategory");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
         }
         else if (id == R.id.nav_shop_by_occasion) {
             Intent intent=new Intent(context,CategoryList.class);
             intent.putExtra("from","shopByOccasion");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
             context.startActivity(intent);
         }
         else if (id == R.id.nav_offers) {
             Intent intent=new Intent(context,CategoryList.class);
             intent.putExtra("from","offers");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
             context.startActivity(intent);
         }
         else if (id == R.id.nav_register_event) {
             if(!(context instanceof RegisterEvent)) {
                 Intent intent = new Intent(context, RegisterEvent.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
             }
         }
         else if (id == R.id.nav_contact_us) {
             if(!(context instanceof ContactUs)) {
                 Intent intent = new Intent(context, ContactUs.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
             }
         }
         else if (id == R.id.nav_cart) {
             if(!(context instanceof Cart)) {
                 Intent intent = new Intent(context, Cart.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
                 context.startActivity(intent);
             }
         }
         else if (id==R.id.nav_wishlist){
             Intent intent=new Intent (context,ListViewsActivity.class);
             intent.putExtra("list","wishlist");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
             context.startActivity(intent);
         }
         else if (id==R.id.nav_view_bookings){
             Intent intent=new Intent (context,ListViewsActivity.class);
             intent.putExtra("list","bookings");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
             context.startActivity(intent);
         }
         else if (id==R.id.nav_view_quotations){
             Intent intent=new Intent (context,ListViewsActivity.class);
             intent.putExtra("list","quotations");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
             context.startActivity(intent);
         }
         else if (id==R.id.nav_view_orders){
             Intent intent=new Intent (context,ListViewsActivity.class);
             intent.putExtra("list","orders");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
             context.startActivity(intent);
         }
     }
@@ -122,7 +152,11 @@ class Common {
             navigationView.getHeaderView(0).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(new Intent(context, Login.class));
+                    Intent intent=new Intent(context,Login.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+                    context.startActivity(intent);
                 }
             });
         }
