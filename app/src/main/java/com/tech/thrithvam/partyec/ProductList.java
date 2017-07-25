@@ -453,7 +453,7 @@ public class ProductList extends AppCompatActivity
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(adapterAllProducts!=null){
+                if(allProductsGrid.getAdapter()!=null){
                     ((CustomAdapter)allProductsGrid.getAdapter()).getFilter(0).filter(searchView.getQuery().toString().trim());
                     TextView noItems=(TextView)findViewById(R.id.enter_to_search);
                     noItems.setVisibility(allProductsGrid.getChildCount()>0?View.INVISIBLE:View.VISIBLE);
