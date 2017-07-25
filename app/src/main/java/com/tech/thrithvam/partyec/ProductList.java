@@ -445,13 +445,17 @@ public class ProductList extends AppCompatActivity
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+                Intent searchIntent=new Intent(ProductList.this,Search.class);
+                searchIntent.putExtra("searchkey",searchView.getQuery().toString().trim());
+                startActivity(searchIntent);
+                finish();
+                return true;
             }
             @Override
             public boolean onQueryTextChange(String newText) {
                 if(adapterAllProducts!=null){
-                    adapterAllProducts.getFilter(1).filter(searchView.getQuery().toString().trim());
-                    TextView noItems=(TextView)findViewById(R.id.no_items);
+                    ((CustomAdapter)allProductsGrid.getAdapter()).getFilter(0).filter(searchView.getQuery().toString().trim());
+                    TextView noItems=(TextView)findViewById(R.id.enter_to_search);
                     noItems.setVisibility(allProductsGrid.getChildCount()>0?View.INVISIBLE:View.VISIBLE);
                 }
                 return true;
