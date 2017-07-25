@@ -270,8 +270,23 @@
                         android:maxLines="1"
                         android:ellipsize="end"
                         android:id="@+id/action_button"/>
+
 </LinearLayout>
+
             </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_to_buy"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:paddingBottom="5dp"
+                android:id="@+id/contact_to_buy"
+                android:textColor="@color/secondary_text"
+                android:textSize="12sp"
+                android:visibility="gone"
+                android:layout_gravity="end"
+                />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

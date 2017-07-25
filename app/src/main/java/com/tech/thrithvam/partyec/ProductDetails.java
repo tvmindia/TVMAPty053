@@ -156,6 +156,12 @@ public class ProductDetails extends AppCompatActivity
                             (findViewById(R.id.price)).setVisibility(GONE);
                             (findViewById(R.id.actual_price)).setVisibility(GONE);
                             (findViewById(R.id.product_detail_specs)).setVisibility(GONE);
+
+                            //Can't buy a product that doesn't show price
+                            (findViewById(R.id.add_to_cart)).setVisibility(GONE);
+                            proceed.setEnabled(false);
+                            proceed.setBackgroundColor(Color.LTGRAY);
+                            (findViewById(R.id.contact_to_buy)).setVisibility(View.VISIBLE);
                         }
 
                         if (jsonRootObject.optBoolean("FreeDelivery"))
