@@ -1,15 +1,15 @@
 <resources>
     <string name="app_name">PartyEC</string>
     <!--Local publish-->
-    <string name="url" translatable="false">http://192.168.1.109:456/</string>
-    <string name="offers_code">2072</string>
-    <string name="occasion_code">2063</string>
+    <!--<string name="url" translatable="false">http://192.168.1.109:456/</string>-->
+    <!--<string name="offers_code">2072</string>-->
+    <!--<string name="occasion_code">2063</string>-->
     <!--<string name="url" translatable="false">http://192.168.1.110:97/</string>-->
 
     <!--Web publish-->
-    <!--<string name="url" translatable="false">http://jdadmin-001-site5.itempurl.com/</string>-->
-    <!--<string name="offers_code">1080</string>-->
-    <!--<string name="occasion_code">1079</string>-->
+    <string name="url" translatable="false">http://jdadmin-001-site5.itempurl.com/</string>
+    <string name="offers_code">1080</string>
+    <string name="occasion_code">1079</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
